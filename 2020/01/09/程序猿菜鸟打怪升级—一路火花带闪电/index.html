@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: ''
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="&amp;lt; 此篇文章为segmentfault中秋约稿时写的。 各位小伙伴，大家好！我是猿人谷，一名搬砖老菜鸟。蓦然回首这几年的打怪升级历程，不再是之前的年轻气盛，也没有百感交集，内心却像湖面躺着那株莲花一般，平静，荡不起半点涟漪。 总结从事搬砖行业的这几年，感觉就是：平台白发银披风，一生都在征战中。初入行时，真的连菜鸟都算不上，顶多是只菜虫。当时听到什么c++，Objective-c，大数据，神经">
+<meta name="keywords" content="程序人生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序猿菜鸟打怪升级—一路火花带闪电">
+<meta property="og:url" content="http://yoursite.com/2020/01/09/程序猿菜鸟打怪升级—一路火花带闪电/index.html">
+<meta property="og:site_name" content="猿人谷">
+<meta property="og:description" content="&amp;lt; 此篇文章为segmentfault中秋约稿时写的。 各位小伙伴，大家好！我是猿人谷，一名搬砖老菜鸟。蓦然回首这几年的打怪升级历程，不再是之前的年轻气盛，也没有百感交集，内心却像湖面躺着那株莲花一般，平静，荡不起半点涟漪。 总结从事搬砖行业的这几年，感觉就是：平台白发银披风，一生都在征战中。初入行时，真的连菜鸟都算不上，顶多是只菜虫。当时听到什么c++，Objective-c，大数据，神经">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190916103157318.gif">
+<meta property="og:updated_time" content="2020-01-09T09:40:50.585Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="程序猿菜鸟打怪升级—一路火花带闪电">
+<meta name="twitter:description" content="&amp;lt; 此篇文章为segmentfault中秋约稿时写的。 各位小伙伴，大家好！我是猿人谷，一名搬砖老菜鸟。蓦然回首这几年的打怪升级历程，不再是之前的年轻气盛，也没有百感交集，内心却像湖面躺着那株莲花一般，平静，荡不起半点涟漪。 总结从事搬砖行业的这几年，感觉就是：平台白发银披风，一生都在征战中。初入行时，真的连菜鸟都算不上，顶多是只菜虫。当时听到什么c++，Objective-c，大数据，神经">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190916103157318.gif">
+  <link rel="canonical" href="http://yoursite.com/2020/01/09/程序猿菜鸟打怪升级—一路火花带闪电/">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>程序猿菜鸟打怪升级—一路火花带闪电 | 猿人谷</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">猿人谷</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">路虽远，行则必至；事虽难，做则必成</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+    </ul>
+    
+
+</nav>
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/09/程序猿菜鸟打怪升级—一路火花带闪电/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="猿人谷">
+      <meta itemprop="description" content="猿人谷,java，JVM，分布式，微服务，Spring Boot，Spring Cloud">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿人谷">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">程序猿菜鸟打怪升级—一路火花带闪电
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-09 17:37:41 / 修改时间：17:40:50" itemprop="dateCreated datePublished" datetime="2020-01-09T17:37:41+08:00">2020-01-09</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/奋斗/" itemprop="url" rel="index"><span itemprop="name">奋斗</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">6.7k</span>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">6 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>&lt; 此篇文章为segmentfault中秋约稿时写的。</p>
+<p>各位小伙伴，大家好！我是猿人谷，一名搬砖老菜鸟。蓦然回首这几年的打怪升级历程，不再是之前的年轻气盛，也没有百感交集，内心却像湖面躺着那株莲花一般，平静，荡不起半点涟漪。</p>
+<p>总结从事搬砖行业的这几年，感觉就是：平台白发银披风，一生都在征战中。初入行时，真的连菜鸟都算不上，顶多是只菜虫。当时听到什么c++，Objective-c，大数据，神经网络。。。。。。真的明白自己就两件事不会：这也不会，那也不会。凭着内心的一股倔强，拼命的学，没日没夜的学算法，刷poj，玩命似的向所有人证明：哥真的不是菜鸟。只记得当时内心非常希望有人能叫我一声大佬！过了这些年后，发现技术真的是浩如烟海，我懂的这点东西真的只是沧海一粟而已，倒是有很多人叫我大佬了，可我却想告诉大家：哥真的只是只菜鸟啦！</p>
+<p>接下来我会分三个篇章向小伙伴们介绍，我是怎么从小菜鸟，经过多年的玩命学习后，成功变成老菜鸟的。这三个篇章会围绕以下几点来铺开：</p>
+<ol>
+<li>猿人谷到底是哪条路子的？菜虫？还是大佬？</li>
+<li>初入搬砖行业，什么都不会，该从哪里学起？望尽天涯路啊！</li>
+<li>搬砖工到底要不要写技术博客？</li>
+<li>如何扩展自己的技术视野和技术圈？</li>
+<li>总觉得效率很低，该如何高效的学习？</li>
+<li>工资在房价面前微不足道，搬砖工如何去理财？</li>
+<li>搬砖工如何学习扛过中年危机？</li>
+</ol>
+<h2 id="一-昨夜西风凋碧树，独上高楼，望尽天涯路"><a href="#一-昨夜西风凋碧树，独上高楼，望尽天涯路" class="headerlink" title="一. 昨夜西风凋碧树，独上高楼，望尽天涯路"></a>一. 昨夜西风凋碧树，独上高楼，望尽天涯路</h2><p>本科四年基本没有学明白有关计算机的任何东西，当时只开过C语言，关键是大四毕业时我连个冒泡都写不明白。大一大二基本就是懵懵懂懂，刚从高中的那种“军事化”学习中解脱，算是彻底放飞了自己，跟风的去当班长，去捣腾怎么做学生会主席，反正就是把其他事都干了，唯独把学习的事全忘了。记得在大二时，去做大一的辅导员助理，突然一下子要去教大一的学弟学妹们该如何过好大学四年。感觉就跟一个已经喝醉酒的人去教刚端起酒杯的人怎么才能不喝醉！突然我好像明白了什么，我的大学四年到底该如何去过？晃悠到大二结束，我才发现这两年的课本好像只有线性代数这本书有翻完（请注意是“翻”，不是学完），其它的书基本都没翻一半，更别提学完了。内心一下子就慌了。<strong>独上高楼，望尽天涯路，未来的我到底该怎么办啊？</strong></p>
+<p>就横下心来去学习，从此一如图书馆深似海，从此皆是陌路人，决心加入考研大军！看了几天高数，懵了，小伙伴能理解什么是挫败感扑面而来吗？发现放飞了两年的心沉不下来看书，怎么办？理科的书看不明白，那我去看文科的书，在图书馆看书时看到有人考国家导游证，听说有这证的人，全国所有旅游景点都能免费。刚好我也喜欢旅游，世间竟有这等好事，考，必须考，冲这个免费我也得考，就用考证来磨练自己，让放飞的心能沉下来看书。当时还年轻，脑子比较够用，我这人有个很怪的小技能，就是短时记忆能力比较强（就是记得快，忘得也快，对付考试最好用）。当时国家级导游证考试，指定的是好像是两本跟医学专业的教材那么厚的书，记得考前3个月，把这两本书翻了2遍，画类似思维脑图的图谱，基本把整本书都记得七七八八了。考试时，说来也怪，考的都会，蒙的题好像都对。最后成绩出来，全省排名好像是前15%，莫名其妙的竟然通过了，自己都觉得挺逗的。（<strong>人越努力，就会越幸运，学习技术也一样，够努力，菜鸟也能逆袭成大佬</strong>）</p>
+<p>考完后就开始考研，考研基本就是早出晚归的泡图书馆，图书馆什么时候熄灯，就什么时候回宿舍，就这样早出晚归的过了差不多一年。后面非常幸运的考到了北京，也不明白为什么，好像一直都还挺幸运的！读研前的心理状态跟当初去读本科时的状态完全不一样，更清楚自己该如何去过研究生这3年了，目的性更强了。读研是计算机方向，主要是用c，c++，开始重新学编程语言（本科的底子太薄），把《C++ primer》里的例子照着敲，不要问我当时敲什么？反正咱也不懂，咱也不敢多问啊。学着学着，发现自己好像对语言有点懂，又好像啥都不会（缺乏项目的历练）。</p>
+<p><strong>既然我也不知道我会什么，也不知道自己不会什么，那怎么办？</strong></p>
+<p>初入行的小白，往往都不知道该怎么学技术，觉得技术太多，又不知道该选，我当初也遇到过这种迷茫。有次无意中发现高中三年都同班的一个好友保送到清华了，好，既然我啥也不会，那我就去找那些啥都会的大牛学习。之后就基本混迹于五道口了，没事就去清华北航晃一晃，看看大牛们都是怎么学习的。大牛们都在学算法，刷ACM，好，那我也跟学；大牛们搞数据挖掘，好，我也跟着学；大牛们搞图像识别，好，我也跟着学；大牛们搞网格计算，好，我也跟着学。。。。。。<strong>既然当时也不知道该做什么，那就大牛做啥就跟着做啥，动起来总比坐着瞎空想强</strong>！发现自己还是对算法更感兴趣，那就跟着刷ACM呗，题太难，就从poj开始。其实初学技术就是这样，不知道该怎么学技术，就是因为对技术不够了解，动起来，先把自己感兴趣的都学，学着学着就知道自己的最大兴趣点在哪里了。当时刷题到半夜，再跟几个好哥们找个马路边的烧烤摊，撸串，喝酒，吹牛，何等的扬鞭纵马江湖，快意人生啊！（其实就是几只单身狗，抱着酒瓶唱情歌啦，可怜的单身狗啊）</p>
+<p>找到了自己的兴趣点后，就开始刷算法和数据结构，当时开了自己的第一个技术博客，开始把自己的一些学习过程和经验写出来。遇到不懂的，就去五道口晃悠（八卦一下，当时楼教主还在姚班读博），反正晃悠回来肯定能找到答案。</p>
+<p>现在经常有人问我：<strong>想写技术博客，但不知道怎么写</strong>？结合我自己曾经的经验来说，我曾经是从洗稿开始（有注明参考来源，向曾经帮助过我的大佬致谢），当时就是无论写什么，度娘上都有，而且感觉别人写的要比自己的好。那怎么办？（世上土豪那么多，难不成我这种穷人就不用过日子啦？道理是一样的）那就照着别人的套路，结合自己对知识点的理解写。写了几篇后，慢慢就会形成自己写作的一些套路和写作习惯，就不需要再去洗稿了，而是能写出自己风格的文章了。所以还要问博客该怎么写吗？有功夫问的时间，还不如立马敲起键盘——开写！<strong>记住，学技术，行动起来永远比空想强，Talk is cheap,Show me the code.</strong></p>
+<p>研二开始找实习，当时做iOS开发挺火的，听着挺高端，就打算找个iOS开发的实习。就去某家公司找实习，先笔试，竟然都是些算法题，记得是7道题，说随机选5道就可以了，因为有了之前刷算法的基础，做这些题没有太大难度。很快就刷了5道，面试的人很忙，让我等会，反正也闲着，我顺便把这7道题全刷了，后面面试官进行来说笔试成绩满分，就这样很顺利的通过了面试。实习就是跟公司一起做一个模拟炒股的app，通过实习给自己赚了台mac。牛逼吹完了，其实就是想告诉大家，<strong>学技术真的没有捷径，唯有积累，也许真的是越努力越幸运吧！</strong></p>
+<p>临毕业前，大家都一样，赶场参加各种校招，当时很想去网易和360（因为这两公司当时校招给的待遇很高），可怜的是都没要我！当时开始有点怀疑自己，就不再找这类大公司了，开始给各种中小公司投简历，发现各个公司出的问题都差不多，对付不了大公司，中小公司还是没啥问题的，被打击的心重新找回了自信。</p>
+<p>毕业后的第一份工作，公司用的java，就从c++转成了java，从此就在java这条路上摇摇晃晃的走到了今天。</p>
+<h2 id="二-衣带渐宽终不悔，为伊消得人憔悴"><a href="#二-衣带渐宽终不悔，为伊消得人憔悴" class="headerlink" title="二. 衣带渐宽终不悔，为伊消得人憔悴"></a>二. 衣带渐宽终不悔，为伊消得人憔悴</h2><p>毕业第一年就是公司有什么项目，就跟着做什么项目，过了大半年，发现每天就是往返于公司与家，基本都没啥圈子了。内心莫名的惶恐起来，其他公司在玩什么技术？现在市面都有什么牛逼的产品？就怕自己跟不上技术发展的节奏，为了扩展自己的技术视野和圈子，后面基本每个周末都去3W咖啡和车库咖啡晃悠，那里几乎每天都会有各种公司的路演，还有很多大公司的技术分享活动。刚开始，其实路演的很多东西和技术分享我真的听不明白（留下没技术的眼泪），既然听不明白那就多去听呗，听着听着开始对很多产品有自己的一些小见解了，也慢慢结识了一些同样的技术狂热份子。到现在都还记得当时有位大佬给我说过一句话：<strong>现在的社会竞争非常激烈，你以为是不进则退？其实错了，是进步的慢都算后退</strong> 。我的天啊！犹如醍醐灌顶一般，原来进步小都算后退，那没进步的岂不是直接掉队？（可以用某种算法思路来解释，快慢指针大家都知道吧，职场是场马拉松，你slow.next，别人是fast.next.next，你以为自己在进步，其实已经在悄然掉队）</p>
+<p>北京工作一年后，因为家庭原因，辗转到了广州。不愧为食在广州，来广州的这几年，体重直接飙升30斤，但技术能力是否有跟着飙升，我也不知道。发现广州的技术分享活动非常少，那就自己学呗。从读研时我就一直保留着一个小习惯，每晚睡前都会看至少半小时以上的书（一直对电子书无感，偏好纸质书，可以做笔记），这一年我的重点都放在基础上，jdk的源码、缓存、分布式等技术的研究上。但一直很热衷于技术交流和分享，慢慢的博客上有很多小伙伴留言，留言的有些问题超过我的技术范围，我就各种面向搜索引擎编程，弄明白后再回复小伙伴。反正当时帮助别人解决问题给我内心带来了极大的满足感！</p>
+<p>随着技术的慢慢积累，后面去某家公司（不大，整个技术团队不到30人）做架构师，全面负责公司的技术架构、产品把控和团队管理。当时就是既当爹又当妈的感觉，搭建框架，pc端有两个系统（前台系统给用户用，后台系统）、6个app（3个安卓，3个iOS）。起初自己就是搭框架，撸些核心代码，慢慢时间分配不过来，就开始主要负责团队任务的划分，团队管理，人员招聘之类的事。这期间参加过100人次的面试，遇到过非常多形形色色的面试者，发现虽然人是独立的个体，如果按面试者这个维度区分的话，很多人都是有共性的，相对还是比较容易区分哪些是适合的，哪些是不太适合的。这个阶段积累了很多团队管理的经验和教训，久而久之，发现自己还是对技术很偏执，不想过早的转管理岗，还是更喜欢一线搬砖的感觉。</p>
+<p>为了能不断提高自己的搬砖战斗力，基本就是白天忙工作，晚上再学习自己感兴趣的技术。这里一定要说有哪些经验可以送给即将踏入程序员大军的小宝贝们的话，我只想说，<strong>工作的8小时是让你养家糊口，下班后的学习才是让你技术能否更上一层楼的时刻！</strong>（大家应该听过工作两年，经验却有3年，多出的1年真可以自己加班给加出来）大家都知道，工作中一定不是每个开发任务都是你喜欢的，也并不是你不喜欢的东西你都有权利选择不做的，也并不是每一个你喜欢的任务都能轮到你这的。写业务代码的，可能绝大部分时间都是CRUD，可能技术含量不是很高的，如果指望靠这些来让自己的搬砖能力与日俱增，肯能最终的结果会大失所望。</p>
+<p><strong>搬砖工，一定要学会利用工作外的时间来继续保持学习的激情和野心</strong>。对技术要保有衣带渐宽终不悔的信念，技术的成长绝不可能一蹴而就的。这东西没法像金庸小说那样，掉到个山洞里，捡一本武林秘籍，修炼后就天下无敌（如果真有这种秘籍，小伙伴千万记得告诉我哦）。<strong>结合猿人谷这几年的工作经验，我可以非常负责任的告诉你，绝对不可能，不可能，不可能！（重要的事情还是说3遍）所以很多小伙伴指望买某个专栏就能把这个专栏的内容学得非常精进，怎么可能呢？还是那句老话：技术没有捷径，唯有积累。</strong></p>
+<h2 id="三-众里寻他千百度，蓦然回首，那人却在，灯火阑珊处"><a href="#三-众里寻他千百度，蓦然回首，那人却在，灯火阑珊处" class="headerlink" title="三.众里寻他千百度，蓦然回首，那人却在，灯火阑珊处"></a>三.众里寻他千百度，蓦然回首，那人却在，灯火阑珊处</h2><p>第三篇章的标题也是我还在一直思索着的，专门问了下度娘该如何解读：</p>
+<blockquote>
+<p>简评：此句言与伊人相会之欢悦心境，于灯火明灭闪烁之处，终于见到意中之人，自是大喜过望。意喻经过艰辛探索，终有所悟，犹如醍醐灌顶，豁然开朗。</p>
+</blockquote>
+<p>各位小伙伴有没有发现，虽然自己对技术矜矜业业，道理懂了一堆，好像还是没能过好这一生？</p>
+<p>很现实的问题，房子，车子，票子。如何权衡这些现实的问题与学习呢？其实搬砖工严格意义来说工资待遇不算太差，可能跟很多行业比起来待遇还偏高了点。到了这个阶段需要具备一定的理财能力了，记得强哥（纯洁的微笑）以前还专门写过一些文章来告诉搬砖工理财的重要性。我也曾经豪情壮志的冲进过股市，反正我是灰头土脸的光着膀子出来了（衣服都亏没了）。但我身边也有些朋友真的靠股市发家致富了，股市有风险但也有机遇。曾经有个同事特逗，当时我不玩股票都能知道每天股票的大致情况如何，每到下午三点，如果这哥们提起包哼着小曲下班（这哥们明目张胆的早退，来句今天都赚一两万了，早退才扣多少钱？），那必定是股票大涨，三点后还在上班那股票基本就是绿了。</p>
+<p>股票这货注定是我的敌人！当时工作两年多，手上有点小积蓄，前面说过，来到了广州，广州的房价相对北上深是真亲民，你想1200就能租个单间（有独立卫生间，厨房等），在北京恐怕连个隔断的次卧都租不到吧！就去鼓捣房子，当时房子也在低点，最终鼓捣了一套房子（中间过程省略），记得当时11月份把定金付了（我额外跟房东签了份不许反悔的合同，房子涨了，房东你得认栽，降了，我照价收），就去毛里求斯度假，等我度假回来，中介就一直打电话让我请吃饭。人生有时就是处处是惊喜，买房前说是一定不会通地铁，度假期间莫名其妙的官宣说已经规划地铁线路了，大起大落的太刺激了，反正地铁一响黄金万两，房子莫名其妙的一个月一个价，幸好之前跟房东有签合同，后面就很快去房管局处理过户。房子涨一百万，确实比搬砖赚一百万要轻松太多了！分享的意思是，<strong>搬砖之余，最好能学会一些理财的方法。俗话说的好，人无横财不富，马无夜草不肥啊！</strong></p>
+<p>近一两年，我不再从事管理者的岗位，因为更喜欢一线搬砖的活儿。起初用夏雪冬日这个笔记一直在写文章，可能这个名字比较冷门，度娘前几页基本都是我的文章信息。后来改名猿人谷，注册了yuanrengu.com的域名，也弄了<strong>猿人谷</strong>的微信公众号。关注“猿人谷”公众号的很多小伙伴们都知道我创建这个公众号的初衷，起初是网上很多小伙伴在我的博客和个人主页里留言各种技术问题（最初大都问的是面试相关的问题），写了文章后又没法及时告知大家。当时流行公众号，就创建了猿人谷这个公号，意思就是一伙程序猿聚在一起的山谷（自恋的认为颇有几分侠义情怀），大家可以互相讨论技术，互相交流。所以公号大部分文章都是小伙伴们留言问到的问题，问的多的，一般都会自己原创一篇文章，如果网上有比自己写的更好的文章，就会联系作者进行转载。初衷只是为了解决小伙伴们的提问，也就没太刻意去推广自己的公众号（自己技术有限，很多时候也不敢班门弄斧），其实有段时间也会在很多微信群推自己的文章，但心里总觉得别扭，技术很纯粹的东西，最后就不再推广了。希望自己能一直秉持初心！</p>
+<p>截至今日，我有时心里想，<strong>如果让我自己给自己的技术评级，会评定在哪一档呢？我想了很久，想来想去，发现自己其实真的还只是菜鸟，如果一定要加个阶段的话，那我就是只老菜鸟</strong>。虽然如今学到了很多，但我却深刻的明白，不会的东西更多！我的前面还有非常多值得学习的标杆，孟大哥（孟岩，且慢的扛把子，绝对扫地僧级别的大神，无论技术还是人品都令人崇拜）、知秋、许进等，还有遥不可及的楼教主。有那么多优秀的学习榜样在前面，我又怎敢懈怠呢？</p>
+<p>如果还有一次选择职业的机会，你还会选程序员吗？我想说我一定会毫不犹豫的选程序员这个搬砖行业，<strong>如今的时代对程序员来说绝对是最好的时代，任何人都可以通过自己的努力不懈来达到自己的梦想，大家不靠背景，靠本事和能力吃饭。</strong></p>
+<p>我想说的经验和教训基本都穿插在上面的话题中，我这人非常不喜欢一板一眼的方法论，如学技术就该先学啥，再学啥，这种方法论，那种秘籍。反正我是从来对这种东西不感冒，我一直非常相信每个人都是独立的个体，有自己特有的学习和处事方法，别人的可以参考可以借鉴，但一定要内化为自己特有的方式。适合自己的，才是最好的！</p>
+<p><strong>文末，我们一起喝碗鸡汤，也是我一直践行着的鸡汤</strong>！括号里是我的备注。</p>
+<h4 id="【告别平庸的9个方法】"><a href="#【告别平庸的9个方法】" class="headerlink" title="【告别平庸的9个方法】"></a>【告别平庸的9个方法】</h4><ol>
+<li>每天坚持读书1小时。（<strong>坚持很难，但水滴石穿的道理大家都懂。</strong>）</li>
+<li>坚持提升专业，成为圈子里的权威。（<strong>越努力越幸运，技术的成长没有捷径，唯有每天坚持努力，在未来的某一刻，终究会绽放绚烂的生命之花，终有成技术大佬的一天</strong>）</li>
+<li>战胜两个坏毛病：拖延与抱怨。（<strong>大老爷们最忌讳抱怨</strong>）</li>
+<li>先从形象上改变，提升自信。（<strong>爷们还是自信点好</strong>）</li>
+<li>时常反省自己，但不诋毁自己。（<strong>不骄不躁</strong>）</li>
+<li>向优秀的人学习。（<strong>多向技术大佬学习，如江南白衣，笨神（你假笨），知秋等</strong>）</li>
+<li>坚持早睡早起。（<strong>这个我做的也不好，不好提建议</strong>）</li>
+<li>坚持体育锻炼。（<strong>人到中年不得已，保温杯里泡枸杞，该要注意身体了，多锻炼</strong>）</li>
+<li>保持微笑。（<strong>还是那句话，爱笑的人，运气一般不会太差</strong>）</li>
+</ol>
+<p><strong>愿每一个小伙伴都能找准方向，认清局势，沉淀积累，稳步前行。</strong></p>
+<p><strong>有梦想，什么时候开始都不会晚！</strong></p>
+<p><strong>愿你历经千帆，归来仍是少年！</strong><br><img src="https://img-blog.csdnimg.cn/20190916103157318.gif" alt="在这里插入图片描述"></p>
+
+    </div>
+
+    
+    
+    
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------------------ 本文结束<i class="fa fa-paw"></i>记得扫描下方二维码------------------------</div>
+    
+</div>
+
+      
+    </div>
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/images/wechat.png" alt="猿人谷 wechat" style="width: 200px; max-width: 100%;">
+  <div>关注公众号可获取更多学习资料哦！</div>
+</div>
+
+
+    <div>
+    
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>程序猿菜鸟打怪升级—一路火花带闪电</a></p>
+  <p><span>文章作者:</span>猿人谷</a></p>
+  <p><span>发布时间:</span>2020年01月09日 - 17:37:41</p>
+  <p><span>最后更新:</span>2020年01月09日 - 17:40:50</p>
+  <p><span>原始链接:</span><a href="/2020/01/09/程序猿菜鸟打怪升级—一路火花带闪电/" title="程序猿菜鸟打怪升级—一路火花带闪电">http://yoursite.com/2020/01/09/程序猿菜鸟打怪升级—一路火花带闪电/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/01/09/程序猿菜鸟打怪升级—一路火花带闪电/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+    
+    </div>
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/程序人生/" rel="tag"># 程序人生</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2020/01/09/ZooKeeper/【ZooKeeper系列】3-ZooKeeper源码环境搭建/" rel="next" title="【ZooKeeper系列】3.ZooKeeper源码环境搭建">
+                <i class="fa fa-chevron-left"></i> 【ZooKeeper系列】3.ZooKeeper源码环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">猿人谷</p>
+  <div class="site-description motion-element" itemprop="description">猿人谷,java，JVM，分布式，微服务，Spring Boot，Spring Cloud</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-昨夜西风凋碧树，独上高楼，望尽天涯路"><span class="nav-text">一. 昨夜西风凋碧树，独上高楼，望尽天涯路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-衣带渐宽终不悔，为伊消得人憔悴"><span class="nav-text">二. 衣带渐宽终不悔，为伊消得人憔悴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-众里寻他千百度，蓦然回首，那人却在，灯火阑珊处"><span class="nav-text">三.众里寻他千百度，蓦然回首，那人却在，灯火阑珊处</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【告别平庸的9个方法】"><span class="nav-text">【告别平庸的9个方法】</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fas fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">猿人谷</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.3.0</div>
+-->
+
+<!-- 新增访客统计代码 -->
+<div class="busuanzi-count">
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">29.4k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("07/15/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+
+    
+
+  </div>
+
+  
+    
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+  <script type="text/javascript" src="/js/src/clicksocialvalue.js"></script>
+
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+</body>
+</html>
