@@ -61,23 +61,19 @@
   };
 </script>
 
-  <meta name="description" content="《JVM从小白学成大佬》系列推出到现在，收到了很多小伙伴的好评，也收到了一些小伙伴的建议，在此表示感谢。 有几个小伙伴提出了希望出一篇介绍对象的创建及访问，猿人谷向来是没有原则的，小伙们要求啥，咱就尽力满足，毕竟文章就是对自己学习的一个总结及和各位小伙伴交流学习的机会。话不多说，直接开撸！ 1 创建对象在Java程序运行过程中无时无刻都有对象被创建出来，java中对象可以采用new或反射或clon">
-<meta name="keywords" content="句柄,直接指针">
+  <meta name="description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【JVM从小白学成大佬】6.创建对象及对象的访问定位">
-<meta property="og:url" content="http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/index.html">
+<meta property="og:title" content="Integer和Integer比较以及Integer和Int的比较分析">
+<meta property="og:url" content="http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/index.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="《JVM从小白学成大佬》系列推出到现在，收到了很多小伙伴的好评，也收到了一些小伙伴的建议，在此表示感谢。 有几个小伙伴提出了希望出一篇介绍对象的创建及访问，猿人谷向来是没有原则的，小伙们要求啥，咱就尽力满足，毕竟文章就是对自己学习的一个总结及和各位小伙伴交流学习的机会。话不多说，直接开撸！ 1 创建对象在Java程序运行过程中无时无刻都有对象被创建出来，java中对象可以采用new或反射或clon">
+<meta property="og:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154819.png">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154850.png">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154917.png">
-<meta property="og:updated_time" content="2020-01-10T07:51:44.257Z">
+<meta property="og:updated_time" content="2020-01-13T06:25:09.012Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【JVM从小白学成大佬】6.创建对象及对象的访问定位">
-<meta name="twitter:description" content="《JVM从小白学成大佬》系列推出到现在，收到了很多小伙伴的好评，也收到了一些小伙伴的建议，在此表示感谢。 有几个小伙伴提出了希望出一篇介绍对象的创建及访问，猿人谷向来是没有原则的，小伙们要求啥，咱就尽力满足，毕竟文章就是对自己学习的一个总结及和各位小伙伴交流学习的机会。话不多说，直接开撸！ 1 创建对象在Java程序运行过程中无时无刻都有对象被创建出来，java中对象可以采用new或反射或clon">
-<meta name="twitter:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154819.png">
-  <link rel="canonical" href="http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/">
+<meta name="twitter:title" content="Integer和Integer比较以及Integer和Int的比较分析">
+<meta name="twitter:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+  <link rel="canonical" href="http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/">
 
 
 <script id="page.configurations">
@@ -86,7 +82,7 @@
   };
 </script>
 
-  <title>【JVM从小白学成大佬】6.创建对象及对象的访问定位 | 猿人谷</title>
+  <title>Integer和Integer比较以及Integer和Int的比较分析 | 猿人谷</title>
   
 
 
@@ -245,7 +241,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -259,7 +255,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">【JVM从小白学成大佬】6.创建对象及对象的访问定位
+          <h1 class="post-title" itemprop="name headline">Integer和Integer比较以及Integer和Int的比较分析
 
               
             
@@ -279,7 +275,7 @@
                 
               
 
-              <time title="创建时间：2020-01-10 15:39:12 / 修改时间：15:51:44" itemprop="dateCreated datePublished" datetime="2020-01-10T15:39:12+08:00">2020-01-10</time>
+              <time title="创建时间：2020-01-13 14:24:18 / 修改时间：14:25:09" itemprop="dateCreated datePublished" datetime="2020-01-13T14:24:18+08:00">2020-01-13</time>
             </span>
           
             
@@ -294,7 +290,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/JVM从小白学成大佬/" itemprop="url" rel="index"><span itemprop="name">JVM从小白学成大佬</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
 
                 
                 
@@ -319,7 +315,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">2.1k</span>
+              <span title="本文字数">2.8k</span>
             </span>
           
             <span class="post-meta-item">
@@ -329,7 +325,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">2 分钟</span>
+              <span title="阅读时长">3 分钟</span>
             </span>
           
 
@@ -342,47 +338,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>《JVM从小白学成大佬》系列推出到现在，收到了很多小伙伴的好评，也收到了一些小伙伴的建议，在此表示感谢。</p>
-<p>有几个小伙伴提出了希望出一篇介绍对象的创建及访问，猿人谷向来是没有原则的，小伙们要求啥，咱就尽力满足，毕竟文章就是对自己学习的一个总结及和各位小伙伴交流学习的机会。话不多说，直接开撸！</p>
-<h2 id="1-创建对象"><a href="#1-创建对象" class="headerlink" title="1 创建对象"></a>1 创建对象</h2><p>在Java程序运行过程中无时无刻都有对象被创建出来，<strong>java中对象可以采用new或反射或clone或反序列化的方法创建</strong>。接下来我们我们介绍在虚拟机中，对象（限于普通Java对象，不包括数组和Class对象等）的创建过程。</p>
-<p>字节码new表示创建对象，虚拟机遇到该指令时，从栈顶取得目标对象在常量池中的索引，接着定位到目标对象的类型。接下来，虚拟机将根据该类的状态，采取相应的内存分配技术，在内存中分配实例空间，并完成实例数据和对象头的初始化。这样，一个对象就在JVM中创建好了。</p>
-<p>实例的创建过程，首先根据从类常量池中获取对象类型信息并验证类是否已被解析过，若确保该类<strong>已被加载和正确解析</strong>，使用<strong>快速分配</strong>（fast allocation）技术为该类分配对象空间；若该类<strong>尚未解析过</strong>，则只能通过<strong>慢速分配</strong>（slow allocation）方式分配实例对象。实例的创建流程如下图所示。</p>
-<p><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110154819.png" alt></p>
-<p>对象创建的基本流程：</p>
-<ol>
-<li>验证类已被解析。</li>
-<li>获取instanceKlass，确保Klass已完全初始化。</li>
-<li>若满足快速分配条件，则进入快速分配流程。</li>
-<li>若不满足快速分配条件，或者快速分配失败，则进入慢速分配流程。</li>
-</ol>
-<h3 id="1-1-快速分配"><a href="#1-1-快速分配" class="headerlink" title="1.1 快速分配"></a>1.1 快速分配</h3><p>如果在实例分配之前已经完成了类型的解析，那么分配操作仅仅是在内存空间中划分可用内存，因此能以较高效率实现内存分配，这就是<strong>快速分配</strong>。</p>
-<p>根据分配空间是来自于线程私有区域还是共享的堆空间，快速分配可以分为两种空间选择策略。HotSpot通过线程局部分配缓存技术(Thread-Local Allocation Buffers,即TLABs)可以在线程私有区域实现空间的分配。</p>
-<blockquote>
-<p>可以通过VM选项UseTLAB来开启或关闭TLAB功能。</p>
-</blockquote>
-<p>根据是否使用TLAB，快速分配方式有两种选择策略：</p>
-<ul>
-<li><strong>选择TLAB</strong>：首先尝试在TLAB中分配，因为TLAB是线程私有区域，故不需要加锁便能够确保线程安全。在分配一个新的对象空间时，将首先尝试在TLAB空间中分配对象空间，若分配空间的请求失败，则再尝试使用加锁机制在Eden区分配对象。</li>
-<li><strong>选择Eden空间</strong>：若失败，则尝试在共享的Eden区进行分配，Eden区是所有线程共享区域，需要保证线程安全，故采用<strong>原子操作</strong>进行分配。若分配失败，则再次尝试该操作，直到分配成功为止。</li>
-</ul>
-<p>实例空间分配成功以后，将对实例进行初始化。待完成对象的空间分配和初始化后，就可以设置栈顶对象引用。当然，<strong>对象的空间分配和初始化操作都是基于从类常量池中获取对象类型并确保该类已被加载和正确解析的前提下进行的</strong>，如果类未被解析，则需要进行慢速分配。</p>
-<h3 id="1-2-慢速分配"><a href="#1-2-慢速分配" class="headerlink" title="1.2 慢速分配"></a>1.2 慢速分配</h3><p>之所以成为慢速分配，<strong>正是因为在分配实例前需要对类进行解析，确保类及依赖类已得到正确的解析和初始化</strong>。慢速分配是调用InterpreterRuntime模块_new()进行的，实现代码如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 确保要初始化的类不是抽象类型</span><br><span class="line">klass-&gt;check_valid_for_instantiation(true, CHECK);</span><br><span class="line">// 确保类已初始化</span><br><span class="line">klass-&gt;initialize(CHECK);</span><br><span class="line">// 分配实例</span><br><span class="line">oop obj = klass-&gt;allocate_instance(CHECK);</span><br><span class="line">// 在线程栈中设置对象引用</span><br><span class="line">thread-&gt;set_vm_result(obj);</span><br></pre></td></tr></table></figure>
+        <p>发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。</p>
+<p>java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（boolean、byte、short、char、int、float、double、long、void）之一。Integer是int对应的包装类，它有一个int类型的字段存储数据，并且提供了基本操作，比如数学运算、int和字符串之间转换等。在<strong>java 5中引入了自动装箱和自动拆箱功能（boxing/unboxing）</strong>，java可以根据上下文，自动进行转换，极大地简化了相关编程。javac自动把<strong>装箱</strong>转换为<strong>Integer.valueOf()</strong>,把<strong>拆箱</strong>替换为<strong>Integer.intValue()</strong>。</p>
+<p>自动装箱实际上算是一种语法糖。什么是语法糖？可以简单理解为java平台为我们自动进行了一些转换，保证不同的写法在运行时等价，他们发生在<code>编译阶段</code>，也就是生产的字节码是一致的。（此句摘自极客时间专栏）</p>
+<p>原始数据类型的变量，需要使用并发相关手段才能保证线程安全。如果有线程安全的计算需要，建议考虑使用类似AtomicInteger、AtomicLong这样的线程安全类。</p>
+<p><code>原始数据类型和java泛型并不能配合使用</code>。因为java的泛型某种程度上可以算作伪泛型，它完全是一种<code>编译期</code>的技巧，java编译期会自动将类型转换为对应的特定类型。这就决定了使用泛型，必须保证相应类型可以转换为Object。</p>
+<p>废话不多说，直接来demo，这样效果更直接。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Integer a1 = <span class="number">6</span>;</span><br><span class="line">		Integer a2 = <span class="number">6</span>;</span><br><span class="line">		<span class="keyword">int</span> a11 = <span class="number">6</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a1 == a11); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a3 = <span class="number">128</span>;</span><br><span class="line">		Integer a4 = <span class="number">128</span>;</span><br><span class="line">		<span class="keyword">int</span> a33 = <span class="number">128</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a3 == a4); <span class="comment">//false</span></span><br><span class="line">		<span class="comment">//Integer会自动拆箱为int，所以为true</span></span><br><span class="line">		System.out.println(a3 == a33); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a5 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		Integer a6 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.println(a5 == a6); <span class="comment">//false</span></span><br><span class="line">		System.out.println(a5.equals(a6)); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-对象的访问定位"><a href="#2-对象的访问定位" class="headerlink" title="2 对象的访问定位"></a>2 对象的访问定位</h2><p>建立对象是为了使用对象，Java程序需要通过栈上的reference数据来操作<strong>堆</strong>上的具体对象。由于reference类型在Java虚拟机规范中只规定了一个指向对象的引用，并没有定义这个引用应该通过何种方式去定位、访问堆中的对象的具体位置，所以对象访问方式也是取决于虚拟机实现而定的。</p>
-<p>目前主流的访问方式有使用<strong>句柄</strong>和<strong>直接指针</strong>两种：</p>
+<p>需要明确的一点是，包装型（Integer）和基本型（int）比较会自动拆箱（jdk1.5以上）。</p>
+<p>在这里很多人比较容易迷惑的是如下情况：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer a1 = <span class="number">6</span>;</span><br><span class="line">Integer a2 = <span class="number">6</span>;</span><br><span class="line">System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3 == a4); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<p>如果研究过jdk源码，你就会发现Integer a3 = 128;在java编译时会被翻译成 Integer a3 = Integer.valueOf(128); 我们再来看看valueOf()的源码就更清晰了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由以上源码就会发现，<code>对于-128到127之间的数，会进行缓存</code>，Integer a1 = 6时，会将6进行缓存，下次再写Integer a2 = 6;时，就会直接从缓存中取，也就不用new一个对象了，所以a1和a2比较时就为true。但a3和a4是超过范围，会new一个对象，<code>==是进行地址和值比较，是比较两个对象在JVM中的地址</code>，这时a3和a4虽然值相同但地址是不一样的，所以比较就为false了。</p>
+<p>通过上面的分析可知：</p>
 <ul>
-<li><p>如果使用<strong>句柄</strong>访问的话，那么Java堆中将会划分出一块内存来作为<strong>句柄池</strong>，reference中存储的就是<strong>对象的句柄地址</strong>，而句柄中包含了对象实例数据与类型数据各自的具体地址信息，如下图所示。<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110154850.png" alt></p>
-</li>
-<li><p>如果使用<strong>直接指针</strong>访问，那么Java堆对象的布局中就必须考虑如何放置访问类型数据的相关信息，而reference中存储的直接就是<strong>对象地址</strong>。即使用直接指针访问在对象被移动时<strong>reference本身需要被修改</strong>，reference存储的就是对象地址。如下图所示。<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110154917.png" alt></p>
-</li>
+<li>两个都不是new出来的Integer，且数值在-128~127之间，用==比较时，基本值相等时为true，否则为false；</li>
+<li>两个都是new出来的Integer，为false</li>
+<li>int和Integer比较，数值相同，用==比较时为true。（因为Integer会自动拆箱为int去比较）</li>
 </ul>
-<p>这两种对象访问方式各有优势：</p>
-<ul>
-<li>使用句柄来访问的最大好处就是reference中存储的是<strong>稳定的句柄地址</strong>，在对象被移动（垃圾收集时移动对象时非常普遍的行为）时只会改变句柄中的<strong>实例数据指针</strong>，而reference本身不需要修改。</li>
-<li>使用直接指针访问方式的最大好处就是<strong>速度更快，它节省了一次指针定位的时间开销</strong>，由于对象的访问在Java中非常频繁，因此这类开销积少成多后也是一项非常可观的执行成本。</li>
-</ul>
-<p>HotSpot就是使用第二种方式进行对象访问的，但从整个软件开发的范围来看，各种语言和框架使用句柄来访问的情况也十分常见。</p>
+<blockquote>
+<p><code>所有包装类对象之间值的比较，建议使用equals方法比较</code>。</p>
+</blockquote>
+<p><code>==</code>判断对象是否同一个。</p>
+<p>Integer var = ?在<code>缓存区间</code>的赋值，会复用已有对象，因此这个区间内的Integer使用==进行判断可通过，但是区间之外的所有数据，则会在<code>堆</code>上新产生，不会通过。</p>
+<p>因此如果用== 来比较数值，很可能在小的测试数据中通过，而到了生产环境才出问题。</p>
+<p>为了节省内容，对与下列包装对象的两个实例，当他们的基本值相同时，用==判断会为true：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Boolean  </span><br><span class="line">Byte  </span><br><span class="line">Character, \u0000 - \u007f(7f是十进制的127)  </span><br><span class="line">Integer, -128 — 127</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以看看其它包装型的缓存情况：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Boolean：(全部缓存)</span><br><span class="line">Byte：(全部缓存)</span><br><span class="line"></span><br><span class="line">Character(缓存范围<span class="string">'\u0000'</span>到<span class="string">'\u007F'</span>)</span><br><span class="line">Short(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line">Long(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line"></span><br><span class="line">Float(没有缓存)</span><br><span class="line">﻿﻿﻿﻿﻿﻿Doulbe(没有缓存)</span><br></pre></td></tr></table></figure>
+
+<p>﻿﻿﻿﻿﻿﻿<br>如果要比较两个Integer对象的值（均为new的对象），可以通过<code>.intValue()</code>进行转换后来比较，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.intValue() == a4.intValue());</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用<code>equal()</code>来进行比较，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -416,12 +411,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></p>
+  <p><span>本文标题:</span>Integer和Integer比较以及Integer和Int的比较分析</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年01月10日 - 15:39:12</p>
-  <p><span>最后更新:</span>2020年01月10日 - 15:51:44</p>
-  <p><span>原始链接:</span><a href="/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/" title="【JVM从小白学成大佬】6.创建对象及对象的访问定位">http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2020年01月13日 - 14:24:18</p>
+  <p><span>最后更新:</span>2020年01月13日 - 14:25:09</p>
+  <p><span>原始链接:</span><a href="/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/" title="Integer和Integer比较以及Integer和Int的比较分析">http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -448,15 +443,13 @@
           
         
         <div class="post-tags">
-            <a href="/tags/句柄/" rel="tag"><i class="fa fa-tag"></i> 句柄</a>
-          
-            <a href="/tags/直接指针/" rel="tag"><i class="fa fa-tag"></i> 直接指针</a>
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/01/10/jvm/【JVM从小白学成大佬】5-垃圾收集器及内存分配策略/" rel="next" title="【JVM从小白学成大佬】5.垃圾收集器及内存分配策略">
-                <i class="fa fa-chevron-left"></i> 【JVM从小白学成大佬】5.垃圾收集器及内存分配策略
+              <a href="/2020/01/13/apollo/1-Apollo本地运行环境搭建/" rel="next" title="1.Apollo本地运行环境搭建">
+                <i class="fa fa-chevron-left"></i> 1.Apollo本地运行环境搭建
               </a>
             
           </div>
@@ -464,8 +457,8 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/01/10/jvm/【面试必备】小伙伴栽在了JVM的内存分配策略。。。/" rel="prev" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
-                【面试必备】小伙伴栽在了JVM的内存分配策略。。。 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/01/13/java/Lombok介绍、使用方法和总结/" rel="prev" title="Lombok介绍、使用方法和总结">
+                Lombok介绍、使用方法和总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -500,17 +493,8 @@
 
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <div class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -631,23 +615,6 @@
 
         </div>
       </div>
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-创建对象"><span class="nav-text">1 创建对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-快速分配"><span class="nav-text">1.1 快速分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-慢速分配"><span class="nav-text">1.2 慢速分配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-对象的访问定位"><span class="nav-text">2 对象的访问定位</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
 
     </div>
   </aside>
