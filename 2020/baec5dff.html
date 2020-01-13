@@ -69,10 +69,12 @@
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="1 Lombok背景介绍官方介绍如下：          Project Lombok makes java a spicier language by adding ‘handlers’ that know how to build and compile simple, boilerplate-free, not-quite-java code.  大致意思是Lombok通过增加一些“处理程序">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.354Z">
+<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200113153249.png">
+<meta property="og:updated_time" content="2020-01-13T07:34:34.476Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lombok介绍、使用方法和总结">
 <meta name="twitter:description" content="1 Lombok背景介绍官方介绍如下：          Project Lombok makes java a spicier language by adding ‘handlers’ that know how to build and compile simple, boilerplate-free, not-quite-java code.  大致意思是Lombok通过增加一些“处理程序">
+<meta name="twitter:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200113153249.png">
   <link rel="canonical" href="https://yuanrengu.github.io/2020/baec5dff">
 
 
@@ -275,7 +277,7 @@
                 
               
 
-              <time title="创建时间：2020-01-13 14:25:45 / 修改时间：14:42:16" itemprop="dateCreated datePublished" datetime="2020-01-13T14:25:45+08:00">2020-01-13</time>
+              <time title="创建时间：2020-01-13 14:25:45 / 修改时间：15:34:34" itemprop="dateCreated datePublished" datetime="2020-01-13T14:25:45+08:00">2020-01-13</time>
             </span>
           
             
@@ -345,7 +347,7 @@
 <p>大致意思是Lombok通过增加一些“处理程序”，可以让java变得简洁、快速。</p>
 <h1 id="2-Lombok使用方法"><a href="#2-Lombok使用方法" class="headerlink" title="2 Lombok使用方法"></a>2 Lombok使用方法</h1><p>Lombok能以简单的注解形式来简化java代码，提高开发人员的开发效率。例如开发中经常需要写的javabean，都需要花时间去添加相应的getter/setter，也许还要去写构造器、equals等方法，而且需要维护，当属性多时会出现大量的getter/setter方法，这些显得很冗长也没有太多技术含量，一旦修改属性，就容易出现忘记修改对应方法的失误。</p>
 <p>Lombok能通过注解的方式，在编译时自动为属性生成构造器、getter/setter、equals、hashcode、toString方法。出现的神奇就是在源码中没有getter和setter方法，但是在编译生成的字节码文件中有getter和setter方法。这样就省去了手动重建这些代码的麻烦，使代码看起来更简洁些。</p>
-<p>Lombok的使用跟引用jar包一样，可以在官网（<a href="https://projectlombok.org/download）" target="_blank" rel="noopener">https://projectlombok.org/download）</a> 下载jar包，也可以使用maven添加依赖：</p>
+<p>Lombok的使用跟引用jar包一样，可以在<a href="https://projectlombok.org/download" target="_blank" rel="noopener">官网</a>下载jar包，也可以使用maven添加依赖：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.16.20<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>接下来我们来分析Lombok中注解的具体用法。</p>
@@ -411,8 +413,7 @@
 <li>api都在com.sun.mirror非标准包下</li>
 <li>没有集成到javac中，需要额外运行<br>2）Pluggable Annotation Processing API</li>
 </ul>
-<p>JSR 269自JDK6加入，作为apt的替代方案，它解决了apt的两个问题，javac在执行的时候会调用实现了该API的程序，这样我们就可以对编译器做一些增强，这时javac执行的过程如下：<br>[外链图片转存失败(img-mI7h2d7v-1564717349348)(<a href="https://i.loli.net/2019/08/01/5d4287cac12ca67455.png)]" target="_blank" rel="noopener">https://i.loli.net/2019/08/01/5d4287cac12ca67455.png)]</a></p>
-<p>Lombok本质上就是一个实现了“JSR 269 API”的程序。在使用javac的过程中，它产生作用的具体流程如下：</p>
+<p>JSR 269自JDK6加入，作为apt的替代方案，它解决了apt的两个问题，javac在执行的时候会调用实现了该API的程序，这样我们就可以对编译器做一些增强，这时javac执行的过程如下：<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200113153249.png" alt><br>Lombok本质上就是一个实现了“JSR 269 API”的程序。在使用javac的过程中，它产生作用的具体流程如下：</p>
 <ol>
 <li>javac对源代码进行分析，生成了一棵抽象语法树（AST）</li>
 <li>运行过程中调用实现了“JSR 269 API”的Lombok程序<br>3, 此时Lombok就对第一步骤得到的AST进行处理，找到@Data注解所在类对应的语法树（AST），然后修改该语法树（AST），增加getter和setter方法定义的相应树节点</li>
@@ -474,7 +475,7 @@
   <p><span>本文标题:</span>Lombok介绍、使用方法和总结</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月13日 - 14:25:45</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>最后更新:</span>2020年01月13日 - 15:34:34</p>
   <p><span>原始链接:</span><a href="/2020/baec5dff.html" title="Lombok介绍、使用方法和总结">https://yuanrengu.github.io/2020/baec5dff.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.github.io/2020/baec5dff.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -736,7 +737,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">63.7k</span> 字
+      博客全站共： <span class="post-count">63.6k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
