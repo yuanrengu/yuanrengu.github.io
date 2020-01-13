@@ -61,19 +61,21 @@
   };
 </script>
 
-  <meta name="description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
-<meta name="keywords" content="java">
+  <meta name="description" content="JVM的重要性毋庸置疑，可以毫不夸张的说Java虚拟机是整个Java平台的基石。 JVM方面的知识，也一直是BAT等大厂面试考核的重点。特别是JVM调优，故障排查性能调优，你知道该从哪些方面入手吗？  此专栏结合自己对JVM的理解，从java运行时数据区、java内存模型(JMM)、什么是垃圾回收，垃圾回收算法、垃圾收集器、内存分配与回收策略等，也会介绍安全点、安全区域等知识点。 相信学习完专栏，">
+<meta name="keywords" content="jvm,性能调优">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Integer和Integer比较以及Integer和Int的比较分析">
-<meta property="og:url" content="http://yoursite.com/2020/6bbb74ca.html">
+<meta property="og:title" content="【JVM从小白学成大佬】1.开篇">
+<meta property="og:url" content="http://yoursite.com/2020/01/08/jvm/【JVM从小白学成大佬】1-开篇/index.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+<meta property="og:description" content="JVM的重要性毋庸置疑，可以毫不夸张的说Java虚拟机是整个Java平台的基石。 JVM方面的知识，也一直是BAT等大厂面试考核的重点。特别是JVM调优，故障排查性能调优，你知道该从哪些方面入手吗？  此专栏结合自己对JVM的理解，从java运行时数据区、java内存模型(JMM)、什么是垃圾回收，垃圾回收算法、垃圾收集器、内存分配与回收策略等，也会介绍安全点、安全区域等知识点。 相信学习完专栏，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T06:25:09.012Z">
+<meta property="og:image" content="https://i.loli.net/2019/08/19/Vdh6brKZaNRDtkx.png">
+<meta property="og:updated_time" content="2020-01-13T06:42:16.348Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Integer和Integer比较以及Integer和Int的比较分析">
-<meta name="twitter:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
-  <link rel="canonical" href="http://yoursite.com/2020/6bbb74ca">
+<meta name="twitter:title" content="【JVM从小白学成大佬】1.开篇">
+<meta name="twitter:description" content="JVM的重要性毋庸置疑，可以毫不夸张的说Java虚拟机是整个Java平台的基石。 JVM方面的知识，也一直是BAT等大厂面试考核的重点。特别是JVM调优，故障排查性能调优，你知道该从哪些方面入手吗？  此专栏结合自己对JVM的理解，从java运行时数据区、java内存模型(JMM)、什么是垃圾回收，垃圾回收算法、垃圾收集器、内存分配与回收策略等，也会介绍安全点、安全区域等知识点。 相信学习完专栏，">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/19/Vdh6brKZaNRDtkx.png">
+  <link rel="canonical" href="http://yoursite.com/2020/01/08/jvm/【JVM从小白学成大佬】1-开篇/">
 
 
 <script id="page.configurations">
@@ -82,7 +84,7 @@
   };
 </script>
 
-  <title>Integer和Integer比较以及Integer和Int的比较分析 | 猿人谷</title>
+  <title>【JVM从小白学成大佬】1.开篇 | 猿人谷</title>
   
 
 
@@ -241,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/6bbb74ca.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/08/jvm/【JVM从小白学成大佬】1-开篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -255,7 +257,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">Integer和Integer比较以及Integer和Int的比较分析
+          <h1 class="post-title" itemprop="name headline">【JVM从小白学成大佬】1.开篇
 
               
             
@@ -275,11 +277,21 @@
                 
               
 
-              <time title="创建时间：2020-01-13 14:24:18 / 修改时间：14:25:09" itemprop="dateCreated datePublished" datetime="2020-01-13T14:24:18+08:00">2020-01-13</time>
+              <time title="创建时间：2020-01-08 15:29:34" itemprop="dateCreated datePublished" datetime="2020-01-08T15:29:34+08:00">2020-01-08</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -290,7 +302,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/JVM从小白学成大佬/" itemprop="url" rel="index"><span itemprop="name">JVM从小白学成大佬</span></a></span>
 
                 
                 
@@ -315,7 +327,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">2.8k</span>
+              <span title="本文字数">618</span>
             </span>
           
             <span class="post-meta-item">
@@ -325,7 +337,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">3 分钟</span>
+              <span title="阅读时长">1 分钟</span>
             </span>
           
 
@@ -338,46 +350,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。</p>
-<p>java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（boolean、byte、short、char、int、float、double、long、void）之一。Integer是int对应的包装类，它有一个int类型的字段存储数据，并且提供了基本操作，比如数学运算、int和字符串之间转换等。在<strong>java 5中引入了自动装箱和自动拆箱功能（boxing/unboxing）</strong>，java可以根据上下文，自动进行转换，极大地简化了相关编程。javac自动把<strong>装箱</strong>转换为<strong>Integer.valueOf()</strong>,把<strong>拆箱</strong>替换为<strong>Integer.intValue()</strong>。</p>
-<p>自动装箱实际上算是一种语法糖。什么是语法糖？可以简单理解为java平台为我们自动进行了一些转换，保证不同的写法在运行时等价，他们发生在<code>编译阶段</code>，也就是生产的字节码是一致的。（此句摘自极客时间专栏）</p>
-<p>原始数据类型的变量，需要使用并发相关手段才能保证线程安全。如果有线程安全的计算需要，建议考虑使用类似AtomicInteger、AtomicLong这样的线程安全类。</p>
-<p><code>原始数据类型和java泛型并不能配合使用</code>。因为java的泛型某种程度上可以算作伪泛型，它完全是一种<code>编译期</code>的技巧，java编译期会自动将类型转换为对应的特定类型。这就决定了使用泛型，必须保证相应类型可以转换为Object。</p>
-<p>废话不多说，直接来demo，这样效果更直接。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Integer a1 = <span class="number">6</span>;</span><br><span class="line">		Integer a2 = <span class="number">6</span>;</span><br><span class="line">		<span class="keyword">int</span> a11 = <span class="number">6</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a1 == a11); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a3 = <span class="number">128</span>;</span><br><span class="line">		Integer a4 = <span class="number">128</span>;</span><br><span class="line">		<span class="keyword">int</span> a33 = <span class="number">128</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a3 == a4); <span class="comment">//false</span></span><br><span class="line">		<span class="comment">//Integer会自动拆箱为int，所以为true</span></span><br><span class="line">		System.out.println(a3 == a33); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a5 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		Integer a6 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.println(a5 == a6); <span class="comment">//false</span></span><br><span class="line">		System.out.println(a5.equals(a6)); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-<p>需要明确的一点是，包装型（Integer）和基本型（int）比较会自动拆箱（jdk1.5以上）。</p>
-<p>在这里很多人比较容易迷惑的是如下情况：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer a1 = <span class="number">6</span>;</span><br><span class="line">Integer a2 = <span class="number">6</span>;</span><br><span class="line">System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3 == a4); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
-
-<p>如果研究过jdk源码，你就会发现Integer a3 = 128;在java编译时会被翻译成 Integer a3 = Integer.valueOf(128); 我们再来看看valueOf()的源码就更清晰了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>由以上源码就会发现，<code>对于-128到127之间的数，会进行缓存</code>，Integer a1 = 6时，会将6进行缓存，下次再写Integer a2 = 6;时，就会直接从缓存中取，也就不用new一个对象了，所以a1和a2比较时就为true。但a3和a4是超过范围，会new一个对象，<code>==是进行地址和值比较，是比较两个对象在JVM中的地址</code>，这时a3和a4虽然值相同但地址是不一样的，所以比较就为false了。</p>
-<p>通过上面的分析可知：</p>
-<ul>
-<li>两个都不是new出来的Integer，且数值在-128~127之间，用==比较时，基本值相等时为true，否则为false；</li>
-<li>两个都是new出来的Integer，为false</li>
-<li>int和Integer比较，数值相同，用==比较时为true。（因为Integer会自动拆箱为int去比较）</li>
-</ul>
+        <p>JVM的重要性毋庸置疑，可以毫不夸张的说Java虚拟机是整个Java平台的基石。 JVM方面的知识，也一直是BAT等大厂面试考核的重点。特别是JVM调优，故障排查性能调优，你知道该从哪些方面入手吗？ </p>
+<p>此专栏结合自己对JVM的理解，从java运行时数据区、java内存模型(JMM)、什么是垃圾回收，垃圾回收算法、垃圾收集器、内存分配与回收策略等，也会介绍安全点、安全区域等知识点。 相信学习完专栏，在面试时被问到JVM，你定能跟面试官侃侃而谈，话聊人生！</p>
+<p>关于JVM的历史以及重要性我就不做介绍，网上能搜到一大堆。我们就直接上干货，希望能最简单直白语言来深入浅出，一步步揭开JVM的神秘面纱。</p>
+<h4 id="本专栏将分为如下几个大模块进行分析："><a href="#本专栏将分为如下几个大模块进行分析：" class="headerlink" title="本专栏将分为如下几个大模块进行分析："></a>本专栏将分为如下几个大模块进行分析：</h4><ol>
+<li>开篇介绍</li>
+<li>Java运行时数据区。</li>
+<li>什么是垃圾回收？</li>
+<li>常用垃圾回收算法及HotSpot的算法实现。</li>
+<li>垃圾收集器。</li>
+<li>内存分配与回收策略。此模块也会延展一些内存回收时的<strong>坑</strong>。</li>
+<li>Java内存模型（JMM）。</li>
+<li>头脑风暴（即JVM必备题）。</li>
+</ol>
+<p>专栏将会围绕如下脑图进行展开（<strong>此脑图会持续进行完善</strong>）：</p>
+<p><img src="https://i.loli.net/2019/08/19/Vdh6brKZaNRDtkx.png" alt="JVM _2_.png"></p>
 <blockquote>
-<p><code>所有包装类对象之间值的比较，建议使用equals方法比较</code>。</p>
+<p>如需高清、无码、完整大图可留言告知。</p>
 </blockquote>
-<p><code>==</code>判断对象是否同一个。</p>
-<p>Integer var = ?在<code>缓存区间</code>的赋值，会复用已有对象，因此这个区间内的Integer使用==进行判断可通过，但是区间之外的所有数据，则会在<code>堆</code>上新产生，不会通过。</p>
-<p>因此如果用== 来比较数值，很可能在小的测试数据中通过，而到了生产环境才出问题。</p>
-<p>为了节省内容，对与下列包装对象的两个实例，当他们的基本值相同时，用==判断会为true：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Boolean  </span><br><span class="line">Byte  </span><br><span class="line">Character, \u0000 - \u007f(7f是十进制的127)  </span><br><span class="line">Integer, -128 — 127</span><br></pre></td></tr></table></figure>
-
-<p>我们也可以看看其它包装型的缓存情况：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Boolean：(全部缓存)</span><br><span class="line">Byte：(全部缓存)</span><br><span class="line"></span><br><span class="line">Character(缓存范围<span class="string">'\u0000'</span>到<span class="string">'\u007F'</span>)</span><br><span class="line">Short(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line">Long(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line"></span><br><span class="line">Float(没有缓存)</span><br><span class="line">﻿﻿﻿﻿﻿﻿Doulbe(没有缓存)</span><br></pre></td></tr></table></figure>
-
-<p>﻿﻿﻿﻿﻿﻿<br>如果要比较两个Integer对象的值（均为new的对象），可以通过<code>.intValue()</code>进行转换后来比较，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.intValue() == a4.intValue());</span><br></pre></td></tr></table></figure>
-
-<p>也可以使用<code>equal()</code>来进行比较，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-
+<blockquote>
+<p><strong>鬼知道我看了多少相关的书籍和博客，都没找到适合我的，不得不自己动手撸几篇，请叫我知识的搬运工。</strong>此专栏算是我在学习Java虚拟机的读书笔记及经验总结，在小伙伴们阅读专栏的过程中，如有哪一块的知识想了解，可以留言告知。</p>
+</blockquote>
+<p><strong>参考书籍</strong>：<br>《深入理解Java虚拟机》<br>《Java虚拟机规范》（Java SE 8版）<br>《HotSpot实战》</p>
 
     </div>
 
@@ -411,12 +405,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>Integer和Integer比较以及Integer和Int的比较分析</a></p>
+  <p><span>本文标题:</span>【JVM从小白学成大佬】1.开篇</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年01月13日 - 14:24:18</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:25:09</p>
-  <p><span>原始链接:</span><a href="/2020/6bbb74ca.html" title="Integer和Integer比较以及Integer和Int的比较分析">http://yoursite.com/2020/6bbb74ca.html</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/6bbb74ca.html"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2020年01月08日 - 15:29:34</p>
+  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>原始链接:</span><a href="/2020/01/08/jvm/【JVM从小白学成大佬】1-开篇/" title="【JVM从小白学成大佬】1.开篇">http://yoursite.com/2020/01/08/jvm/【JVM从小白学成大佬】1-开篇/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/01/08/jvm/【JVM从小白学成大佬】1-开篇/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -443,22 +437,20 @@
           
         
         <div class="post-tags">
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+            <a href="/tags/jvm/" rel="tag"><i class="fa fa-tag"></i> jvm</a>
+          
+            <a href="/tags/性能调优/" rel="tag"><i class="fa fa-tag"></i> 性能调优</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/49f0797e.html" rel="next" title="1.Apollo本地运行环境搭建">
-                <i class="fa fa-chevron-left"></i> 1.Apollo本地运行环境搭建
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/baec5dff.html" rel="prev" title="Lombok介绍、使用方法和总结">
-                Lombok介绍、使用方法和总结 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/01/08/jvm/【JVM从小白学成大佬】2-Java虚拟机运行时数据区/" rel="prev" title="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">
+                【JVM从小白学成大佬】2.Java虚拟机运行时数据区 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -493,8 +485,17 @@
 
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -615,6 +616,23 @@
 
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#本专栏将分为如下几个大模块进行分析："><span class="nav-text">本专栏将分为如下几个大模块进行分析：</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
     </div>
   </aside>

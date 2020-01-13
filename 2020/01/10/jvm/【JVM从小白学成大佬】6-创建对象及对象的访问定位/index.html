@@ -65,19 +65,19 @@
 <meta name="keywords" content="句柄,直接指针">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【JVM从小白学成大佬】6.创建对象及对象的访问定位">
-<meta property="og:url" content="http://yoursite.com/2020/d386b2ef.html">
+<meta property="og:url" content="http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/index.html">
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="《JVM从小白学成大佬》系列推出到现在，收到了很多小伙伴的好评，也收到了一些小伙伴的建议，在此表示感谢。 有几个小伙伴提出了希望出一篇介绍对象的创建及访问，猿人谷向来是没有原则的，小伙们要求啥，咱就尽力满足，毕竟文章就是对自己学习的一个总结及和各位小伙伴交流学习的机会。话不多说，直接开撸！ 1 创建对象在Java程序运行过程中无时无刻都有对象被创建出来，java中对象可以采用new或反射或clon">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154819.png">
 <meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154850.png">
 <meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154917.png">
-<meta property="og:updated_time" content="2020-01-10T07:51:44.257Z">
+<meta property="og:updated_time" content="2020-01-13T06:42:16.349Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】6.创建对象及对象的访问定位">
 <meta name="twitter:description" content="《JVM从小白学成大佬》系列推出到现在，收到了很多小伙伴的好评，也收到了一些小伙伴的建议，在此表示感谢。 有几个小伙伴提出了希望出一篇介绍对象的创建及访问，猿人谷向来是没有原则的，小伙们要求啥，咱就尽力满足，毕竟文章就是对自己学习的一个总结及和各位小伙伴交流学习的机会。话不多说，直接开撸！ 1 创建对象在Java程序运行过程中无时无刻都有对象被创建出来，java中对象可以采用new或反射或clon">
 <meta name="twitter:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154819.png">
-  <link rel="canonical" href="http://yoursite.com/2020/d386b2ef">
+  <link rel="canonical" href="http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/">
 
 
 <script id="page.configurations">
@@ -245,7 +245,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/d386b2ef.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -279,11 +279,21 @@
                 
               
 
-              <time title="创建时间：2020-01-10 15:39:12 / 修改时间：15:51:44" itemprop="dateCreated datePublished" datetime="2020-01-10T15:39:12+08:00">2020-01-10</time>
+              <time title="创建时间：2020-01-10 15:39:12" itemprop="dateCreated datePublished" datetime="2020-01-10T15:39:12+08:00">2020-01-10</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
+              </span>
             
           
             <span class="post-meta-item">
@@ -419,9 +429,9 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 15:39:12</p>
-  <p><span>最后更新:</span>2020年01月10日 - 15:51:44</p>
-  <p><span>原始链接:</span><a href="/2020/d386b2ef.html" title="【JVM从小白学成大佬】6.创建对象及对象的访问定位">http://yoursite.com/2020/d386b2ef.html</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/d386b2ef.html"  aria-label="复制成功！"></i></span>
+  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>原始链接:</span><a href="/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/" title="【JVM从小白学成大佬】6.创建对象及对象的访问定位">http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/01/10/jvm/【JVM从小白学成大佬】6-创建对象及对象的访问定位/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -455,7 +465,7 @@
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/9ed477f0.html" rel="next" title="【JVM从小白学成大佬】5.垃圾收集器及内存分配策略">
+              <a href="/2020/01/10/jvm/【JVM从小白学成大佬】5-垃圾收集器及内存分配策略/" rel="next" title="【JVM从小白学成大佬】5.垃圾收集器及内存分配策略">
                 <i class="fa fa-chevron-left"></i> 【JVM从小白学成大佬】5.垃圾收集器及内存分配策略
               </a>
             
@@ -464,7 +474,7 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/1977ac11.html" rel="prev" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
+              <a href="/2020/01/10/jvm/【面试必备】小伙伴栽在了JVM的内存分配策略。。。/" rel="prev" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
                 【面试必备】小伙伴栽在了JVM的内存分配策略。。。 <i class="fa fa-chevron-right"></i>
               </a>
             
