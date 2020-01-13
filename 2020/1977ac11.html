@@ -61,19 +61,21 @@
   };
 </script>
 
-  <meta name="description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
-<meta name="keywords" content="java">
+  <meta name="description" content="周末有小伙伴留言说上周面试时被问到内存分配策略的问题，但回答的不够理想，小伙伴说之前公号里看过这一块的文章的，当时看时很清楚，也知道各个策略是干嘛的，但面试时脑子里清楚，心里很明白，但嘴里就是说不清楚，说出来的就是像云像雾又像风，最后面试官说他应该是不清楚这一块的内容 这里给小伙伴要再次说明下，任何知识点，先抓主干，再摸细节。对于面试来说，能把各个主干捋清楚，只要面试官要求不是太高，都是能过关的。">
+<meta name="keywords" content="面试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Integer和Integer比较以及Integer和Int的比较分析">
-<meta property="og:url" content="http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/index.html">
+<meta property="og:title" content="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
+<meta property="og:url" content="http://yoursite.com/2020/1977ac11.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+<meta property="og:description" content="周末有小伙伴留言说上周面试时被问到内存分配策略的问题，但回答的不够理想，小伙伴说之前公号里看过这一块的文章的，当时看时很清楚，也知道各个策略是干嘛的，但面试时脑子里清楚，心里很明白，但嘴里就是说不清楚，说出来的就是像云像雾又像风，最后面试官说他应该是不清楚这一块的内容 这里给小伙伴要再次说明下，任何知识点，先抓主干，再摸细节。对于面试来说，能把各个主干捋清楚，只要面试官要求不是太高，都是能过关的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T06:25:09.012Z">
+<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110160547.png">
+<meta property="og:updated_time" content="2020-01-10T08:06:24.578Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Integer和Integer比较以及Integer和Int的比较分析">
-<meta name="twitter:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
-  <link rel="canonical" href="http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/">
+<meta name="twitter:title" content="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
+<meta name="twitter:description" content="周末有小伙伴留言说上周面试时被问到内存分配策略的问题，但回答的不够理想，小伙伴说之前公号里看过这一块的文章的，当时看时很清楚，也知道各个策略是干嘛的，但面试时脑子里清楚，心里很明白，但嘴里就是说不清楚，说出来的就是像云像雾又像风，最后面试官说他应该是不清楚这一块的内容 这里给小伙伴要再次说明下，任何知识点，先抓主干，再摸细节。对于面试来说，能把各个主干捋清楚，只要面试官要求不是太高，都是能过关的。">
+<meta name="twitter:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110160547.png">
+  <link rel="canonical" href="http://yoursite.com/2020/1977ac11">
 
 
 <script id="page.configurations">
@@ -82,7 +84,7 @@
   };
 </script>
 
-  <title>Integer和Integer比较以及Integer和Int的比较分析 | 猿人谷</title>
+  <title>【面试必备】小伙伴栽在了JVM的内存分配策略。。。 | 猿人谷</title>
   
 
 
@@ -241,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/1977ac11.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -255,7 +257,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">Integer和Integer比较以及Integer和Int的比较分析
+          <h1 class="post-title" itemprop="name headline">【面试必备】小伙伴栽在了JVM的内存分配策略。。。
 
               
             
@@ -275,7 +277,7 @@
                 
               
 
-              <time title="创建时间：2020-01-13 14:24:18 / 修改时间：14:25:09" itemprop="dateCreated datePublished" datetime="2020-01-13T14:24:18+08:00">2020-01-13</time>
+              <time title="创建时间：2020-01-10 16:00:09 / 修改时间：16:06:24" itemprop="dateCreated datePublished" datetime="2020-01-10T16:00:09+08:00">2020-01-10</time>
             </span>
           
             
@@ -290,7 +292,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/JVM从小白学成大佬/" itemprop="url" rel="index"><span itemprop="name">JVM从小白学成大佬</span></a></span>
 
                 
                 
@@ -315,7 +317,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">2.8k</span>
+              <span title="本文字数">2.3k</span>
             </span>
           
             <span class="post-meta-item">
@@ -325,7 +327,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">3 分钟</span>
+              <span title="阅读时长">2 分钟</span>
             </span>
           
 
@@ -338,46 +340,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。</p>
-<p>java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（boolean、byte、short、char、int、float、double、long、void）之一。Integer是int对应的包装类，它有一个int类型的字段存储数据，并且提供了基本操作，比如数学运算、int和字符串之间转换等。在<strong>java 5中引入了自动装箱和自动拆箱功能（boxing/unboxing）</strong>，java可以根据上下文，自动进行转换，极大地简化了相关编程。javac自动把<strong>装箱</strong>转换为<strong>Integer.valueOf()</strong>,把<strong>拆箱</strong>替换为<strong>Integer.intValue()</strong>。</p>
-<p>自动装箱实际上算是一种语法糖。什么是语法糖？可以简单理解为java平台为我们自动进行了一些转换，保证不同的写法在运行时等价，他们发生在<code>编译阶段</code>，也就是生产的字节码是一致的。（此句摘自极客时间专栏）</p>
-<p>原始数据类型的变量，需要使用并发相关手段才能保证线程安全。如果有线程安全的计算需要，建议考虑使用类似AtomicInteger、AtomicLong这样的线程安全类。</p>
-<p><code>原始数据类型和java泛型并不能配合使用</code>。因为java的泛型某种程度上可以算作伪泛型，它完全是一种<code>编译期</code>的技巧，java编译期会自动将类型转换为对应的特定类型。这就决定了使用泛型，必须保证相应类型可以转换为Object。</p>
-<p>废话不多说，直接来demo，这样效果更直接。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Integer a1 = <span class="number">6</span>;</span><br><span class="line">		Integer a2 = <span class="number">6</span>;</span><br><span class="line">		<span class="keyword">int</span> a11 = <span class="number">6</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a1 == a11); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a3 = <span class="number">128</span>;</span><br><span class="line">		Integer a4 = <span class="number">128</span>;</span><br><span class="line">		<span class="keyword">int</span> a33 = <span class="number">128</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a3 == a4); <span class="comment">//false</span></span><br><span class="line">		<span class="comment">//Integer会自动拆箱为int，所以为true</span></span><br><span class="line">		System.out.println(a3 == a33); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a5 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		Integer a6 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.println(a5 == a6); <span class="comment">//false</span></span><br><span class="line">		System.out.println(a5.equals(a6)); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-<p>需要明确的一点是，包装型（Integer）和基本型（int）比较会自动拆箱（jdk1.5以上）。</p>
-<p>在这里很多人比较容易迷惑的是如下情况：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer a1 = <span class="number">6</span>;</span><br><span class="line">Integer a2 = <span class="number">6</span>;</span><br><span class="line">System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3 == a4); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
-
-<p>如果研究过jdk源码，你就会发现Integer a3 = 128;在java编译时会被翻译成 Integer a3 = Integer.valueOf(128); 我们再来看看valueOf()的源码就更清晰了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>由以上源码就会发现，<code>对于-128到127之间的数，会进行缓存</code>，Integer a1 = 6时，会将6进行缓存，下次再写Integer a2 = 6;时，就会直接从缓存中取，也就不用new一个对象了，所以a1和a2比较时就为true。但a3和a4是超过范围，会new一个对象，<code>==是进行地址和值比较，是比较两个对象在JVM中的地址</code>，这时a3和a4虽然值相同但地址是不一样的，所以比较就为false了。</p>
-<p>通过上面的分析可知：</p>
-<ul>
-<li>两个都不是new出来的Integer，且数值在-128~127之间，用==比较时，基本值相等时为true，否则为false；</li>
-<li>两个都是new出来的Integer，为false</li>
-<li>int和Integer比较，数值相同，用==比较时为true。（因为Integer会自动拆箱为int去比较）</li>
-</ul>
-<blockquote>
-<p><code>所有包装类对象之间值的比较，建议使用equals方法比较</code>。</p>
-</blockquote>
-<p><code>==</code>判断对象是否同一个。</p>
-<p>Integer var = ?在<code>缓存区间</code>的赋值，会复用已有对象，因此这个区间内的Integer使用==进行判断可通过，但是区间之外的所有数据，则会在<code>堆</code>上新产生，不会通过。</p>
-<p>因此如果用== 来比较数值，很可能在小的测试数据中通过，而到了生产环境才出问题。</p>
-<p>为了节省内容，对与下列包装对象的两个实例，当他们的基本值相同时，用==判断会为true：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Boolean  </span><br><span class="line">Byte  </span><br><span class="line">Character, \u0000 - \u007f(7f是十进制的127)  </span><br><span class="line">Integer, -128 — 127</span><br></pre></td></tr></table></figure>
-
-<p>我们也可以看看其它包装型的缓存情况：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Boolean：(全部缓存)</span><br><span class="line">Byte：(全部缓存)</span><br><span class="line"></span><br><span class="line">Character(缓存范围<span class="string">'\u0000'</span>到<span class="string">'\u007F'</span>)</span><br><span class="line">Short(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line">Long(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line"></span><br><span class="line">Float(没有缓存)</span><br><span class="line">﻿﻿﻿﻿﻿﻿Doulbe(没有缓存)</span><br></pre></td></tr></table></figure>
-
-<p>﻿﻿﻿﻿﻿﻿<br>如果要比较两个Integer对象的值（均为new的对象），可以通过<code>.intValue()</code>进行转换后来比较，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.intValue() == a4.intValue());</span><br></pre></td></tr></table></figure>
-
-<p>也可以使用<code>equal()</code>来进行比较，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-
+        <p>周末有小伙伴留言说上周面试时被问到内存分配策略的问题，但回答的不够理想，小伙伴说之前公号里看过这一块的文章的，当时看时很清楚，也知道各个策略是干嘛的，但面试时脑子里清楚，心里很明白，但嘴里就是说不清楚，说出来的就是像云像雾又像风，最后面试官说他应该是不清楚这一块的内容</p>
+<p>这里给小伙伴要再次说明下，任何知识点，<strong>先抓主干，再摸细节</strong>。对于面试来说，能把各个主干捋清楚，只要面试官要求不是太高，都是能过关的。毕竟jvm参数那么多，难不成面试官揪着各个参数的作用不放？如果真遇到这种太过揪细节的，只能说江湖路远，有缘再见！</p>
+<p>对象的内存分配，往大方向上讲，就是在<strong>堆</strong>上分配（但也可能经过JIT编译后被拆散为标量类型并间接地栈上分配），<strong>对象主要分配在新生代的Eden区上</strong>，如果启动了本地线程分配缓冲，将按线程优先在TLAB上分配。少数情况下可能会直接分配在老年代中。</p>
+<h3 id="对象优先在Eden分配"><a href="#对象优先在Eden分配" class="headerlink" title="对象优先在Eden分配"></a>对象优先在Eden分配</h3><p>大多数情况下，对象在新生代Eden区中分配。当Eden区没有足够空间进行分配时，虚拟机将发起一次Minor GC（前面篇章中有介绍过Minor GC）。但也有一种情况，在内存担保机制下，无法安置的对象会直接进到老年代。</p>
+<h3 id="大对象直接进入老年代"><a href="#大对象直接进入老年代" class="headerlink" title="大对象直接进入老年代"></a>大对象直接进入老年代</h3><p>大对象时指需要大量连续内存空间的Java对象，最典型的大对象就是那种很长的字符串以及数组。</p>
+<p>虚拟机提供了一个-XX：PretenureSizeThreshold参数，令大于这个设置值的对象直接在老年代分配。目的就是避免在Eden区及两个Survivor区之间发生大量的内存复制。</p>
+<h3 id="长期存活的对象将进入老年代"><a href="#长期存活的对象将进入老年代" class="headerlink" title="长期存活的对象将进入老年代"></a>长期存活的对象将进入老年代</h3><p>虚拟机给每个对象定义了一个对象年龄（Age）计数器。如果对象在Eden出生并经过第一次Minor GC后仍然存活，并且能被Survivor容纳的话，将被移动到Survivor空间中，并且对象年龄设为1 。对象在Survivor区中没经过一次Minor GC，年龄就加1岁，当年龄达到15岁（默认值），就会被晋升到老年代中。</p>
+<p>对象晋升老年代的年龄阈值，可以通过参数-XX：MaxTenuringThreshold设置。</p>
+<h4 id="接下来我们来回答JVM的分代年龄为什么是15？而不是16-20之类的呢？"><a href="#接下来我们来回答JVM的分代年龄为什么是15？而不是16-20之类的呢？" class="headerlink" title="接下来我们来回答JVM的分代年龄为什么是15？而不是16,20之类的呢？"></a>接下来我们来回答JVM的分代年龄为什么是15？而不是16,20之类的呢？</h4><p>真的不是为什么不能是其它数（除了15），着实是臣妾做不到啊！</p>
+<p>事情是这样的，HotSpot虚拟机的对象头其中一部分用于存储对象自身的运行时数据，如哈希码（HashCode）、GC分代年龄、锁状态标志、线程持有的锁、偏向线程ID、偏向时间戳等，这部分数据的长度在32位和64位的虚拟机（未开启压缩指针）中分别为32bit和64bit，官方称它为“Mark word”。</p>
+<p>例如，在32位的HotSpot虚拟机中，如果对象处于未被锁定的状态下，那么Mark Word的32bit空间中25bit用于存储对象哈希码，4bit用于存储对象分代年龄，2bit用于存储锁标志位，1bit固定为0 。</p>
+<p>明白是什么原因了吗？对象的分代年龄占4位，也就是0000，最大值为1111也就是最大为15，而不可能为16，20之类的了。</p>
+<h3 id="动态对象年龄判定"><a href="#动态对象年龄判定" class="headerlink" title="动态对象年龄判定"></a>动态对象年龄判定</h3><p>为了能更好的适应不同程序的内存状况，虚拟机并不是永远地要求兑现过的年龄必须达到了MaxTenuringThreshold才能晋升老年代。</p>
+<h4 id="满足如下条件之一，对象能晋升老年代："><a href="#满足如下条件之一，对象能晋升老年代：" class="headerlink" title="满足如下条件之一，对象能晋升老年代："></a>满足如下条件之一，对象能晋升老年代：</h4><ol>
+<li>对象的年龄达到了MaxTenuringThreshold（默认15）能晋升老年代。</li>
+<li>如果在Survivor空间中相同年龄所有对象大小的总和大于Survivor空间的一半，年龄大于或等于该年龄的对象就可以直接进入老年代，无须等到MaxTenuringThreshold中要求的年龄。</li>
+</ol>
+<p>很多文章都只是注意到了上面描述的情况（包括阿里中间件公众号发的一篇文章里也只是这么简单的介绍），但如果只是这么认识的话，会发现在实际的内存回收中有悖于此条规定。</p>
+<p><strong>举个小栗子，如对象年龄5的占34%，年龄6的占36%，年龄7的占30%，按那两个标准，对象是不能进入老年代的，但Survivor都已经100%了啊？</strong></p>
+<p>大家可以关注这个参数<strong>TargetSurvivorRatio</strong>，目标存活率，默认为50%。大致意思就是说年龄从小到大累加，如加入某个年龄段（如栗子中的年龄6）后，总占用超过Survivor空间TargetSurvivorRatio的时候，从该年龄段开始及大于的年龄对象就要进入老年代（即栗子中的年龄6,7对象）。动态对象年龄判断，主要是被TargetSurvivorRatio这个参数来控制。而且算的是年龄从小到大的累加和，而不是某个年龄段对象的大小。</p>
+<h3 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h3><p>在发生Minor GC之前，虚拟机会先检查老年代最大可用的连续空间是否大于新生代所有对象总空间，如果这个条件成立，那么Minor GC可以确保是安全的。如果不成立，则虚拟机会查看HandlePromotionFailure设置值是否允许担保失败。如果允许，那么会继续检查老年代最大可用的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于，将尝试着进行一次Minor GC，尽管这次Minor GC是有风险的；如果小于，或者HandlePromotionFailure设置不允许冒险，那这时也要改为进行一次Full GC 。</p>
+<p>上面说的风险是什么呢？我们知道，新生代使用复制收集算法，但为了内存利用率，只使用其中一个Survivor空间来作为轮换备份，因此当出现大量对象在Minor GC后仍然存活的情况（最极端的情况就是内存回收后新生代中所有对象都存活），就需要老年代进行分配担保，把Survivor无法容纳的对象直接进入老年代。</p>
+<p>总结脑图：<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110160547.png" alt></p>
 
     </div>
 
@@ -411,12 +396,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>Integer和Integer比较以及Integer和Int的比较分析</a></p>
+  <p><span>本文标题:</span>【面试必备】小伙伴栽在了JVM的内存分配策略。。。</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年01月13日 - 14:24:18</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:25:09</p>
-  <p><span>原始链接:</span><a href="/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/" title="Integer和Integer比较以及Integer和Int的比较分析">http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/01/13/java/Integer和Integer比较以及Integer和Int的比较分析/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2020年01月10日 - 16:00:09</p>
+  <p><span>最后更新:</span>2020年01月10日 - 16:06:24</p>
+  <p><span>原始链接:</span><a href="/2020/1977ac11.html" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">http://yoursite.com/2020/1977ac11.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2020/1977ac11.html"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -443,13 +428,13 @@
           
         
         <div class="post-tags">
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+            <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/01/13/apollo/1-Apollo本地运行环境搭建/" rel="next" title="1.Apollo本地运行环境搭建">
-                <i class="fa fa-chevron-left"></i> 1.Apollo本地运行环境搭建
+              <a href="/2020/d386b2ef.html" rel="next" title="【JVM从小白学成大佬】6.创建对象及对象的访问定位">
+                <i class="fa fa-chevron-left"></i> 【JVM从小白学成大佬】6.创建对象及对象的访问定位
               </a>
             
           </div>
@@ -457,8 +442,8 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/01/13/java/Lombok介绍、使用方法和总结/" rel="prev" title="Lombok介绍、使用方法和总结">
-                Lombok介绍、使用方法和总结 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/4c889127.html" rel="prev" title="弄明白CMS和G1，就靠这一篇了">
+                弄明白CMS和G1，就靠这一篇了 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -493,8 +478,17 @@
 
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -615,6 +609,23 @@
 
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象优先在Eden分配"><span class="nav-text">对象优先在Eden分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大对象直接进入老年代"><span class="nav-text">大对象直接进入老年代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#长期存活的对象将进入老年代"><span class="nav-text">长期存活的对象将进入老年代</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#接下来我们来回答JVM的分代年龄为什么是15？而不是16-20之类的呢？"><span class="nav-text">接下来我们来回答JVM的分代年龄为什么是15？而不是16,20之类的呢？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态对象年龄判定"><span class="nav-text">动态对象年龄判定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#满足如下条件之一，对象能晋升老年代："><span class="nav-text">满足如下条件之一，对象能晋升老年代：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空间分配担保"><span class="nav-text">空间分配担保</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
     </div>
   </aside>
