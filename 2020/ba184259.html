@@ -69,12 +69,12 @@
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://www.yuanrengu.com/wp-content/uploads/2018/11/20181106111837_36935.png">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.355Z">
+<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200114094745.png">
+<meta property="og:updated_time" content="2020-01-14T01:49:34.583Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap在Jdk1.7和1.8中的实现">
 <meta name="twitter:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
-<meta name="twitter:image" content="http://www.yuanrengu.com/wp-content/uploads/2018/11/20181106111837_36935.png">
+<meta name="twitter:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200114094745.png">
   <link rel="canonical" href="https://yuanrengu.github.io/2020/ba184259">
 
 
@@ -290,7 +290,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
+                <time title="修改时间：2020-01-14 09:49:34" itemprop="dateModified" datetime="2020-01-14T09:49:34+08:00">2020-01-14</time>
               </span>
             
           
@@ -378,8 +378,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addEntry</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">int</span> bucketIndex)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 如果当前 HashMap 大小已经达到了阈值，并且新值要插入的数组位置已经有元素了，那么要扩容</span></span><br><span class="line">    <span class="keyword">if</span> ((size &gt;= threshold) &amp;&amp; (<span class="keyword">null</span> != table[bucketIndex])) &#123;</span><br><span class="line">        <span class="comment">// 扩容</span></span><br><span class="line">        resize(<span class="number">2</span> * table.length);</span><br><span class="line">        <span class="comment">// 扩容以后，重新计算 hash 值</span></span><br><span class="line">        hash = (<span class="keyword">null</span> != key) ? hash(key) : <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 重新计算扩容后的新的下标</span></span><br><span class="line">        bucketIndex = indexFor(hash, table.length);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 往下看</span></span><br><span class="line">    createEntry(hash, key, value, bucketIndex);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这个很简单，其实就是将新值放到链表的表头，然后 size++</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">createEntry</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">int</span> bucketIndex)</span> </span>&#123;</span><br><span class="line">    Entry&lt;K,V&gt; e = table[bucketIndex];</span><br><span class="line">    table[bucketIndex] = <span class="keyword">new</span> Entry&lt;&gt;(hash, key, value, e);</span><br><span class="line">    size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这个方法的主要逻辑就是先判断是否需要扩容，需要带的话先扩容，然后再将这个新的数据插入到扩容后的数组的相应位置处的链表的表头。</p>
-<p>扩容就是用一个新的大数组替换原来的小数组，并将原来数组中的值迁移到新的数组中。由于是双倍扩容，迁移过程中，会将原来table[i]中的链表的所有节点，分拆到新的数组的newTable[i]和newTable[i+oldLength]位置上。如原来数组长度是16，那么扩容后，原来table[0]处的链表中的所有元素会被分配到新数组中newTable[0]和newTable[16]这两个位置。</p>
-<p><img src="http://www.yuanrengu.com/wp-content/uploads/2018/11/20181106111837_36935.png" alt></p>
+<p>扩容就是用一个新的大数组替换原来的小数组，并将原来数组中的值迁移到新的数组中。由于是双倍扩容，迁移过程中，会将原来table[i]中的链表的所有节点，分拆到新的数组的newTable[i]和newTable[i+oldLength]位置上。如原来数组长度是16，那么扩容后，原来table[0]处的链表中的所有元素会被分配到新数组中newTable[0]和newTable[16]这两个位置。扩容期间，由于会新建一个新的空数组，并且用旧的项填充到这个新的数组中去。所以，在这个填充的过程中，如果有线程获取值，很可能会取到 null 值，而不是我们所希望的、原来添加的值。</p>
+<p><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200114094745.png" alt></p>
 <p>图中，左边部分即代表哈希表，也称为哈希数组（默认数组大小是16，每对key-value键值对其实是存在map的内部类entry里的），<strong>数组的每个元素都是一个单链表的<code>头节点</code></strong>，跟着的蓝色链表是用来解决冲突的，如果不同的key映射到了数组的同一位置处，就将其放入单链表中。</p>
 <p>前面说过HashMap的key是允许为null的，当出现这种情况时，会放到table[0]中。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> V <span class="title">putForNullKey</span><span class="params">(V value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Entry&lt;K,V&gt; e = table[<span class="number">0</span>]; e != <span class="keyword">null</span>; e = e.next) &#123;</span><br><span class="line">        <span class="keyword">if</span> (e.key == <span class="keyword">null</span>) &#123;</span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            e.value = value;</span><br><span class="line">            e.recordAccess(<span class="keyword">this</span>);</span><br><span class="line">            <span class="keyword">return</span> oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    modCount++;</span><br><span class="line">    addEntry(<span class="number">0</span>, <span class="keyword">null</span>, value, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -491,7 +491,7 @@
   <p><span>本文标题:</span>HashMap在Jdk1.7和1.8中的实现</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月09日 - 10:17:40</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>最后更新:</span>2020年01月14日 - 09:49:34</p>
   <p><span>原始链接:</span><a href="/2020/ba184259.html" title="HashMap在Jdk1.7和1.8中的实现">https://yuanrengu.github.io/2020/ba184259.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.github.io/2020/ba184259.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -757,7 +757,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">63.6k</span> 字
+      博客全站共： <span class="post-count">63.7k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
