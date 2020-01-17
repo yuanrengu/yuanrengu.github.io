@@ -61,19 +61,19 @@
   };
 </script>
 
-  <meta name="description" content="在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下： 12345678910111213141516171819202122232425262728293031323334package com.model;import java.util.ArrayList;import java.util.">
-<meta name="keywords" content="java">
+  <meta name="description" content="该篇文章写于2016年10月21日  一直在使用Mybatis这个ORM框架，都是使用mybatis里的一些常用功能。今天在项目开发中有个业务是需要限制各个用户对某些表里的字段查询以及某些字段是否显示，如某张表的某些字段不让用户查询到。这种情况下，就需要构建sql来动态传入表名、字段名了。现在对解决方法进行下总结，希望对遇到同样问题的伙伴有些帮助。 动态SQL是mybatis的强大特性之一，my">
+<meta name="keywords" content="Mybatis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中List求并集、交集、差集、无重复并集">
-<meta property="og:url" content="https://yuanrengu.github.io/2020/fb3dc37a.html">
+<meta property="og:title" content="Mybatis动态调用表名和字段名">
+<meta property="og:url" content="https://yuanrengu.github.io/2020/2ecc1e06.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下： 12345678910111213141516171819202122232425262728293031323334package com.model;import java.util.ArrayList;import java.util.">
+<meta property="og:description" content="该篇文章写于2016年10月21日  一直在使用Mybatis这个ORM框架，都是使用mybatis里的一些常用功能。今天在项目开发中有个业务是需要限制各个用户对某些表里的字段查询以及某些字段是否显示，如某张表的某些字段不让用户查询到。这种情况下，就需要构建sql来动态传入表名、字段名了。现在对解决方法进行下总结，希望对遇到同样问题的伙伴有些帮助。 动态SQL是mybatis的强大特性之一，my">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.348Z">
+<meta property="og:updated_time" content="2020-01-17T09:56:03.310Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中List求并集、交集、差集、无重复并集">
-<meta name="twitter:description" content="在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下： 12345678910111213141516171819202122232425262728293031323334package com.model;import java.util.ArrayList;import java.util.">
-  <link rel="canonical" href="https://yuanrengu.github.io/2020/fb3dc37a">
+<meta name="twitter:title" content="Mybatis动态调用表名和字段名">
+<meta name="twitter:description" content="该篇文章写于2016年10月21日  一直在使用Mybatis这个ORM框架，都是使用mybatis里的一些常用功能。今天在项目开发中有个业务是需要限制各个用户对某些表里的字段查询以及某些字段是否显示，如某张表的某些字段不让用户查询到。这种情况下，就需要构建sql来动态传入表名、字段名了。现在对解决方法进行下总结，希望对遇到同样问题的伙伴有些帮助。 动态SQL是mybatis的强大特性之一，my">
+  <link rel="canonical" href="https://yuanrengu.github.io/2020/2ecc1e06">
 
 
 <script id="page.configurations">
@@ -82,7 +82,7 @@
   };
 </script>
 
-  <title>Java中List求并集、交集、差集、无重复并集 | 猿人谷</title>
+  <title>Mybatis动态调用表名和字段名 | 猿人谷</title>
   
 
 
@@ -241,7 +241,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yuanrengu.github.io/2020/fb3dc37a.html">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.github.io/2020/2ecc1e06.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -255,7 +255,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">Java中List求并集、交集、差集、无重复并集
+          <h1 class="post-title" itemprop="name headline">Mybatis动态调用表名和字段名
 
               
             
@@ -275,21 +275,11 @@
                 
               
 
-              <time title="创建时间：2020-01-09 17:45:55" itemprop="dateCreated datePublished" datetime="2020-01-09T17:45:55+08:00">2020-01-09</time>
+              <time title="创建时间：2020-01-17 17:54:51 / 修改时间：17:56:03" itemprop="dateCreated datePublished" datetime="2020-01-17T17:54:51+08:00">2020-01-17</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
-              </span>
             
           
             <span class="post-meta-item">
@@ -300,7 +290,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Mybatis/" itemprop="url" rel="index"><span itemprop="name">Mybatis</span></a></span>
 
                 
                 
@@ -325,7 +315,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">911</span>
+              <span title="本文字数">1.9k</span>
             </span>
           
             <span class="post-meta-item">
@@ -335,7 +325,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">1 分钟</span>
+              <span title="阅读时长">2 分钟</span>
             </span>
           
 
@@ -348,13 +338,58 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		List&lt;String&gt; list1 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		list1.add(<span class="string">"11111111111"</span>);</span><br><span class="line">		list1.add(<span class="string">"22222222222"</span>);</span><br><span class="line">		</span><br><span class="line">		List&lt;String&gt; list2 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		list2.add(<span class="string">"22222222222"</span>);</span><br><span class="line">		list2.add(<span class="string">"33333333333"</span>);</span><br><span class="line">		list2.add(<span class="string">"44444444444"</span>);</span><br><span class="line">		</span><br><span class="line">		list2.addAll(list1); <span class="comment">//并集</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//list2.removeAll(list1); //差集</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//list2.retainAll(list1); //交集</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//无重复并集（即先求差集，再做并集）</span></span><br><span class="line"><span class="comment">//		list2.removeAll(list1);</span></span><br><span class="line"><span class="comment">//		list1.addAll(list2);</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"--------------------------------------"</span>);</span><br><span class="line">		System.out.println(list2.size());</span><br><span class="line">		System.out.println(list2.toString());</span><br><span class="line">		System.out.println(<span class="string">"--------------------------------------"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p>该篇文章写于2016年10月21日</p>
+</blockquote>
+<p>一直在使用Mybatis这个ORM框架，都是使用mybatis里的一些常用功能。今天在项目开发中有个业务是需要限制各个用户对某些表里的字段查询以及某些字段是否显示，如某张表的某些字段不让用户查询到。这种情况下，就需要构建sql来动态传入表名、字段名了。现在对解决方法进行下总结，希望对遇到同样问题的伙伴有些帮助。</p>
+<p>动态SQL是mybatis的强大特性之一，mybatis在对sql语句进行预编译之前，会对sql进行动态解析，解析为一个BoundSql对象，也是在此处对动态sql进行处理。下面让我们先来熟悉下mybatis里<code>#{}</code>与<code>${}</code>的用法。</p>
+<p>在动态sql解析过程，<code>#{}</code>与<code>${}</code>效果是不一样的：</p>
+<blockquote>
+<p><code>#{}</code> 解析为一个 JDBC 预编译语句（prepared statement）的参数标记符。</p>
+</blockquote>
+<p>如以下sql语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">name</span> = <span class="comment">#&#123;name&#125;;</span></span><br></pre></td></tr></table></figure>
 
-<p>注意如下求交集的形式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list2.retainAll(list1)</span><br></pre></td></tr></table></figure>
+<p>会被解析为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">name</span> = ?;</span><br></pre></td></tr></table></figure>
 
-<p>这里list2的结果会变为list1和list2的交集，而list1是不改变的。</p>
+<p>可以看到#{}被解析为一个参数占位符<code>？</code>。</p>
+<p><code>${ }</code> 仅仅为一个纯碎的 string 替换，在动态 SQL 解析阶段将会进行变量替换<br>如以下sql语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">name</span> = $&#123;<span class="keyword">name</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>当我们传递参数“yuanrengu”时，sql会解析为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">"yuanrengu"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到预编译之前的sql语句已经不包含变量name了。</p>
+<p>综上所得， <code>${ }</code> 的变量的替换阶段是在动态 SQL <code>解析阶段</code>，而 <code>#{ }</code>的变量的替换是在 DBMS 中。</p>
+<p><code>#{}</code>与<code>${}</code>的区别可以简单总结如下：</p>
+<ul>
+<li>#{}将传入的参数当成一个字符串，会给传入的参数加一个双引号</li>
+<li><code>${}</code>将传入的参数直接显示生成在sql中，不会添加引号</li>
+<li>#{}能够很大程度上防止sql注入，<code>${}</code>无法防止sql注入</li>
+</ul>
+<p><code>${}</code>在预编译之前已经被变量替换了，这会存在sql注入的风险。如下sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> $&#123;tableName&#125; <span class="keyword">where</span> <span class="keyword">name</span> = $&#123;<span class="keyword">name</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果传入的参数tableName为<code>user; delete user; —</code>，那么sql动态解析之后，预编译之前的sql将变为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span>; <span class="keyword">delete</span> <span class="keyword">user</span>; <span class="comment">-- where name = ?;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>—</code>之后的语句将作为注释不起作用，顿时我和我的小伙伴惊呆了！！！看到没，本来的查询语句，竟然偷偷的包含了一个删除表数据的sql，是删除，删除，删除！！！重要的事情说三遍，可想而知，这个风险是有多大。</p>
+<ul>
+<li><code>${}</code>一般用于传输数据库的表名、字段名等</li>
+<li>能用#{}的地方尽量别用<code>${}</code></li>
+</ul>
+<p>通过上面的分析，相信大家可能已经对如何动态调用表名和字段名有些思路了。示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getUser&quot; resultType=&quot;java.util.Map&quot; parameterType=&quot;java.lang.String&quot; statementType=&quot;STATEMENT&quot;&gt;</span><br><span class="line">  select </span><br><span class="line">      $&#123;columns&#125;</span><br><span class="line">  from $&#123;tableName&#125;</span><br><span class="line">      where COMPANY_REMARK = $&#123;company&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+
+<p>要实现动态调用表名和字段名，就不能使用预编译了，需添加statementType=”STATEMENT”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">statementType：STATEMENT（非预编译），PREPARED（预编译）或CALLABLE中的任意一个，这就告诉 MyBatis 分别使用Statement，PreparedStatement或者CallableStatement。默认：PREPARED。这里显然不能使用预编译，要改成非预编译。</span><br></pre></td></tr></table></figure>
+
+<p>其次，sql里的变量取值是<code>${xxx}</code>,不是#{xxx}。</p>
+<p>因为<code>${}</code>是将传入的参数直接显示生成sql，如${xxx}传入的参数为字符串数据，需在参数传入前加上引号，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String name = <span class="string">"sprite"</span>;</span><br><span class="line">name = <span class="string">"'"</span> + name + <span class="string">"'"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>mybatis动态调用表名和字段名，还可以应用于日志的收集上，如数据库的日志表，每隔一个月动态建一个日志表，表名前缀相同（如log_201610,log_201611等），这样实现日志的分月分表存储，方便日志的分析。</p>
 
     </div>
 
@@ -388,12 +423,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>Java中List求并集、交集、差集、无重复并集</a></p>
+  <p><span>本文标题:</span>Mybatis动态调用表名和字段名</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年01月09日 - 17:45:55</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
-  <p><span>原始链接:</span><a href="/2020/fb3dc37a.html" title="Java中List求并集、交集、差集、无重复并集">https://yuanrengu.github.io/2020/fb3dc37a.html</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.github.io/2020/fb3dc37a.html"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2020年01月17日 - 17:54:51</p>
+  <p><span>最后更新:</span>2020年01月17日 - 17:56:03</p>
+  <p><span>原始链接:</span><a href="/2020/2ecc1e06.html" title="Mybatis动态调用表名和字段名">https://yuanrengu.github.io/2020/2ecc1e06.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.github.io/2020/2ecc1e06.html"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -420,13 +455,13 @@
           
         
         <div class="post-tags">
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+            <a href="/tags/Mybatis/" rel="tag"><i class="fa fa-tag"></i> Mybatis</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/abb6453a.html" rel="next" title="程序猿菜鸟打怪升级—一路火花带闪电">
-                <i class="fa fa-chevron-left"></i> 程序猿菜鸟打怪升级—一路火花带闪电
+              <a href="/2020/2329b301.html" rel="next" title="如何招聘程序猿？">
+                <i class="fa fa-chevron-left"></i> 如何招聘程序猿？
               </a>
             
           </div>
@@ -434,10 +469,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/22810993.html" rel="prev" title="【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用">
-                【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
     </footer>

@@ -61,19 +61,19 @@
   };
 </script>
 
-  <meta name="description" content="在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下： 12345678910111213141516171819202122232425262728293031323334package com.model;import java.util.ArrayList;import java.util.">
-<meta name="keywords" content="java">
+  <meta name="description" content="本篇文章写于2017年3月14日。虽然写的比较早了，但很多东西依然适用于如今的职场。  近一年技术团队在不断扩充成员，一直忙于高级java工程师、Android工程师、iOS工程师的面试，很想写一篇和招聘程序猿相关的文章，特别是看到“酷壳”里皓哥写的一篇《我是怎么招聘程序员的》文章后，产生很多共鸣。 虽然工作年限还不够长，但也经历过很多大大小小的面试，即被面试过，也面试过很多人。经历过很多很专业">
+<meta name="keywords" content="面试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中List求并集、交集、差集、无重复并集">
-<meta property="og:url" content="https://yuanrengu.github.io/2020/fb3dc37a.html">
+<meta property="og:title" content="如何招聘程序猿？">
+<meta property="og:url" content="https://yuanrengu.github.io/2020/2329b301.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下： 12345678910111213141516171819202122232425262728293031323334package com.model;import java.util.ArrayList;import java.util.">
+<meta property="og:description" content="本篇文章写于2017年3月14日。虽然写的比较早了，但很多东西依然适用于如今的职场。  近一年技术团队在不断扩充成员，一直忙于高级java工程师、Android工程师、iOS工程师的面试，很想写一篇和招聘程序猿相关的文章，特别是看到“酷壳”里皓哥写的一篇《我是怎么招聘程序员的》文章后，产生很多共鸣。 虽然工作年限还不够长，但也经历过很多大大小小的面试，即被面试过，也面试过很多人。经历过很多很专业">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.348Z">
+<meta property="og:updated_time" content="2020-01-17T09:44:25.537Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中List求并集、交集、差集、无重复并集">
-<meta name="twitter:description" content="在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下： 12345678910111213141516171819202122232425262728293031323334package com.model;import java.util.ArrayList;import java.util.">
-  <link rel="canonical" href="https://yuanrengu.github.io/2020/fb3dc37a">
+<meta name="twitter:title" content="如何招聘程序猿？">
+<meta name="twitter:description" content="本篇文章写于2017年3月14日。虽然写的比较早了，但很多东西依然适用于如今的职场。  近一年技术团队在不断扩充成员，一直忙于高级java工程师、Android工程师、iOS工程师的面试，很想写一篇和招聘程序猿相关的文章，特别是看到“酷壳”里皓哥写的一篇《我是怎么招聘程序员的》文章后，产生很多共鸣。 虽然工作年限还不够长，但也经历过很多大大小小的面试，即被面试过，也面试过很多人。经历过很多很专业">
+  <link rel="canonical" href="https://yuanrengu.github.io/2020/2329b301">
 
 
 <script id="page.configurations">
@@ -82,7 +82,7 @@
   };
 </script>
 
-  <title>Java中List求并集、交集、差集、无重复并集 | 猿人谷</title>
+  <title>如何招聘程序猿？ | 猿人谷</title>
   
 
 
@@ -241,7 +241,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yuanrengu.github.io/2020/fb3dc37a.html">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.github.io/2020/2329b301.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -255,7 +255,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">Java中List求并集、交集、差集、无重复并集
+          <h1 class="post-title" itemprop="name headline">如何招聘程序猿？
 
               
             
@@ -275,21 +275,11 @@
                 
               
 
-              <time title="创建时间：2020-01-09 17:45:55" itemprop="dateCreated datePublished" datetime="2020-01-09T17:45:55+08:00">2020-01-09</time>
+              <time title="创建时间：2020-01-17 17:42:12 / 修改时间：17:44:25" itemprop="dateCreated datePublished" datetime="2020-01-17T17:42:12+08:00">2020-01-17</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
-              </span>
             
           
             <span class="post-meta-item">
@@ -300,7 +290,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/奋斗/" itemprop="url" rel="index"><span itemprop="name">奋斗</span></a></span>
 
                 
                 
@@ -325,7 +315,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">911</span>
+              <span title="本文字数">3.3k</span>
             </span>
           
             <span class="post-meta-item">
@@ -335,7 +325,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">1 分钟</span>
+              <span title="阅读时长">3 分钟</span>
             </span>
           
 
@@ -348,13 +338,40 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		List&lt;String&gt; list1 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		list1.add(<span class="string">"11111111111"</span>);</span><br><span class="line">		list1.add(<span class="string">"22222222222"</span>);</span><br><span class="line">		</span><br><span class="line">		List&lt;String&gt; list2 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		list2.add(<span class="string">"22222222222"</span>);</span><br><span class="line">		list2.add(<span class="string">"33333333333"</span>);</span><br><span class="line">		list2.add(<span class="string">"44444444444"</span>);</span><br><span class="line">		</span><br><span class="line">		list2.addAll(list1); <span class="comment">//并集</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//list2.removeAll(list1); //差集</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//list2.retainAll(list1); //交集</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//无重复并集（即先求差集，再做并集）</span></span><br><span class="line"><span class="comment">//		list2.removeAll(list1);</span></span><br><span class="line"><span class="comment">//		list1.addAll(list2);</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"--------------------------------------"</span>);</span><br><span class="line">		System.out.println(list2.size());</span><br><span class="line">		System.out.println(list2.toString());</span><br><span class="line">		System.out.println(<span class="string">"--------------------------------------"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意如下求交集的形式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list2.retainAll(list1)</span><br></pre></td></tr></table></figure>
-
-<p>这里list2的结果会变为list1和list2的交集，而list1是不改变的。</p>
+        <blockquote>
+<p>本篇文章写于2017年3月14日。虽然写的比较早了，但很多东西依然适用于如今的职场。</p>
+</blockquote>
+<p>近一年技术团队在不断扩充成员，一直忙于高级java工程师、Android工程师、iOS工程师的面试，很想写一篇和招聘程序猿相关的文章，特别是看到“酷壳”里皓哥写的一篇《我是怎么招聘程序员的》文章后，产生很多共鸣。</p>
+<p>虽然工作年限还不够长，但也经历过很多大大小小的面试，即被面试过，也面试过很多人。经历过很多很专业的面试，也经历过一些非常BT和令人不怎么舒服的面试。一个好的面试体验，公司的考核流程和面试官就显得非常重要了，如果考核流程非常繁琐，会让面试者内心没有任何好感，如面试时在前台莫名其妙的被晾置一两个小时，笔试初试复试得跑三趟公司。面试官就更重要了，不要刚开始面试，就弄的像别人欠你钱或别人在挑战的技术能力似的，或者尽问些非常冷门而且工作中完全用不到的技术来彰显自己的博学。</p>
+<p>公司招聘不要弄成一种买卖关系，应该是寻找一些志同道合和跟公司“气场”匹配的伙伴，这里的气场是指跟公司所需要的技能有一定的匹配度、跟公司的理念有一定程度的吻合。公司行政经常给我说：“技术人员是不是很矫情啊？说好来面试的，最后都不来，说好要入职的，入职前一天又说有公司给更高的待遇。”我只能微微一笑的给她说：“你见，或者不见我，我就在那里，不悲不喜。你来入职，或者不来入职，offer反正在你手里，不增只减”。因为我也曾经矫情过，研究生快毕业时，做了一堆的算法和数据结构方面的题，准备了一堆面试常问的题和一些面试技巧，就到处投简历面试（其实当时手里已经有几个不错的offer了），不为找工作，只为刷存在感，回想这年少无知的举动，倍感惭愧。技术圈说小不小，说大其实也不大，毕竟江湖不远，有缘再见，程序猿平时还是要多给自己攒攒口碑的。</p>
+<p>如何去考核一个程序猿是否可以给offer？我在面试应聘者的时候，最主要是要弄清如下几件事：</p>
+<ol>
+<li>应聘者是否可以跟我“正常对话”？</li>
+<li>应聘者的技能是否跟公司所需的技能达到一定的契合度？</li>
+<li>应聘者是否有能力解决工作中的难题？</li>
+<li>应聘者是否可以跟我们团队一起愉快的工作？</li>
+</ol>
+<p>我相信绝大部分的公司在考核应聘者时都会围绕上述四个问题来进行，可能有人会对第一个问题产生疑问，难道还有不能正常对话的人？还真别说，我就遇到几个性格比较“鲜明”的应聘者，面试时头抬的高高的，眼瞅着天花板，一副老子天下第一的表情，技术人员有傲骨可以理解，可是问几个技术问题，却一问三不知，问他之前团队如何协作的，只回答说公司安排的任务不喜欢就离职了，让人真的很难正常对话。对于第二个问题就更重要了，公司当然希望应聘者的技术越牛越好，梦想是美好的，能招到大神这肯定是公司之幸，现实终究还是很骨感，只希望能找到跟公司所需的技能契合度尽可能高的伙伴。</p>
+<p>技术圈比较流行一句话：面试造火箭，工作拧螺丝。这种情况确实比较常见，从某个层面来看是大部分公司程序猿能力的美好愿景，也催促自己去不断完善自己的知识体系。对于第三个问题，程序猿最基本的技能就是要通过网络解决工作中的一些难题，多问度娘，多问谷歌，程序猿比较忌讳的一点就是“拿来主义”，遇到问题不动脑思考张口就问别人。第四个问题，基本就是考查人的社交能力和情商了，个人人为，团队氛围的整体和谐是做好所有项目的前提。毕竟如今的项目都是靠团战，一个人即使能力再强，也很难独立完成整个项目。</p>
+<p>之前我经历过的一些比较传统的面试流程，基本是下面这样的：</p>
+<ol>
+<li>应聘者先做自我介绍</li>
+<li>问一些比较难的非常细节的技术问题，基本就是快问快答的形式</li>
+<li>给应聘者出一些比较怪异的算法题</li>
+</ol>
+<p>个人觉得这种面试形式不是太合适，可能会错过很多适合公司的程序猿。其实我个人不论是面试别人还是被面试时，都非常讨厌第一个问题，拿着别人简历难道不知道别人叫什么名字？技术面试，这种形式上的东西能少就尽量少即可。但应聘者一进来，总得有个关于介绍的开场。我面试应聘者时，别人一进来时我会先问好，给个微笑，让应聘者不要太紧张。让别人做下技术方面的简单介绍，如工作中主要处理哪里方面的业务（电商、金融等等）啊？主要用哪些编程语言？主要用哪些开发架构（dubbo、SOA等）？主要用哪些框架（Spring、mybatis等）？这样也方便对这个人有比较全面的了解，交流时也好针对性的问些问题，做偏技术方面的介绍也好了解这个人的沟通交流能力。毕竟很难从一个人的简历或自我阐述上来考核这个人是否合适。</p>
+<p>我绝不会在面试应聘者时问一些非常细节的问题，我曾经就经历一个非常BT的面试，面试官据称刚从华为出来，一上来就问我是否用过mybatis，我说用过。接下来这哥们问，mybatis是哪一年被开源的？接手的是哪个开发团队？mybatis的升级历史？当然我觉得我可能听错了，我说记不清楚哪一年被开源的，是apache开源的项目，讲解了下mybatis对比hibernate的优势和缺点。这哥们说是都不知道哪一年开源的，也不知道是apache的哪个团队接手，真的用过mybatis？说是我肯定没用过mybatis。当时内心就千万只骏马奔腾而过啊，我真的是在应聘程序猿吗？敢情我用了几年假的mybatis？</p>
+<p>还有一种面试流程是很多朋友都给我说过非常不喜欢的，就是跟hr的面聊，hr的小姐姐们一般都是聊家庭啊，聊什么让应聘者说自己目前做过最骄傲的事情是什么？最失败的事情是什么？还有问应聘者如何处理跟女票的矛盾，陪女票逛街时接到要加班的电话怎么办？还有非常多很奇怪的问题，其实程序猿虽然得到的评价是木讷，但都是很聪明的，这类问题都可以用些标准答案来应付，但不是内心真实的答案啊。例如陪女票逛街的问题，程序猿大都是很有责任心的，如果是项目非常忙，都会主动加班，如果项目没那么忙，好容易陪女票逛街要加啥班啊，毕竟程序猿有个女票还是非常不容易的，人艰不拆啊。</p>
+<p>我在面试时一般会根据应聘者自己的项目描述来提问，考核下他自己说的技能的熟练程度。也遇到一些技术确实够菜，简历写的无比高大上，问他自己说的问题都回答不上来，你问东他答西，完全不在同一频道对话。碰到这种情况，我就会问笔试题里的SpringMVC工作原理(笔试只是公司要求的形式，我一般不会太看重笔试的成绩)，这个问题非常简单，只要用过这个框架的人都能说出个一二三来。这道题也是所有人都答的非常好的，因为网上一搜，答案一大推，问这个问题也是让应聘者放松些不要太紧张，毕竟自己刚写过。但有些人笔试题上答案写了好大一堆，但口述却一点都说不出来，知道什么问题了吧？我真的不介意你笔试时抄网上的东西，只要你能复述出来讲清楚我都算你掌握了这个问题，但假如是抄的东西连复述都说不出来，那面试还有什么可问的？碰到这种情况，我也不能直接打发别人，还得照顾应聘者的自尊心啊，我会跟应聘者聊聊人生聊聊理想，然后面试就愉快的结束了。</p>
+<p>对于这里还得说一点，公司hr小姐姐要求即使面试遇到不合适的应聘者，说话也要照顾对方的面子，因为网络暴力真的很害人，但凡看一些招聘网站的面试分享，说公司好话的基本都是拿到offer了的，说不好话都是没拿到offer的，如果面试体验不好，就尽发些诋毁公司的言论，对后面要来公司应聘的伙伴来说起到非常不好的影响。网络暴力，确实。。。。。。</p>
+<p>如果没有一起工作过，没有一些实际的项目做背景，单靠半个小时或一个多小时的面试，是比较难全面的了解一个人的。个人觉得在应聘程序猿职务时需要做好如下几个方面：</p>
+<ol>
+<li>穿着大方、简单、整洁。（不需穿个西装打个领带）</li>
+<li>提前熟悉公司的业务、招聘需求，需要的技能可以提前准备下，有备无患嘛。这一点非常重要，知己知彼百战不殆。</li>
+<li>对于面试官的问题，知之为知之不知为不知，技术这东西会就是会，不会就是不会，没法伪装或隐瞒，不然等着面试官问个问题而拆穿就尴尬了。</li>
+<li>平时可以多写些技术博客、参入开源项目、参与技术活动，反正我是非常喜欢这样的程序猿，肯定能加分。</li>
+</ol>
+<p>所有的面试技巧都敌不过自己知识体系的深度、广度！不断提升自己，基础扎实，对某一个或几个业务有比较深入的熟悉，这样的小伙伴无论在哪家公司都是非常受欢迎的。</p>
 
     </div>
 
@@ -388,12 +405,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>Java中List求并集、交集、差集、无重复并集</a></p>
+  <p><span>本文标题:</span>如何招聘程序猿？</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年01月09日 - 17:45:55</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
-  <p><span>原始链接:</span><a href="/2020/fb3dc37a.html" title="Java中List求并集、交集、差集、无重复并集">https://yuanrengu.github.io/2020/fb3dc37a.html</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.github.io/2020/fb3dc37a.html"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2020年01月17日 - 17:42:12</p>
+  <p><span>最后更新:</span>2020年01月17日 - 17:44:25</p>
+  <p><span>原始链接:</span><a href="/2020/2329b301.html" title="如何招聘程序猿？">https://yuanrengu.github.io/2020/2329b301.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.github.io/2020/2329b301.html"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -420,13 +437,13 @@
           
         
         <div class="post-tags">
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+            <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/abb6453a.html" rel="next" title="程序猿菜鸟打怪升级—一路火花带闪电">
-                <i class="fa fa-chevron-left"></i> 程序猿菜鸟打怪升级—一路火花带闪电
+              <a href="/2020/baec5dff.html" rel="next" title="Lombok介绍、使用方法和总结">
+                <i class="fa fa-chevron-left"></i> Lombok介绍、使用方法和总结
               </a>
             
           </div>
@@ -434,8 +451,8 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/22810993.html" rel="prev" title="【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用">
-                【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/2ecc1e06.html" rel="prev" title="Mybatis动态调用表名和字段名">
+                Mybatis动态调用表名和字段名 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
