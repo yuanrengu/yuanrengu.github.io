@@ -64,7 +64,7 @@
 </script>
 
   <meta name="description" content="关于强引用、软引用、弱引用、幻象引用的区别，在很多公司的面试题中经常出现，可能有些小伙伴觉得这个知识点比较冷门，其实大家在开发中经常用到，如new一个对象的时候就是强引用的应用。 在java语言中，除了原始数据类型（boolean、byte、short、char、int、float、double、long）的变量，其他所有都是所谓的引用类型，指向各种不同的对象。理解这些引用的区别，对于掌握java">
-<meta name="keywords" content="强引用,软引用,弱引用,虚引用">
+<meta name="keywords" content="JVM,强引用,软引用,弱引用,虚引用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用">
 <meta property="og:url" content="http://yuanrengu.com/2020/22810993.html">
@@ -72,7 +72,7 @@
 <meta property="og:description" content="关于强引用、软引用、弱引用、幻象引用的区别，在很多公司的面试题中经常出现，可能有些小伙伴觉得这个知识点比较冷门，其实大家在开发中经常用到，如new一个对象的时候就是强引用的应用。 在java语言中，除了原始数据类型（boolean、byte、short、char、int、float、double、long）的变量，其他所有都是所谓的引用类型，指向各种不同的对象。理解这些引用的区别，对于掌握java">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2019/08/22/wLfYe8QZvqnJzXD.png">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.350Z">
+<meta property="og:updated_time" content="2020-01-27T16:43:18.464Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用">
 <meta name="twitter:description" content="关于强引用、软引用、弱引用、幻象引用的区别，在很多公司的面试题中经常出现，可能有些小伙伴觉得这个知识点比较冷门，其实大家在开发中经常用到，如new一个对象的时候就是强引用的应用。 在java语言中，除了原始数据类型（boolean、byte、short、char、int、float、double、long）的变量，其他所有都是所谓的引用类型，指向各种不同的对象。理解这些引用的区别，对于掌握java">
@@ -303,7 +303,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
+                <time title="修改时间：2020-01-28 00:43:18" itemprop="dateModified" datetime="2020-01-28T00:43:18+08:00">2020-01-28</time>
               </span>
             
           
@@ -403,6 +403,44 @@
 
     </div>
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/11ea27b.html" rel="bookmark">【JVM从小白学成大佬】1.开篇</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d386b2ef.html" rel="bookmark">【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d6aff7a6.html" rel="bookmark">【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/9ed477f0.html" rel="bookmark">【JVM从小白学成大佬】5.垃圾收集器及内存分配策略</a></div>
+      
+    </li>
+  
+  </ul>
 
 
 
@@ -439,7 +477,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 09:37:43</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>最后更新:</span>2020年01月28日 - 00:43:18</p>
   <p><span>原始链接:</span><a href="/2020/22810993.html" title="【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用">http://yuanrengu.com/2020/22810993.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yuanrengu.com/2020/22810993.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -468,6 +506,8 @@
           
         
         <div class="post-tags">
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
             <a href="/tags/强引用/" rel="tag"><i class="fa fa-tag"></i> 强引用</a>
           
             <a href="/tags/软引用/" rel="tag"><i class="fa fa-tag"></i> 软引用</a>

@@ -64,7 +64,7 @@
 </script>
 
   <meta name="description" content="这里我们先说句题外话，相信大家在面试中经常被问到介绍Java内存模型，我在面试别人时也会经常问这个问题。但是，往往都会令我比较尴尬，我还话音未落，面试者就会“背诵”一段（Java虚拟机是由堆、方法区、虚拟机栈，吧啦吧啦。。。），估计心里还一脸自豪的想幸好哥提前在网上搜过，早有准备。每每这个时候，我都不忍心打断，因为“背诵”的真的太顺畅了！ 这也怪不得面试者，首先Java虚拟机方面的知识，对中高级程">
-<meta name="keywords" content="运行时数据区,内存模型">
+<meta name="keywords" content="JVM,运行时数据区,内存模型">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">
 <meta property="og:url" content="http://yuanrengu.com/2020/d6aff7a6.html">
@@ -75,7 +75,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/18/QYD4cLRIl9zU52j.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/17/DbdKMswgfNeQAFW.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/17/WmFPQwVrRlExnjz.png">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.350Z">
+<meta property="og:updated_time" content="2020-01-27T16:42:45.936Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">
 <meta name="twitter:description" content="这里我们先说句题外话，相信大家在面试中经常被问到介绍Java内存模型，我在面试别人时也会经常问这个问题。但是，往往都会令我比较尴尬，我还话音未落，面试者就会“背诵”一段（Java虚拟机是由堆、方法区、虚拟机栈，吧啦吧啦。。。），估计心里还一脸自豪的想幸好哥提前在网上搜过，早有准备。每每这个时候，我都不忍心打断，因为“背诵”的真的太顺畅了！ 这也怪不得面试者，首先Java虚拟机方面的知识，对中高级程">
@@ -306,7 +306,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
+                <time title="修改时间：2020-01-28 00:42:45" itemprop="dateModified" datetime="2020-01-28T00:42:45+08:00">2020-01-28</time>
               </span>
             
           
@@ -389,7 +389,7 @@
 </ul>
 <p><strong>备注</strong>：《深入理解Java虚拟机》里将方法区归纳为用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</p>
 <p>Java虚拟机规范对方法区的限制非常宽松，除了和Java堆一样不需要连续的内存和可以选择固定大小或者可扩展外，还可以选择不实现垃圾收集。<strong>这区域的内存回收目标主要是针对常量池的回收和对类型的卸载。</strong></p>
-<p>##4.程序计数器（Program Counter Register）<br>Java虚拟机可以支持多条线程同时执行，每一条Java虚拟机线程都有自己的程序计数器。在任意时刻，一条Java虚拟机线程只会执行一个方法的代码，这个正在被线程执行的方法称为该线程的当前方法（current methon）。如果这个方法不是native的，那程序计数器保存的就是Java虚拟机正在执行的字节码指令的地址。如果该方法是native方法，那程序计数器的值为空（undefined）。程序计数器的容量至少应当保存一个returnAddress类型的数据或者一个与平台相关的本地指针的值。</p>
+<h2 id="4-程序计数器（Program-Counter-Register）"><a href="#4-程序计数器（Program-Counter-Register）" class="headerlink" title="4.程序计数器（Program Counter Register）"></a>4.程序计数器（Program Counter Register）</h2><p>Java虚拟机可以支持多条线程同时执行，每一条Java虚拟机线程都有自己的程序计数器。在任意时刻，一条Java虚拟机线程只会执行一个方法的代码，这个正在被线程执行的方法称为该线程的当前方法（current methon）。如果这个方法不是native的，那程序计数器保存的就是Java虚拟机正在执行的字节码指令的地址。如果该方法是native方法，那程序计数器的值为空（undefined）。程序计数器的容量至少应当保存一个returnAddress类型的数据或者一个与平台相关的本地指针的值。</p>
 <p>程序计数器是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。<strong>此内存区域是唯一一个在Java虚拟机规范中没有规定任何OutOfMemoryError情况的区域。</strong></p>
 <h2 id="5-虚拟机栈（VM-Stack）"><a href="#5-虚拟机栈（VM-Stack）" class="headerlink" title="5.虚拟机栈（VM Stack）"></a>5.虚拟机栈（VM Stack）</h2><p>每一条Java虚拟机线程都有自己私有的Java虚拟机栈，它的生命周期与线程相同。虚拟机栈描述的是Java方法执行的内存模型：<strong>每个方法在执行的同时都会创建一个栈帧（stack frame）用于存储局部变量表、操作数栈、动态链接、方法出口等信息</strong>。每一个方法从调用直至执行完成的过程，就<strong>对应着一个栈帧在虚拟机栈中入栈到出栈的过程。</strong></p>
 <p>Java虚拟机栈可能发生如下异常情况：</p>
@@ -412,6 +412,44 @@
 
     </div>
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/11ea27b.html" rel="bookmark">【JVM从小白学成大佬】1.开篇</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d386b2ef.html" rel="bookmark">【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/22810993.html" rel="bookmark">【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/9ed477f0.html" rel="bookmark">【JVM从小白学成大佬】5.垃圾收集器及内存分配策略</a></div>
+      
+    </li>
+  
+  </ul>
 
 
 
@@ -448,7 +486,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月08日 - 15:49:25</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>最后更新:</span>2020年01月28日 - 00:42:45</p>
   <p><span>原始链接:</span><a href="/2020/d6aff7a6.html" title="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">http://yuanrengu.com/2020/d6aff7a6.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yuanrengu.com/2020/d6aff7a6.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -477,6 +515,8 @@
           
         
         <div class="post-tags">
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
             <a href="/tags/运行时数据区/" rel="tag"><i class="fa fa-tag"></i> 运行时数据区</a>
           
             <a href="/tags/内存模型/" rel="tag"><i class="fa fa-tag"></i> 内存模型</a>
@@ -674,7 +714,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-运行时数据区介绍"><span class="nav-text">1.运行时数据区介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-堆（Heap）"><span class="nav-text">2.堆（Heap）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是否可能有两个对象共用一段内存的事故？"><span class="nav-text">是否可能有两个对象共用一段内存的事故？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-方法区（Method-Area）"><span class="nav-text">3.方法区（Method Area）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-虚拟机栈（VM-Stack）"><span class="nav-text">5.虚拟机栈（VM Stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-本地方法栈（Native-Method-Stack）"><span class="nav-text">6.本地方法栈（Native Method Stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-扩展知识点"><span class="nav-text">7.扩展知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-栈上分配和逃逸分析"><span class="nav-text">7.1 栈上分配和逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-栈帧"><span class="nav-text">7.2 栈帧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-运行时数据区脑图"><span class="nav-text">8.运行时数据区脑图</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-运行时数据区介绍"><span class="nav-text">1.运行时数据区介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-堆（Heap）"><span class="nav-text">2.堆（Heap）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是否可能有两个对象共用一段内存的事故？"><span class="nav-text">是否可能有两个对象共用一段内存的事故？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-方法区（Method-Area）"><span class="nav-text">3.方法区（Method Area）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-程序计数器（Program-Counter-Register）"><span class="nav-text">4.程序计数器（Program Counter Register）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-虚拟机栈（VM-Stack）"><span class="nav-text">5.虚拟机栈（VM Stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-本地方法栈（Native-Method-Stack）"><span class="nav-text">6.本地方法栈（Native Method Stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-扩展知识点"><span class="nav-text">7.扩展知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-栈上分配和逃逸分析"><span class="nav-text">7.1 栈上分配和逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-栈帧"><span class="nav-text">7.2 栈帧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-运行时数据区脑图"><span class="nav-text">8.运行时数据区脑图</span></a></li></ol></div>
             
 
           </div>

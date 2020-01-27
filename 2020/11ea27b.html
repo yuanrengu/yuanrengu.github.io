@@ -64,7 +64,7 @@
 </script>
 
   <meta name="description" content="JVM的重要性毋庸置疑，可以毫不夸张的说Java虚拟机是整个Java平台的基石。 JVM方面的知识，也一直是BAT等大厂面试考核的重点。特别是JVM调优，故障排查性能调优，你知道该从哪些方面入手吗？  此专栏结合自己对JVM的理解，从java运行时数据区、java内存模型(JMM)、什么是垃圾回收，垃圾回收算法、垃圾收集器、内存分配与回收策略等，也会介绍安全点、安全区域等知识点。 相信学习完专栏，">
-<meta name="keywords" content="jvm,性能调优">
+<meta name="keywords" content="JVM,性能调优">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【JVM从小白学成大佬】1.开篇">
 <meta property="og:url" content="http://yuanrengu.com/2020/11ea27b.html">
@@ -72,7 +72,7 @@
 <meta property="og:description" content="JVM的重要性毋庸置疑，可以毫不夸张的说Java虚拟机是整个Java平台的基石。 JVM方面的知识，也一直是BAT等大厂面试考核的重点。特别是JVM调优，故障排查性能调优，你知道该从哪些方面入手吗？  此专栏结合自己对JVM的理解，从java运行时数据区、java内存模型(JMM)、什么是垃圾回收，垃圾回收算法、垃圾收集器、内存分配与回收策略等，也会介绍安全点、安全区域等知识点。 相信学习完专栏，">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2019/08/19/Vdh6brKZaNRDtkx.png">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.348Z">
+<meta property="og:updated_time" content="2020-01-27T16:43:42.960Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】1.开篇">
 <meta name="twitter:description" content="JVM的重要性毋庸置疑，可以毫不夸张的说Java虚拟机是整个Java平台的基石。 JVM方面的知识，也一直是BAT等大厂面试考核的重点。特别是JVM调优，故障排查性能调优，你知道该从哪些方面入手吗？  此专栏结合自己对JVM的理解，从java运行时数据区、java内存模型(JMM)、什么是垃圾回收，垃圾回收算法、垃圾收集器、内存分配与回收策略等，也会介绍安全点、安全区域等知识点。 相信学习完专栏，">
@@ -303,7 +303,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
+                <time title="修改时间：2020-01-28 00:43:42" itemprop="dateModified" datetime="2020-01-28T00:43:42+08:00">2020-01-28</time>
               </span>
             
           
@@ -388,6 +388,44 @@
 
     </div>
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d386b2ef.html" rel="bookmark">【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d6aff7a6.html" rel="bookmark">【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/22810993.html" rel="bookmark">【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/9ed477f0.html" rel="bookmark">【JVM从小白学成大佬】5.垃圾收集器及内存分配策略</a></div>
+      
+    </li>
+  
+  </ul>
 
 
 
@@ -424,7 +462,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】1.开篇</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月08日 - 15:29:34</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>最后更新:</span>2020年01月28日 - 00:43:42</p>
   <p><span>原始链接:</span><a href="/2020/11ea27b.html" title="【JVM从小白学成大佬】1.开篇">http://yuanrengu.com/2020/11ea27b.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yuanrengu.com/2020/11ea27b.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -453,7 +491,7 @@
           
         
         <div class="post-tags">
-            <a href="/tags/jvm/" rel="tag"><i class="fa fa-tag"></i> jvm</a>
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
           
             <a href="/tags/性能调优/" rel="tag"><i class="fa fa-tag"></i> 性能调优</a>
           

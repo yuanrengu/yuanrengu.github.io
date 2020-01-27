@@ -64,7 +64,7 @@
 </script>
 
   <meta name="description" content="在Java中内存是由虚拟机自动管理的，虚拟机在内存中划出一片区域，作为满足程序内存分配请求的空间。内存的创建仍然是由程序猿来显示指定的，但是对象的释放却对程序猿是透明的。就是解放了程序猿手动回收内存的工作，交给垃圾回收器来自动回收。 在虚拟机中，释放哪些不再被使用的对象所占空间的过程称为垃圾收集（Garbage Collection，GC）。负责垃圾收集的程序模块，成为垃圾收集器（Garbage">
-<meta name="keywords" content="GC,垃圾回收">
+<meta name="keywords" content="JVM,GC,垃圾回收">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">
 <meta property="og:url" content="http://yuanrengu.com/2020/a959fab8.html">
@@ -77,7 +77,7 @@
 <meta property="og:image" content="https://image-static.segmentfault.com/110/658/1106581261-5d633d9a994ac_articlex">
 <meta property="og:image" content="https://image-static.segmentfault.com/210/838/2108386277-5d633d9c0be08_articlex">
 <meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110153711.png">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.351Z">
+<meta property="og:updated_time" content="2020-01-27T16:44:08.750Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">
 <meta name="twitter:description" content="在Java中内存是由虚拟机自动管理的，虚拟机在内存中划出一片区域，作为满足程序内存分配请求的空间。内存的创建仍然是由程序猿来显示指定的，但是对象的释放却对程序猿是透明的。就是解放了程序猿手动回收内存的工作，交给垃圾回收器来自动回收。 在虚拟机中，释放哪些不再被使用的对象所占空间的过程称为垃圾收集（Garbage Collection，GC）。负责垃圾收集的程序模块，成为垃圾收集器（Garbage">
@@ -308,7 +308,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
+                <time title="修改时间：2020-01-28 00:44:08" itemprop="dateModified" datetime="2020-01-28T00:44:08+08:00">2020-01-28</time>
               </span>
             
           
@@ -489,6 +489,44 @@
 
     </div>
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/11ea27b.html" rel="bookmark">【JVM从小白学成大佬】1.开篇</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d386b2ef.html" rel="bookmark">【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d6aff7a6.html" rel="bookmark">【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/22810993.html" rel="bookmark">【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/9ed477f0.html" rel="bookmark">【JVM从小白学成大佬】5.垃圾收集器及内存分配策略</a></div>
+      
+    </li>
+  
+  </ul>
 
 
 
@@ -525,7 +563,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 15:38:17</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>最后更新:</span>2020年01月28日 - 00:44:08</p>
   <p><span>原始链接:</span><a href="/2020/a959fab8.html" title="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">http://yuanrengu.com/2020/a959fab8.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yuanrengu.com/2020/a959fab8.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -554,6 +592,8 @@
           
         
         <div class="post-tags">
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
             <a href="/tags/GC/" rel="tag"><i class="fa fa-tag"></i> GC</a>
           
             <a href="/tags/垃圾回收/" rel="tag"><i class="fa fa-tag"></i> 垃圾回收</a>
