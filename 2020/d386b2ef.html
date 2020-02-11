@@ -71,14 +71,14 @@
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="《JVM从小白学成大佬》系列推出到现在，收到了很多小伙伴的好评，也收到了一些小伙伴的建议，在此表示感谢。 有几个小伙伴提出了希望出一篇介绍对象的创建及访问，猿人谷向来是没有原则的，小伙们要求啥，咱就尽力满足，毕竟文章就是对自己学习的一个总结及和各位小伙伴交流学习的机会。话不多说，直接开撸！ 1 创建对象在Java程序运行过程中无时无刻都有对象被创建出来，java中对象可以采用new或反射或clon">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154819.png">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154850.png">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154917.png">
-<meta property="og:updated_time" content="2020-01-27T16:45:16.601Z">
+<meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154819.png">
+<meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154850.png">
+<meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154917.png">
+<meta property="og:updated_time" content="2020-02-11T13:53:30.555Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】6.创建对象及对象的访问定位">
 <meta name="twitter:description" content="《JVM从小白学成大佬》系列推出到现在，收到了很多小伙伴的好评，也收到了一些小伙伴的建议，在此表示感谢。 有几个小伙伴提出了希望出一篇介绍对象的创建及访问，猿人谷向来是没有原则的，小伙们要求啥，咱就尽力满足，毕竟文章就是对自己学习的一个总结及和各位小伙伴交流学习的机会。话不多说，直接开撸！ 1 创建对象在Java程序运行过程中无时无刻都有对象被创建出来，java中对象可以采用new或反射或clon">
-<meta name="twitter:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110154819.png">
+<meta name="twitter:image" content="http://cdn.yuanrengu.com/img/20200110154819.png">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
   <link rel="canonical" href="https://yuanrengu.com/2020/d386b2ef">
 
@@ -316,7 +316,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-28 00:45:16" itemprop="dateModified" datetime="2020-01-28T00:45:16+08:00">2020-01-28</time>
+                <time title="修改时间：2020-02-11 21:53:30" itemprop="dateModified" datetime="2020-02-11T21:53:30+08:00">2020-02-11</time>
               </span>
             
           
@@ -381,7 +381,7 @@
 <h2 id="1-创建对象"><a href="#1-创建对象" class="headerlink" title="1 创建对象"></a>1 创建对象</h2><p>在Java程序运行过程中无时无刻都有对象被创建出来，<strong>java中对象可以采用new或反射或clone或反序列化的方法创建</strong>。接下来我们我们介绍在虚拟机中，对象（限于普通Java对象，不包括数组和Class对象等）的创建过程。</p>
 <p>字节码new表示创建对象，虚拟机遇到该指令时，从栈顶取得目标对象在常量池中的索引，接着定位到目标对象的类型。接下来，虚拟机将根据该类的状态，采取相应的内存分配技术，在内存中分配实例空间，并完成实例数据和对象头的初始化。这样，一个对象就在JVM中创建好了。</p>
 <p>实例的创建过程，首先根据从类常量池中获取对象类型信息并验证类是否已被解析过，若确保该类<strong>已被加载和正确解析</strong>，使用<strong>快速分配</strong>（fast allocation）技术为该类分配对象空间；若该类<strong>尚未解析过</strong>，则只能通过<strong>慢速分配</strong>（slow allocation）方式分配实例对象。实例的创建流程如下图所示。</p>
-<p><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110154819.png" alt></p>
+<p><img src="http://cdn.yuanrengu.com/img/20200110154819.png" alt></p>
 <p>对象创建的基本流程：</p>
 <ol>
 <li>验证类已被解析。</li>
@@ -406,9 +406,9 @@
 <h2 id="2-对象的访问定位"><a href="#2-对象的访问定位" class="headerlink" title="2 对象的访问定位"></a>2 对象的访问定位</h2><p>建立对象是为了使用对象，Java程序需要通过栈上的reference数据来操作<strong>堆</strong>上的具体对象。由于reference类型在Java虚拟机规范中只规定了一个指向对象的引用，并没有定义这个引用应该通过何种方式去定位、访问堆中的对象的具体位置，所以对象访问方式也是取决于虚拟机实现而定的。</p>
 <p>目前主流的访问方式有使用<strong>句柄</strong>和<strong>直接指针</strong>两种：</p>
 <ul>
-<li><p>如果使用<strong>句柄</strong>访问的话，那么Java堆中将会划分出一块内存来作为<strong>句柄池</strong>，reference中存储的就是<strong>对象的句柄地址</strong>，而句柄中包含了对象实例数据与类型数据各自的具体地址信息，如下图所示。<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110154850.png" alt></p>
+<li><p>如果使用<strong>句柄</strong>访问的话，那么Java堆中将会划分出一块内存来作为<strong>句柄池</strong>，reference中存储的就是<strong>对象的句柄地址</strong>，而句柄中包含了对象实例数据与类型数据各自的具体地址信息，如下图所示。<br><img src="http://cdn.yuanrengu.com/img/20200110154850.png" alt></p>
 </li>
-<li><p>如果使用<strong>直接指针</strong>访问，那么Java堆对象的布局中就必须考虑如何放置访问类型数据的相关信息，而reference中存储的直接就是<strong>对象地址</strong>。即使用直接指针访问在对象被移动时<strong>reference本身需要被修改</strong>，reference存储的就是对象地址。如下图所示。<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110154917.png" alt></p>
+<li><p>如果使用<strong>直接指针</strong>访问，那么Java堆对象的布局中就必须考虑如何放置访问类型数据的相关信息，而reference中存储的直接就是<strong>对象地址</strong>。即使用直接指针访问在对象被移动时<strong>reference本身需要被修改</strong>，reference存储的就是对象地址。如下图所示。<br><img src="http://cdn.yuanrengu.com/img/20200110154917.png" alt></p>
 </li>
 </ul>
 <p>这两种对象访问方式各有优势：</p>
@@ -432,6 +432,13 @@
     <li class="popular-posts-item">
       
       
+      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
       <div class="popular-posts-title"><a href="/2020/d6aff7a6.html" rel="bookmark">【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></div>
       
     </li>
@@ -440,13 +447,6 @@
       
       
       <div class="popular-posts-title"><a href="/2020/22810993.html" rel="bookmark">【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用</a></div>
-      
-    </li>
-  
-    <li class="popular-posts-item">
-      
-      
-      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
       
     </li>
   
@@ -494,7 +494,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 15:39:12</p>
-  <p><span>最后更新:</span>2020年01月28日 - 00:45:16</p>
+  <p><span>最后更新:</span>2020年02月11日 - 21:53:30</p>
   <p><span>原始链接:</span><a href="/2020/d386b2ef.html" title="【JVM从小白学成大佬】6.创建对象及对象的访问定位">https://yuanrengu.com/2020/d386b2ef.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/d386b2ef.html"  aria-label="复制成功！"></i></span>
   </p>

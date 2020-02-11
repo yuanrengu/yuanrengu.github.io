@@ -72,12 +72,12 @@
 <meta property="og:description" content="在Java中内存是由虚拟机自动管理的，虚拟机在内存中划出一片区域，作为满足程序内存分配请求的空间。内存的创建仍然是由程序猿来显示指定的，但是对象的释放却对程序猿是透明的。就是解放了程序猿手动回收内存的工作，交给垃圾回收器来自动回收。 在虚拟机中，释放哪些不再被使用的对象所占空间的过程称为垃圾收集（Garbage Collection，GC）。负责垃圾收集的程序模块，成为垃圾收集器（Garbage">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://image-static.segmentfault.com/404/754/4047541049-5d633d949ef4d_articlex">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110153500.png">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110153553.png">
+<meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110153500.png">
+<meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110153553.png">
 <meta property="og:image" content="https://image-static.segmentfault.com/110/658/1106581261-5d633d9a994ac_articlex">
 <meta property="og:image" content="https://image-static.segmentfault.com/210/838/2108386277-5d633d9c0be08_articlex">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110153711.png">
-<meta property="og:updated_time" content="2020-02-02T11:23:57.012Z">
+<meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110153711.png">
+<meta property="og:updated_time" content="2020-02-11T13:59:24.348Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">
 <meta name="twitter:description" content="在Java中内存是由虚拟机自动管理的，虚拟机在内存中划出一片区域，作为满足程序内存分配请求的空间。内存的创建仍然是由程序猿来显示指定的，但是对象的释放却对程序猿是透明的。就是解放了程序猿手动回收内存的工作，交给垃圾回收器来自动回收。 在虚拟机中，释放哪些不再被使用的对象所占空间的过程称为垃圾收集（Garbage Collection，GC）。负责垃圾收集的程序模块，成为垃圾收集器（Garbage">
@@ -319,7 +319,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-02 19:23:57" itemprop="dateModified" datetime="2020-02-02T19:23:57+08:00">2020-02-02</time>
+                <time title="修改时间：2020-02-11 21:59:24" itemprop="dateModified" datetime="2020-02-11T21:59:24+08:00">2020-02-11</time>
               </span>
             
           
@@ -411,7 +411,7 @@
 <li>被一个可达的对象引用。</li>
 </ul>
 <p>这个算法的<strong>基本思路</strong>就是通过一系列的成为“GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链（Reference Chain），当一个对象到GC Roots没有任何引用链相连（即从GC Roots到这个对象不可达），则证明此对象是不可用的。</p>
-<p><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110153500.png" alt="可达性分析算法.jpeg"></p>
+<p><img src="http://cdn.yuanrengu.com/img/20200110153500.png" alt="可达性分析算法.jpeg"></p>
 <p><strong>GC Roots又是什么呢？可以暂时理解为由堆外指向堆内的引用。</strong></p>
 <p>在Java语言中，可以作为<strong>GC Roots的对象</strong>包括下面几种：</p>
 <ul>
@@ -437,7 +437,7 @@
 <li><strong>内存碎片</strong>。由于Java虚拟机的堆中对象必须是连续分布的，因此可能出现总空闲内存足够，但是无法分配的极端情况。无法找到足够的连续内存，而不得不提前触发一次垃圾收集动作。</li>
 <li><strong>分配效率较低</strong>。如果是一块连续的内存空间，那么我们可以通过指针加法（pointer bumping）来做分配。而对于空闲列表，Java虚拟机则需要逐个访问列表中的项，来查询能够放入新建对象的空闲内存。</li>
 </ol>
-<p>标记-清除算法的示意图如下：<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110153553.png" alt="标记清除算法.png"></p>
+<p>标记-清除算法的示意图如下：<br><img src="http://cdn.yuanrengu.com/img/20200110153553.png" alt="标记清除算法.png"></p>
 <h3 id="2-2-复制算法"><a href="#2-2-复制算法" class="headerlink" title="2.2 复制算法"></a>2.2 复制算法</h3><p>复制算法的过程如下：</p>
 <ul>
 <li>划分区域：将内存区域按比例划分为1个Eden区作为分配对象的“主战场”和2个幸存区（即Survivor空间，划分为2个等比例的from区和to区）。</li>
@@ -455,7 +455,7 @@
 <p>该算法的标记过程与标记-清除算法一样，但后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存。</p>
 <p>解决了内存碎片的问题，也规避了复制算法只能利用一半内存区域的弊端。看起来很美好，但它对内存变动更频繁，需要整理所有存活对象的引用地址，在效率上比复制算法要差很多。</p>
 <p>标记-整理算法的示意图如下：<br><img src="https://image-static.segmentfault.com/210/838/2108386277-5d633d9c0be08_articlex" alt="标记-整理算法.png"></p>
-<h3 id="2-4-分代收集算法"><a href="#2-4-分代收集算法" class="headerlink" title="2.4 分代收集算法"></a>2.4 分代收集算法</h3><p>分代收集算法倒并没有什么新的思想，只是根据对象存活周期的不同将内存划分为几块。一般是把Java堆分为新生代和老年代，这样就可以根据各个年代的特点采用最适当的收集算法。<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110153711.png" alt="JVM堆分代.png"></p>
+<h3 id="2-4-分代收集算法"><a href="#2-4-分代收集算法" class="headerlink" title="2.4 分代收集算法"></a>2.4 分代收集算法</h3><p>分代收集算法倒并没有什么新的思想，只是根据对象存活周期的不同将内存划分为几块。一般是把Java堆分为新生代和老年代，这样就可以根据各个年代的特点采用最适当的收集算法。<br><img src="http://cdn.yuanrengu.com/img/20200110153711.png" alt="JVM堆分代.png"></p>
 <p>在<strong>新生代</strong>中，每次垃圾收集时都发现有大批对象死去，只有少量存活，那就选用<strong>复制算法</strong>，只需要付出少量存活对象的复制成本就可以完成收集。而<strong>老年代</strong>中因为对象存活率高、没有额外空间对它进行分配担保，就必须使用<strong>标记-清理算法或标记-整理算法</strong>来进行回收。</p>
 <h2 id="3-HotSpot算法实现"><a href="#3-HotSpot算法实现" class="headerlink" title="3 HotSpot算法实现"></a>3 HotSpot算法实现</h2><h3 id="3-1-枚举根节点"><a href="#3-1-枚举根节点" class="headerlink" title="3.1 枚举根节点"></a>3.1 枚举根节点</h3><p>以可达性分析中从GC Roots节点找引用链这个操作为例，可作为GC Roots的节点主要在全局性的引用（例如常量或类静态属性）与执行上下文（例如栈帧中的本地变量表）中。上面介绍可达性分析算法时有详细介绍GC Roots，可以参看上面。</p>
 <h3 id="3-2-安全点（Safepoint）"><a href="#3-2-安全点（Safepoint）" class="headerlink" title="3.2 安全点（Safepoint）"></a>3.2 安全点（Safepoint）</h3><p><strong>安全点，即程序执行时并非在所有地方都能停顿下来开始GC，只有在到达安全点时才能暂停</strong>。Safepoint的选定既不能太少以至于让GC等待时间太长，也不能过于频繁以致于过分增大运行时的负荷。</p>
@@ -574,7 +574,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 15:38:17</p>
-  <p><span>最后更新:</span>2020年02月02日 - 19:23:57</p>
+  <p><span>最后更新:</span>2020年02月11日 - 21:59:24</p>
   <p><span>原始链接:</span><a href="/2020/a959fab8.html" title="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">https://yuanrengu.com/2020/a959fab8.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/a959fab8.html"  aria-label="复制成功！"></i></span>
   </p>

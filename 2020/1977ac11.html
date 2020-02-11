@@ -71,12 +71,12 @@
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="周末有小伙伴留言说上周面试时被问到内存分配策略的问题，但回答的不够理想，小伙伴说之前公号里看过这一块的文章的，当时看时很清楚，也知道各个策略是干嘛的，但面试时脑子里清楚，心里很明白，但嘴里就是说不清楚，说出来的就是像云像雾又像风，最后面试官说他应该是不清楚这一块的内容 这里给小伙伴要再次说明下，任何知识点，先抓主干，再摸细节。对于面试来说，能把各个主干捋清楚，只要面试官要求不是太高，都是能过关的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110160547.png">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.349Z">
+<meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110160547.png">
+<meta property="og:updated_time" content="2020-02-11T13:51:23.180Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
 <meta name="twitter:description" content="周末有小伙伴留言说上周面试时被问到内存分配策略的问题，但回答的不够理想，小伙伴说之前公号里看过这一块的文章的，当时看时很清楚，也知道各个策略是干嘛的，但面试时脑子里清楚，心里很明白，但嘴里就是说不清楚，说出来的就是像云像雾又像风，最后面试官说他应该是不清楚这一块的内容 这里给小伙伴要再次说明下，任何知识点，先抓主干，再摸细节。对于面试来说，能把各个主干捋清楚，只要面试官要求不是太高，都是能过关的。">
-<meta name="twitter:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200110160547.png">
+<meta name="twitter:image" content="http://cdn.yuanrengu.com/img/20200110160547.png">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
   <link rel="canonical" href="https://yuanrengu.com/2020/1977ac11">
 
@@ -314,7 +314,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-13 14:42:16" itemprop="dateModified" datetime="2020-01-13T14:42:16+08:00">2020-01-13</time>
+                <time title="修改时间：2020-02-11 21:51:23" itemprop="dateModified" datetime="2020-02-11T21:51:23+08:00">2020-02-11</time>
               </span>
             
           
@@ -396,7 +396,7 @@
 <p>大家可以关注这个参数<strong>TargetSurvivorRatio</strong>，目标存活率，默认为50%。大致意思就是说年龄从小到大累加，如加入某个年龄段（如栗子中的年龄6）后，总占用超过Survivor空间TargetSurvivorRatio的时候，从该年龄段开始及大于的年龄对象就要进入老年代（即栗子中的年龄6,7对象）。动态对象年龄判断，主要是被TargetSurvivorRatio这个参数来控制。而且算的是年龄从小到大的累加和，而不是某个年龄段对象的大小。</p>
 <h3 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h3><p>在发生Minor GC之前，虚拟机会先检查老年代最大可用的连续空间是否大于新生代所有对象总空间，如果这个条件成立，那么Minor GC可以确保是安全的。如果不成立，则虚拟机会查看HandlePromotionFailure设置值是否允许担保失败。如果允许，那么会继续检查老年代最大可用的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于，将尝试着进行一次Minor GC，尽管这次Minor GC是有风险的；如果小于，或者HandlePromotionFailure设置不允许冒险，那这时也要改为进行一次Full GC 。</p>
 <p>上面说的风险是什么呢？我们知道，新生代使用复制收集算法，但为了内存利用率，只使用其中一个Survivor空间来作为轮换备份，因此当出现大量对象在Minor GC后仍然存活的情况（最极端的情况就是内存回收后新生代中所有对象都存活），就需要老年代进行分配担保，把Survivor无法容纳的对象直接进入老年代。</p>
-<p>总结脑图：<br><img src="http://q3uf07rrb.bkt.clouddn.com/img/20200110160547.png" alt></p>
+<p>总结脑图：<br><img src="http://cdn.yuanrengu.com/img/20200110160547.png" alt></p>
 
     </div>
       
@@ -453,7 +453,7 @@
   <p><span>本文标题:</span>【面试必备】小伙伴栽在了JVM的内存分配策略。。。</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 16:00:09</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>最后更新:</span>2020年02月11日 - 21:51:23</p>
   <p><span>原始链接:</span><a href="/2020/1977ac11.html" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">https://yuanrengu.com/2020/1977ac11.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/1977ac11.html"  aria-label="复制成功！"></i></span>
   </p>
