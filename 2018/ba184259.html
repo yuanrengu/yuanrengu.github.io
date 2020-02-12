@@ -67,18 +67,18 @@
 <meta name="keywords" content="HashMap">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap在Jdk1.7和1.8中的实现">
-<meta property="og:url" content="https://yuanrengu.com/2020/ba184259.html">
+<meta property="og:url" content="https://yuanrengu.com/2018/ba184259.html">
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200114094745.png">
-<meta property="og:updated_time" content="2020-01-15T14:51:14.738Z">
+<meta property="og:updated_time" content="2020-02-12T18:11:24.700Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap在Jdk1.7和1.8中的实现">
 <meta name="twitter:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
 <meta name="twitter:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200114094745.png">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
-  <link rel="canonical" href="https://yuanrengu.com/2020/ba184259">
+  <link rel="canonical" href="https://yuanrengu.com/2018/ba184259">
 
 
 <script id="page.configurations">
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/ba184259.html">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2018/ba184259.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -301,7 +301,7 @@
                 
               
 
-              <time title="创建时间：2020-01-09 10:17:00" itemprop="dateCreated datePublished" datetime="2020-01-09T10:17:00+08:00">2020-01-09</time>
+              <time title="创建时间：2018-11-05 10:17:00" itemprop="dateCreated datePublished" datetime="2018-11-05T10:17:00+08:00">2018-11-05</time>
             </span>
           
             
@@ -314,7 +314,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-15 22:51:14" itemprop="dateModified" datetime="2020-01-15T22:51:14+08:00">2020-01-15</time>
+                <time title="修改时间：2020-02-13 02:11:24" itemprop="dateModified" datetime="2020-02-13T02:11:24+08:00">2020-02-13</time>
               </span>
             
           
@@ -460,7 +460,7 @@
 <p>用哈希碰撞发起拒绝服务攻击(DOS，Denial-Of-Service attack),常见的场景是攻击者可以事先构造大量相同哈希值的数据，然后以JSON数据的形式发送给服务器，服务器端在将其构建成为Java对象过程中，通常以Hashtable或HashMap等形式存储，哈希碰撞将导致哈希表发生严重退化，算法复杂度可能上升一个数据级，进而耗费大量CPU资源。</p>
 </blockquote>
 <h1 id="四、分析Hashtable、HashMap、TreeMap的区别"><a href="#四、分析Hashtable、HashMap、TreeMap的区别" class="headerlink" title="四、分析Hashtable、HashMap、TreeMap的区别"></a>四、分析Hashtable、HashMap、TreeMap的区别</h1><ul>
-<li><code>HashMap</code>是继承自<code>AbstractMap</code>类，而<code>HashTable</code>是继承自<code>Dictionary</code>类。不过它们都实现了同时实现了map、Cloneable（可复制）、Serializable（可序列化）这三个接口。存储的内容是基于key-value的键值对映射，不能由重复的key，而且一个key只能映射一个value。HashSet底层就是基于HashMap实现的。</li>
+<li><code>HashMap</code>是继承自<code>AbstractMap</code>类，而<code>HashTable</code>是继承自<code>Dictionary</code>类。不过它们都同时实现了map、Cloneable（可复制）、Serializable（可序列化）这三个接口。存储的内容是基于key-value的键值对映射，不能有重复的key，而且一个key只能映射一个value。HashSet底层就是基于HashMap实现的。</li>
 <li>Hashtable的key、value都不能为null；HashMap的key、value可以为null，不过只能有一个key为null，但可以有多个null的value；TreeMap键、值都不能为null。</li>
 <li>Hashtable、HashMap具有<strong>无序</strong>特性。TreeMap是利用<code>红黑树</code>实现的（树中的每个节点的值都会大于或等于它的左子树中的所有节点的值，并且小于或等于它的右子树中的所有节点的值），实现了SortMap接口，能够对保存的记录根据键进行排序。所以一般需求排序的情况下首选TreeMap，<code>默认按键的升序排序</code>（深度优先搜索），也可以自定义实现Comparator接口实现排序方式。</li>
 </ul>
@@ -517,10 +517,10 @@
 
   <p><span>本文标题:</span>HashMap在Jdk1.7和1.8中的实现</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年01月09日 - 10:17:00</p>
-  <p><span>最后更新:</span>2020年01月15日 - 22:51:14</p>
-  <p><span>原始链接:</span><a href="/2020/ba184259.html" title="HashMap在Jdk1.7和1.8中的实现">https://yuanrengu.com/2020/ba184259.html</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/ba184259.html"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2018年11月05日 - 10:17:00</p>
+  <p><span>最后更新:</span>2020年02月13日 - 02:11:24</p>
+  <p><span>原始链接:</span><a href="/2018/ba184259.html" title="HashMap在Jdk1.7和1.8中的实现">https://yuanrengu.com/2018/ba184259.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2018/ba184259.html"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -552,17 +552,13 @@
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/d6aff7a6.html" rel="next" title="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">
-                <i class="fa fa-chevron-left"></i> 【JVM从小白学成大佬】2.Java虚拟机运行时数据区
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/3bf330a5.html" rel="prev" title="【ZooKeeper系列】1.ZooKeeper单机版、伪集群和集群环境搭建">
-                【ZooKeeper系列】1.ZooKeeper单机版、伪集群和集群环境搭建 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/11ea27b.html" rel="prev" title="【JVM从小白学成大佬】1.开篇">
+                【JVM从小白学成大佬】1.开篇 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
