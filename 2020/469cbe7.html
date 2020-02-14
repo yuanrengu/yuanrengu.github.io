@@ -63,18 +63,18 @@
   };
 </script>
 
-  <meta name="description" content="温馨提示：在这里我再次提个小要求，希望大家能习惯看官方文档，文档虽然是英文但用词都比较简单，基本都能看懂文档表达的意思。授之以鱼不如授之以渔的道理相信大家都明白，也希望通过猿人谷的这个ZooKeeper系列，让大家入门、到熟悉，举一反三后能精通ZooKeeper。  在前一篇我们介绍了ZooKeeper单机版、伪集群和集群环境搭建，通过命令行的方式做了节点的创建、删除、更新、获取节点信息的测试。">
+  <meta name="description" content="温馨提示：在这里我再次提个小要求，希望大家能习惯看官方文档，文档虽然是英文但用词都比较简单，基本都能看懂文档表达的意思。授之以鱼不如授之以渔的道理相信大家都明白，也希望通过猿人谷的这个ZooKeeper系列，让大家入门、到熟悉，举一反三后能精通ZooKeeper。  在前一篇我们介绍了ZooKeeper单机版、伪集群和集群环境搭建 ，通过命令行的方式做了节点的创建、删除、更新、获取节点信息的测试">
 <meta name="keywords" content="ZooKeeper,Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【ZooKeeper系列】2.用Java实现ZooKeeper API的调用">
 <meta property="og:url" content="https://yuanrengu.com/2020/469cbe7.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="温馨提示：在这里我再次提个小要求，希望大家能习惯看官方文档，文档虽然是英文但用词都比较简单，基本都能看懂文档表达的意思。授之以鱼不如授之以渔的道理相信大家都明白，也希望通过猿人谷的这个ZooKeeper系列，让大家入门、到熟悉，举一反三后能精通ZooKeeper。  在前一篇我们介绍了ZooKeeper单机版、伪集群和集群环境搭建，通过命令行的方式做了节点的创建、删除、更新、获取节点信息的测试。">
+<meta property="og:description" content="温馨提示：在这里我再次提个小要求，希望大家能习惯看官方文档，文档虽然是英文但用词都比较简单，基本都能看懂文档表达的意思。授之以鱼不如授之以渔的道理相信大家都明白，也希望通过猿人谷的这个ZooKeeper系列，让大家入门、到熟悉，举一反三后能精通ZooKeeper。  在前一篇我们介绍了ZooKeeper单机版、伪集群和集群环境搭建 ，通过命令行的方式做了节点的创建、删除、更新、获取节点信息的测试">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-09T15:11:20.616Z">
+<meta property="og:updated_time" content="2020-02-14T12:27:14.530Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【ZooKeeper系列】2.用Java实现ZooKeeper API的调用">
-<meta name="twitter:description" content="温馨提示：在这里我再次提个小要求，希望大家能习惯看官方文档，文档虽然是英文但用词都比较简单，基本都能看懂文档表达的意思。授之以鱼不如授之以渔的道理相信大家都明白，也希望通过猿人谷的这个ZooKeeper系列，让大家入门、到熟悉，举一反三后能精通ZooKeeper。  在前一篇我们介绍了ZooKeeper单机版、伪集群和集群环境搭建，通过命令行的方式做了节点的创建、删除、更新、获取节点信息的测试。">
+<meta name="twitter:description" content="温馨提示：在这里我再次提个小要求，希望大家能习惯看官方文档，文档虽然是英文但用词都比较简单，基本都能看懂文档表达的意思。授之以鱼不如授之以渔的道理相信大家都明白，也希望通过猿人谷的这个ZooKeeper系列，让大家入门、到熟悉，举一反三后能精通ZooKeeper。  在前一篇我们介绍了ZooKeeper单机版、伪集群和集群环境搭建 ，通过命令行的方式做了节点的创建、删除、更新、获取节点信息的测试">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
   <link rel="canonical" href="https://yuanrengu.com/2020/469cbe7">
 
@@ -312,7 +312,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-09 23:11:20" itemprop="dateModified" datetime="2020-02-09T23:11:20+08:00">2020-02-09</time>
+                <time title="修改时间：2020-02-14 20:27:14" itemprop="dateModified" datetime="2020-02-14T20:27:14+08:00">2020-02-14</time>
               </span>
             
           
@@ -375,8 +375,8 @@
         <blockquote>
 <p><code>温馨提示</code>：在这里我再次提个小要求，希望大家能习惯看<strong>官方文档</strong>，文档虽然是英文但用词都比较简单，基本都能看懂文档表达的意思。<strong>授之以鱼不如授之以渔</strong>的道理相信大家都明白，也希望通过猿人谷的这个ZooKeeper系列，让大家入门、到熟悉，举一反三后能精通ZooKeeper。</p>
 </blockquote>
-<p>在前一篇我们介绍了<a href="https://blog.csdn.net/hyg0811/article/details/103403658" target="_blank" rel="noopener">ZooKeeper单机版、伪集群和集群环境搭建</a>，通过命令行的方式做了节点的创建、删除、更新、获取节点信息的测试。Zookeeper 的目的是为客户端构建复杂的协调功能提供简单、高效的核心 API，这一篇我们用Java通过ZooKeeper提供的API接口来实现这些增删改查的功能。</p>
-<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h2><p><code>org.apache.zookeeper.Zookeeper</code>是ZooKeeper客户端的主类，在<a href="http://zookeeper.apache.org/doc/r3.5.5/api/index.html" target="_blank" rel="noopener">官方文档</a>（<strong>该系列文章以v3.5.5为主</strong>，v3.6.6的API Docs还没有）中已明确说明（This is the main class of ZooKeeper client library.）。</p>
+<p>在前一篇我们介绍了<a href="https://yuanrengu.com/2020/3bf330a5.html">ZooKeeper单机版、伪集群和集群环境搭建</a> ，通过命令行的方式做了节点的创建、删除、更新、获取节点信息的测试。Zookeeper 的目的是为客户端构建复杂的协调功能提供简单、高效的核心 API，这一篇我们用Java通过ZooKeeper提供的API接口来实现这些增删改查的功能。</p>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h2><p><code>org.apache.zookeeper.Zookeeper</code>是ZooKeeper客户端的主类，在<a href="http://zookeeper.apache.org/doc/r3.5.5/api/index.html" target="_blank" rel="noopener">官方文档</a> （<strong>该系列文章以v3.5.5为主</strong>，v3.6.6的API Docs还没有）中已明确说明（This is the main class of ZooKeeper client library.）。</p>
 <blockquote>
 <p>This is the main class of ZooKeeper client library. To use a ZooKeeper service, an application must first instantiate an object of ZooKeeper class. All the iterations will be done by calling the methods of ZooKeeper class. The methods of this class are thread-safe unless otherwise noted.<br>Once a connection to a server is established, a session ID is assigned to the client. The client will send heart beats to the server periodically to keep the session valid.</p>
 </blockquote>
@@ -506,7 +506,27 @@
 <p>有一点需要特别说明下，文档说客户端和服务端建立会话是<code>异步</code>的。构造方法会在处理完客户端初始化工作后立即返回，在通常情况下，此时并没有真正建立好一个可用的会话，此时在会话的生命周期中处于“CONNECTING”的状态。当该会话真正创建完毕后，ZooKeeper服务端会向会话对应的客户端发送一个事件通知，以告知客户端，客户端只有在获取这个通知后，才算真正建立了会话。</p>
 <p>实例化的ZooKeeper客户端对象将从connectString列举的服务器中<code>随机</code>选择一个服务器，并尝试连接到该服务器。如果建立连接失败，将尝试连接另一个服务器（<code>顺序是不确定的</code>，因为列举的服务器是随机洗牌的），直到建立连接。即客户端连接一个服务器失败，将继续尝试，直到会话显式关闭。</p>
 <p>从<code>3.2.0版本</code>开始添加了可选的”chroot”后缀，意思就是可将“chroot”加在connectString中列举的服务器后面，即客户端连上ZooKeeper服务器后，所有对ZooKeeper的操作都会基于这个<code>根目录</code>。</p>
-<p>对参数做下简要说明：<br>| 参数 | 描述 |<br>|–|–|<br>| connectString | 指定ZooKeeper服务器列表，有英文逗号分隔的host：port字符串组成，如”127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002”。可以指定客户端连上connectString中服务器后的根目录，如 “127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002/app/a” ，<code>对ZooKeeper的操作都会基于/app/a这个根目录，即创建路径为&quot;/foo/bar&quot;的节点，实际该节点的路径为&quot;/app/a/foo/bar&quot;</code> 。|<br>|sessionTimeout|会话的超时事件，以“毫秒”为单位的整型值。在一个会话周期内，ZooKeeper客户端和服务器之间会通过心跳检测机制来维持会话的有效性，一旦在sessionTimeout时间内没有进行有效的心跳检测，会话就会失效。|<br>|watcher|ZooKeeper允许客户端在构造方法中传入一个接口Watcher（org.apache.zookeeper.Watcher）的实现类对象来作为默认的Watch事件通知器。<strong>该参数也可以设置为<code>null</code>，表明不需要设置默认的Watch处理器。</strong>|</p>
+<p>对参数做下简要说明：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>connectString</td>
+<td>指定ZooKeeper服务器列表，有英文逗号分隔的host：port字符串组成，如”127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002”。可以指定客户端连上connectString中服务器后的根目录，如 “127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002/app/a” ，对ZooKeeper的操作都会基于/app/a这个根目录，即创建路径为”/foo/bar”的节点，实际该节点的路径为”/app/a/foo/bar” 。</td>
+</tr>
+<tr>
+<td>sessionTimeout</td>
+<td>会话的超时事件，以“毫秒”为单位的整型值。在一个会话周期内，ZooKeeper客户端和服务器之间会通过心跳检测机制来维持会话的有效性，一旦在sessionTimeout时间内没有进行有效的心跳检测，会话就会失效。</td>
+</tr>
+<tr>
+<td>watcher</td>
+<td>ZooKeeper允许客户端在构造方法中传入一个接口Watcher（org.apache.zookeeper.Watcher）的实现类对象来作为默认的Watch事件通知器。该参数也可以设置为null，表明不需要设置默认的Watch处理器。</td>
+</tr>
+</tbody></table>
 <h4 id="3-1-2-ZooKeeper-String-connectString-int-sessionTimeout-Watcher-watcher-boolean-canBeReadOnly"><a href="#3-1-2-ZooKeeper-String-connectString-int-sessionTimeout-Watcher-watcher-boolean-canBeReadOnly" class="headerlink" title="3.1.2 ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, boolean canBeReadOnly)"></a>3.1.2 ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, boolean canBeReadOnly)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ZooKeeper</span><span class="params">(String connectString,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">int</span> sessionTimeout,</span></span></span><br><span class="line"><span class="function"><span class="params">                 Watcher watcher,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">boolean</span> canBeReadOnly)</span></span></span><br><span class="line"><span class="function">          <span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function">          </span></span><br><span class="line"><span class="function">To create a ZooKeeper client object, the application needs to pass a connection string containing a comma separated list of host:port pairs, each corresponding to a ZooKeeper server.</span></span><br><span class="line"><span class="function">Session establishment is asynchronous. This constructor will initiate connection to the server and return immediately - <span class="title">potentially</span> <span class="params">(usually)</span> before the session is fully established. The watcher argument specifies the watcher that will be notified of any changes in state. This notification can come at any point before or after the constructor call has returned.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">The instantiated ZooKeeper client object will pick an arbitrary server from the connectString and attempt to connect to it. If establishment of the connection fails, another server in the connect string will be <span class="title">tried</span> <span class="params">(the order is non-deterministic, as we random shuffle the list)</span>, until a connection is established. The client will <span class="keyword">continue</span> attempts until the session is explicitly closed.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">Added in 3.2.0: An optional "chroot" suffix may also be appended to the connection string. This will run the client commands <span class="keyword">while</span> interpreting all paths relative to <span class="keyword">this</span> <span class="title">root</span> <span class="params">(similar to the unix chroot command)</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">Parameters:</span></span><br><span class="line"><span class="function">connectString - comma separated host:port pairs, each corresponding to a zk server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002" If the optional chroot suffix is used the example would look like: "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002/app/a" where the client would be rooted at "/app/a" and all paths would be relative to <span class="keyword">this</span> root - ie getting/setting/etc... "/foo/bar" would result in operations being run on "/app/a/foo/bar" <span class="params">(from the server perspective)</span>.</span></span><br><span class="line"><span class="function">sessionTimeout - session timeout in milliseconds</span></span><br><span class="line"><span class="function">watcher - a watcher object which will be notified of state changes, may also be notified <span class="keyword">for</span> node events</span></span><br><span class="line"><span class="function">canBeReadOnly - <span class="params">(added in <span class="number">3.4</span>)</span> whether the created client is allowed to go to read-only mode in <span class="keyword">case</span> of partitioning. Read-only mode basically means that <span class="keyword">if</span> the client can't find any majority servers but there's partitioned server it could reach, it connects to one in read-only mode, i.e. read requests are allowed <span class="keyword">while</span> write requests are not. It continues seeking <span class="keyword">for</span> majority in the background.</span></span><br><span class="line"><span class="function">Throws:</span></span><br><span class="line"><span class="function">IOException - in cases of network failure</span></span><br><span class="line"><span class="function">IllegalArgumentException - <span class="keyword">if</span> an invalid chroot path is specified</span></span><br></pre></td></tr></table></figure>
 
 <p>这个构造方法跟上个方法非常相似，只是从<code>3.4版本</code>开始多了一个<code>canBeReadOnly</code>参数，用于标识当前会话是否支持“read-only”模式（<code>只读模式</code>）。默认情况下，在ZooKeeper集群中，一个节点如果和集群中过半及以上节点失去网络连接（建立不了连接），那么这个机器将不再处理客户端请求（包括读写请求）。但是在某些使用场景下，当ZooKeeper服务器发生此类故障的时候，还是希望ZooKeeper服务器能够提供读服务（写服务肯定无法提供），这就是ZooKeeper的<code>“read-only”模式</code>。但客户端可以连接某一分区的服务器，它将以<strong>只读模式</strong>连接到其中一个服务器，允许读取请求，而不允许写入请求，然后继续在后台寻找更多数的服务器(<strong>这一句我描述的不够简练精准</strong>)。</p>
@@ -664,7 +684,7 @@
   <p><span>本文标题:</span>【ZooKeeper系列】2.用Java实现ZooKeeper API的调用</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月09日 - 16:27:32</p>
-  <p><span>最后更新:</span>2020年02月09日 - 23:11:20</p>
+  <p><span>最后更新:</span>2020年02月14日 - 20:27:14</p>
   <p><span>原始链接:</span><a href="/2020/469cbe7.html" title="【ZooKeeper系列】2.用Java实现ZooKeeper API的调用">https://yuanrengu.com/2020/469cbe7.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/469cbe7.html"  aria-label="复制成功！"></i></span>
   </p>
