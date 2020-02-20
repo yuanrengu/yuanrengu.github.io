@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yuanrengu.com/about/index.html</loc>
+    
+    <lastmod>2020-02-20T01:08:10.567Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yuanrengu.com/links/index.html</loc>
     
-    <lastmod>2020-02-18T09:19:31.717Z</lastmod>
+    <lastmod>2020-02-20T01:07:19.720Z</lastmod>
     
   </url>
   
@@ -166,13 +173,6 @@
     <loc>https://yuanrengu.com/2020/6bbb74ca.html</loc>
     
     <lastmod>2020-01-13T06:42:16.347Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yuanrengu.com/about/index.html</loc>
-    
-    <lastmod>2020-01-10T16:09:29.036Z</lastmod>
     
   </url>
   
