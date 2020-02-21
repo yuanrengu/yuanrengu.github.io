@@ -72,7 +72,7 @@
 <meta property="og:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://q3uf07rrb.bkt.clouddn.com/img/20200114094745.png">
-<meta property="og:updated_time" content="2020-02-20T02:45:30.259Z">
+<meta property="og:updated_time" content="2020-02-21T04:01:45.098Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap在Jdk1.7和1.8中的实现">
 <meta name="twitter:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
@@ -314,7 +314,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-20 10:45:30" itemprop="dateModified" datetime="2020-02-20T10:45:30+08:00">2020-02-20</time>
+                <time title="修改时间：2020-02-21 12:01:45" itemprop="dateModified" datetime="2020-02-21T12:01:45+08:00">2020-02-21</time>
               </span>
             
           
@@ -408,7 +408,7 @@
 <p>前面说过HashMap的key是允许为null的，当出现这种情况时，会放到table[0]中。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> V <span class="title">putForNullKey</span><span class="params">(V value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Entry&lt;K,V&gt; e = table[<span class="number">0</span>]; e != <span class="keyword">null</span>; e = e.next) &#123;</span><br><span class="line">        <span class="keyword">if</span> (e.key == <span class="keyword">null</span>) &#123;</span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            e.value = value;</span><br><span class="line">            e.recordAccess(<span class="keyword">this</span>);</span><br><span class="line">            <span class="keyword">return</span> oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    modCount++;</span><br><span class="line">    addEntry(<span class="number">0</span>, <span class="keyword">null</span>, value, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>当size&gt;=threshold（ threshold等于“容量<em>负载因子”）时，会发生*</em>扩容**。</p>
+<p>当size&gt;=threshold（ threshold等于“容量<em>负载因子”）时，会发生 *</em>扩容**。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addEntry</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">int</span> bucketIndex)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ((size &gt;= threshold) &amp;&amp; (<span class="keyword">null</span> != table[bucketIndex])) &#123;</span><br><span class="line">        resize(<span class="number">2</span> * table.length);</span><br><span class="line">        hash = (<span class="keyword">null</span> != key) ? hash(key) : <span class="number">0</span>;</span><br><span class="line">        bucketIndex = indexFor(hash, table.length);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    createEntry(hash, key, value, bucketIndex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>jdk1.7中resize，只有当 size&gt;=threshold并且 table中的那个槽中已经有Entry时，才会发生resize</code>。即有可能虽然size&gt;=threshold，但是必须等到相应的槽至少有一个Entry时，才会扩容,可以通过上面的代码看到每次resize都会扩大一倍容量（2 * table.length）。</p>
@@ -542,7 +542,7 @@
   <p><span>本文标题:</span>HashMap在Jdk1.7和1.8中的实现</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月05日 - 10:17:00</p>
-  <p><span>最后更新:</span>2020年02月20日 - 10:45:30</p>
+  <p><span>最后更新:</span>2020年02月21日 - 12:01:45</p>
   <p><span>原始链接:</span><a href="/2020/ba184259.html" title="HashMap在Jdk1.7和1.8中的实现">https://yuanrengu.com/2020/ba184259.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/ba184259.html"  aria-label="复制成功！"></i></span>
   </p>
