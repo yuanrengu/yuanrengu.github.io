@@ -64,14 +64,14 @@
 </script>
 
   <meta name="description" content="一.索引的作用一般的应用系统，读写比例在10:1左右，而且插入操作和一般的更新操作很少出现性能问题，遇到最多的，也是最容易出问题的，还是一些复杂的查询操作，所以查询语句的优化显然是重中之重。 在数据量和访问量不大的情况下，mysql访问是非常快的，是否加索引对访问影响不大。但是当数据量和访问量剧增的时候，就会发现mysql变慢，甚至down掉，这就必须要考虑优化sql了，给数据库建立正确合理的索引">
-<meta name="keywords" content="索引">
+<meta name="keywords" content="Mysql,索引">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入浅出Mysql索引的那些事儿">
 <meta property="og:url" content="https://yuanrengu.com/2020/fb519654.html">
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="一.索引的作用一般的应用系统，读写比例在10:1左右，而且插入操作和一般的更新操作很少出现性能问题，遇到最多的，也是最容易出问题的，还是一些复杂的查询操作，所以查询语句的优化显然是重中之重。 在数据量和访问量不大的情况下，mysql访问是非常快的，是否加索引对访问影响不大。但是当数据量和访问量剧增的时候，就会发现mysql变慢，甚至down掉，这就必须要考虑优化sql了，给数据库建立正确合理的索引">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-26T06:41:52.791Z">
+<meta property="og:updated_time" content="2020-02-26T06:56:43.464Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出Mysql索引的那些事儿">
 <meta name="twitter:description" content="一.索引的作用一般的应用系统，读写比例在10:1左右，而且插入操作和一般的更新操作很少出现性能问题，遇到最多的，也是最容易出问题的，还是一些复杂的查询操作，所以查询语句的优化显然是重中之重。 在数据量和访问量不大的情况下，mysql访问是非常快的，是否加索引对访问影响不大。但是当数据量和访问量剧增的时候，就会发现mysql变慢，甚至down掉，这就必须要考虑优化sql了，给数据库建立正确合理的索引">
@@ -299,7 +299,7 @@
                 
               
 
-              <time title="创建时间：2020-02-26 14:40:18 / 修改时间：14:41:52" itemprop="dateCreated datePublished" datetime="2020-02-26T14:40:18+08:00">2020-02-26</time>
+              <time title="创建时间：2020-02-26 14:40:18 / 修改时间：14:56:43" itemprop="dateCreated datePublished" datetime="2020-02-26T14:40:18+08:00">2020-02-26</time>
             </span>
           
             
@@ -503,6 +503,23 @@
 
     </div>
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/e867cb8.html" rel="bookmark">Mysql中Left Join、Right Join、Inner Join的区别</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/c00d182e.html" rel="bookmark">性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）</a></div>
+      
+    </li>
+  
+  </ul>
 
 
 
@@ -539,7 +556,7 @@
   <p><span>本文标题:</span>深入浅出Mysql索引的那些事儿</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年02月26日 - 14:40:18</p>
-  <p><span>最后更新:</span>2020年02月26日 - 14:41:52</p>
+  <p><span>最后更新:</span>2020年02月26日 - 14:56:43</p>
   <p><span>原始链接:</span><a href="/2020/fb519654.html" title="深入浅出Mysql索引的那些事儿">https://yuanrengu.com/2020/fb519654.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/fb519654.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -568,6 +585,8 @@
           
         
         <div class="post-tags">
+            <a href="/tags/Mysql/" rel="tag"><i class="fa fa-tag"></i> Mysql</a>
+          
             <a href="/tags/索引/" rel="tag"><i class="fa fa-tag"></i> 索引</a>
           
         </div>
@@ -640,7 +659,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -762,7 +781,11 @@
         
           
         
-        <span class="site-state-item-count">37</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -828,7 +851,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">76.4k</span> 字
+      博客全站共： <span class="post-count">78.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

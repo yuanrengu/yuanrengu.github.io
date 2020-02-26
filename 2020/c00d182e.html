@@ -71,7 +71,7 @@
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="说明：此篇文章的内容绝大部分来源于《极客时间》专栏。  以下讨论是基于InnoDB引擎。 至于分析性能差别的时候，可以记住以下几个原则：  server层要什么就给什么 InnoDB只给必要的值 现在的优化器只优化了count(*)的语义为“取行数”，其它“显而易见”的优化并没有做。接下来，我们一个个来进行分析。  对于count(主键id)来说，InnoDB引擎会遍历整张表，把每一行的id值都">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-26T06:45:34.790Z">
+<meta property="og:updated_time" content="2020-02-26T06:45:54.137Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）">
 <meta name="twitter:description" content="说明：此篇文章的内容绝大部分来源于《极客时间》专栏。  以下讨论是基于InnoDB引擎。 至于分析性能差别的时候，可以记住以下几个原则：  server层要什么就给什么 InnoDB只给必要的值 现在的优化器只优化了count(*)的语义为“取行数”，其它“显而易见”的优化并没有做。接下来，我们一个个来进行分析。  对于count(主键id)来说，InnoDB引擎会遍历整张表，把每一行的id值都">
@@ -299,7 +299,7 @@
                 
               
 
-              <time title="创建时间：2020-02-26 14:44:30 / 修改时间：14:45:34" itemprop="dateCreated datePublished" datetime="2020-02-26T14:44:30+08:00">2020-02-26</time>
+              <time title="创建时间：2020-02-26 14:44:30 / 修改时间：14:45:54" itemprop="dateCreated datePublished" datetime="2020-02-26T14:44:30+08:00">2020-02-26</time>
             </span>
           
             
@@ -396,6 +396,13 @@
       
     </li>
   
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/fb519654.html" rel="bookmark">深入浅出Mysql索引的那些事儿</a></div>
+      
+    </li>
+  
   </ul>
 
 
@@ -433,7 +440,7 @@
   <p><span>本文标题:</span>性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年02月26日 - 14:44:30</p>
-  <p><span>最后更新:</span>2020年02月26日 - 14:45:34</p>
+  <p><span>最后更新:</span>2020年02月26日 - 14:45:54</p>
   <p><span>原始链接:</span><a href="/2020/c00d182e.html" title="性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）">https://yuanrengu.com/2020/c00d182e.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/c00d182e.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -476,6 +483,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+              <a href="/2020/4a91d705.html" rel="prev" title="内存泄漏与内存溢出">
+                内存泄漏与内存溢出 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
     </footer>
@@ -521,7 +532,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -643,7 +654,11 @@
         
           
         
-        <span class="site-state-item-count">37</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -692,7 +707,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">76.4k</span> 字
+      博客全站共： <span class="post-count">78.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
