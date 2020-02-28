@@ -72,7 +72,7 @@
 <meta property="og:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200114094745.png">
-<meta property="og:updated_time" content="2020-02-28T09:48:04.114Z">
+<meta property="og:updated_time" content="2020-02-28T11:23:22.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap在Jdk1.7和1.8中的实现">
 <meta name="twitter:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
@@ -314,7 +314,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-28 17:48:04" itemprop="dateModified" datetime="2020-02-28T17:48:04+08:00">2020-02-28</time>
+                <time title="修改时间：2020-02-28 19:23:22" itemprop="dateModified" datetime="2020-02-28T19:23:22+08:00">2020-02-28</time>
               </span>
             
           
@@ -411,8 +411,9 @@
 <p>“负载极限”的默认值（0.75）是时间和空间成本上的一种折中：</p>
 <ul>
 <li><code>较高</code>的“负载极限”可以降低hash表所占用的内存空间，但会增加查询数据的时间开销，而查询是最频繁的操作（HashMap的get()与put()方法都要用到查询）</li>
-<li><code>较低</code>的“负载极限”会提高查询数据的性能，但会增加hash表所占用的内存开销<br>程序猿可以根据实际情况来调整“负载极限”值。</li>
+<li><code>较低</code>的“负载极限”会提高查询数据的性能，但会增加hash表所占用的内存开销</li>
 </ul>
+<p>程序猿可以根据实际情况来调整“负载极限”值。</p>
 <p>当向 HashMap 中 <code>put</code>一对键值时，它会根据 key的 hashCode 值计算出一个位置， 该位置就是此对象准备往数组中存放的位置。 该计算过程参看如下代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">transient</span> <span class="keyword">int</span> hashSeed = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object k)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">int</span> h = hashSeed;</span><br><span class="line">     <span class="keyword">if</span> (<span class="number">0</span> != h &amp;&amp; k <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">         <span class="keyword">return</span> sun.misc.Hashing.stringHash32((String) k);</span><br><span class="line">     &#125;</span><br><span class="line"> </span><br><span class="line">     h ^= k.hashCode();</span><br><span class="line"> </span><br><span class="line">     <span class="comment">// This function ensures that hashCodes that differ only by</span></span><br><span class="line">     <span class="comment">// constant multiples at each bit position have a bounded</span></span><br><span class="line">     <span class="comment">// number of collisions (approximately 8 at default load factor).</span></span><br><span class="line">     h ^= (h &gt;&gt;&gt; <span class="number">20</span>) ^ (h &gt;&gt;&gt; <span class="number">12</span>);</span><br><span class="line">     <span class="keyword">return</span> h ^ (h &gt;&gt;&gt; <span class="number">7</span>) ^ (h &gt;&gt;&gt; <span class="number">4</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Returns index for hash code h.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">indexFor</span><span class="params">(<span class="keyword">int</span> h, <span class="keyword">int</span> length)</span> </span>&#123;</span><br><span class="line">     <span class="comment">// assert Integer.bitCount(length) == 1 : "length must be a non-zero power of 2";</span></span><br><span class="line">     <span class="keyword">return</span> h &amp; (length-<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
@@ -563,7 +564,7 @@
   <p><span>本文标题:</span>HashMap在Jdk1.7和1.8中的实现</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月05日 - 10:17:00</p>
-  <p><span>最后更新:</span>2020年02月28日 - 17:48:04</p>
+  <p><span>最后更新:</span>2020年02月28日 - 19:23:22</p>
   <p><span>原始链接:</span><a href="/2020/ba184259.html" title="HashMap在Jdk1.7和1.8中的实现">https://yuanrengu.com/2020/ba184259.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/ba184259.html"  aria-label="复制成功！"></i></span>
   </p>
