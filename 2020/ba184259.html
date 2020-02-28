@@ -72,7 +72,7 @@
 <meta property="og:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200114094745.png">
-<meta property="og:updated_time" content="2020-02-28T07:22:42.447Z">
+<meta property="og:updated_time" content="2020-02-28T09:48:04.114Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap在Jdk1.7和1.8中的实现">
 <meta name="twitter:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
@@ -314,7 +314,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-28 15:22:42" itemprop="dateModified" datetime="2020-02-28T15:22:42+08:00">2020-02-28</time>
+                <time title="修改时间：2020-02-28 17:48:04" itemprop="dateModified" datetime="2020-02-28T17:48:04+08:00">2020-02-28</time>
               </span>
             
           
@@ -379,7 +379,7 @@
 <h1 id="一、初窥HashMap"><a href="#一、初窥HashMap" class="headerlink" title="一、初窥HashMap"></a>一、初窥HashMap</h1><p>HashMap是应用更广泛的<code>哈希表</code>实现，而且大部分情况下，都能在常数时间性能的情况下进行put和get操作。要掌握HashMap，主要从如下几点来把握：</p>
 <ul>
 <li>jdk1.7中底层是由<strong>数组（也有叫做“位桶”的）+链表</strong>实现；jdk1.8中底层是由<strong>数组+链表/红黑树</strong>实现</li>
-<li>可以存储null键和null值，线程不安全</li>
+<li>可以存储null键和null值，线程不安全。在HashMap中，null可以作为键，这样的键只有一个，但可以有一个或多个键所对应的值为null。<code>当get()方法返回null值时，即可以表示HashMap中没有该key，也可以表示该key所对应的value为null</code>。因此，在HashMap中不能由get()方法来判断HashMap中是否存在某个key，应该用<code>containsKey()</code>方法来判断。而在Hashtable中，无论是key还是value都不能为null。</li>
 <li>初始size为<strong>16</strong>，扩容：newsize = oldsize*2，<code>size一定为2的n次幂</code></li>
 <li>扩容针对整个Map，每次扩容时，原来数组中的元素依次重新计算存放位置，并重新插入</li>
 <li>插入元素后才判断该不该扩容，有可能无效扩容（插入后如果扩容，如果没有再次插入，就会产生无效扩容）</li>
@@ -563,7 +563,7 @@
   <p><span>本文标题:</span>HashMap在Jdk1.7和1.8中的实现</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月05日 - 10:17:00</p>
-  <p><span>最后更新:</span>2020年02月28日 - 15:22:42</p>
+  <p><span>最后更新:</span>2020年02月28日 - 17:48:04</p>
   <p><span>原始链接:</span><a href="/2020/ba184259.html" title="HashMap在Jdk1.7和1.8中的实现">https://yuanrengu.com/2020/ba184259.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/ba184259.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -854,7 +854,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">79.2k</span> 字
+      博客全站共： <span class="post-count">79.3k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
