@@ -72,7 +72,7 @@
 <meta property="og:description" content="关于强引用、软引用、弱引用、幻象引用的区别，在很多公司的面试题中经常出现，可能有些小伙伴觉得这个知识点比较冷门，其实大家在开发中经常用到，如new一个对象的时候就是强引用的应用。 在java语言中，除了原始数据类型（boolean、byte、short、char、int、float、double、long）的变量，其他所有都是所谓的引用类型，指向各种不同的对象。理解这些引用的区别，对于掌握java">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2019/08/22/wLfYe8QZvqnJzXD.png">
-<meta property="og:updated_time" content="2020-01-27T16:43:18.464Z">
+<meta property="og:updated_time" content="2020-03-04T06:18:00.590Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用">
 <meta name="twitter:description" content="关于强引用、软引用、弱引用、幻象引用的区别，在很多公司的面试题中经常出现，可能有些小伙伴觉得这个知识点比较冷门，其实大家在开发中经常用到，如new一个对象的时候就是强引用的应用。 在java语言中，除了原始数据类型（boolean、byte、short、char、int、float、double、long）的变量，其他所有都是所谓的引用类型，指向各种不同的对象。理解这些引用的区别，对于掌握java">
@@ -314,7 +314,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-01-28 00:43:18" itemprop="dateModified" datetime="2020-01-28T00:43:18+08:00">2020-01-28</time>
+                <time title="修改时间：2020-03-04 14:18:00" itemprop="dateModified" datetime="2020-03-04T14:18:00+08:00">2020-03-04</time>
               </span>
             
           
@@ -397,13 +397,12 @@
 <h2 id="4-幻象引用（phantom-reference）"><a href="#4-幻象引用（phantom-reference）" class="headerlink" title="4.幻象引用（phantom reference）"></a>4.幻象引用（phantom reference）</h2><p><strong>幻象引用，也有被说成是虚引用或幽灵引用</strong>。幻象引用并不会决定对象的生命周期。即如果一个对象仅持有虚引用，就相当于没有任何引用一样，在任何时候都可能被垃圾回收器回收。不能通过它访问对象，幻象引用仅仅是提供了一种确保对象被finalize以后，做某些事情的机制（如做所谓的Post-Mortem清理机制），也有人利用幻象引用监控对象的创建和销毁。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">PhantomReference&lt;Object&gt; pf = <span class="keyword">new</span> PhantomReference&lt;Object&gt;(obj);</span><br><span class="line">obj=<span class="keyword">null</span>;</span><br><span class="line"><span class="comment">//永远返回null</span></span><br><span class="line">pf.get();</span><br><span class="line"><span class="comment">//返回是否从内存中已经删除</span></span><br><span class="line">pf.isEnQueued();</span><br></pre></td></tr></table></figure>
 
-<p>　　</p>
-<p>幻象引用的get方法永远返回null，主要用于检查对象是否已经从内存中删除。</p>
-<h2 id="5-生存还是死亡"><a href="#5-生存还是死亡" class="headerlink" title="5.生存还是死亡"></a>5.生存还是死亡</h2><p>通过上面对四种引用类型的分析，你可能发现有些对象即使不可达，但也并非是“非死不可”的，这个时候它们暂时处于“缓刑”阶段，要真正宣告一个对象死亡，至少要经历<strong>两次标记过程</strong>：<strong>如果对象在进行可达性分析后发现没有与GC Roots相连接的引用链，那它将会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行finalize()方法</strong>。当对象没有覆盖finalize()方法，或者finalize()方法已经被虚拟机调用过，虚拟机将这两种情况都视为“没有必要执行”。</p>
+<p>　　<br><code>幻象引用的get方法永远返回null</code>，主要用于检查对象是否已经从内存中删除。</p>
+<h2 id="5-生存还是死亡"><a href="#5-生存还是死亡" class="headerlink" title="5.生存还是死亡"></a>5.生存还是死亡</h2><p>通过上面对四种引用类型的分析，你可能发现有些对象即使不可达，但也并非是“非死不可”的，这个时候它们暂时处于“缓刑”阶段，要真正宣告一个对象死亡，至少要经历<code>两次标记过程</code>：<strong>如果对象在进行可达性分析后发现没有与GC Roots相连接的引用链，那它将会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行finalize()方法</strong>。当对象没有覆盖finalize()方法，或者finalize()方法已经被虚拟机调用过，虚拟机将这两种情况都视为“没有必要执行”。</p>
 <p>如果这个对象被判定为有必要执行finalize()方法，那么这个对象将会放置在一个叫做F-Queue的队列之中，并在稍后被一个由虚拟机自动建立的、低优先级的Finalizer线程去执行它。这里所谓的“执行”是指虚拟机会触发这个方法，但并不承诺会等待它运行结束，这样做的原因是，如果一个对象在finalize()方法中执行缓慢，或者发生了死循环（更极端的情况），将很可能会导致F-Queue队列中其他对象永久处于等待，甚至导致整个内存回收系统奔溃。finalize()方法是对象逃脱死亡命运的最后一次机会，稍后GC将对F-Queue中的对象进行第二次小规模的标记，如果对象要在finalize()中成功拯救自己——只要重新与引用链上的任何一个对象建立关联即可。譬如把自己（this关键字）赋值给某个类变量或者对象的成员变量，那在第二次标记时它将被移除出“即将回收”的集合；如果对象这时候还没有逃脱，那基本上它就真的被回收了。</p>
 <p>任何一个对象的finalize()方法都只会被系统自动调用一次，如果对象面临下一次回收，它的finalize()方法不会被再次执行。</p>
 <h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6.总结"></a>6.总结</h2><p><strong>对象的可达性是JVM垃圾收集器决定如何处理对象的一个重要考虑指标</strong>。</p>
-<p>所有引用类型都是抽象类java.lang.ref.Reference的子类，子类里提供了get()方法。通过上面的分析中可以得知，<strong>除了幻象引用（因为get永远返回null），如果对象还没有被销毁，都可以通过get方法获取原有对象。</strong>其实有个非常关键的注意点，利用软引用和弱引用，我们可以将访问到的对象，重新指向强引用，也就是人为的改变了对象的可达性状态。所以对于软引用、弱引用之类，垃圾收集器可能会存在<strong>二次确认</strong>的问题，以确保处于弱引用状态的对象没有改变为强引用。</p>
+<p>所有引用类型都是抽象类java.lang.ref.Reference的子类，子类里提供了get()方法。通过上面的分析中可以得知，<strong>除了幻象引用（因为get永远返回null），如果对象还没有被销毁，都可以通过get方法获取原有对象。</strong>其实有个非常关键的注意点，<code>利用软引用和弱引用，我们可以将访问到的对象，重新指向强引用</code>，也就是人为的改变了对象的可达性状态。所以对于软引用、弱引用之类，垃圾收集器可能会存在<code>二次确认</code>的问题，以确保处于弱引用状态的对象没有改变为强引用。</p>
 <p>但是有个问题，如果我们错误的保持了强引用（比如，赋值给了static变量），那么对象可能就没有机会变回类似弱引用的可达性状态了，就会产生内存泄露。所以，检查弱引用指向对象是否被垃圾收集，也是诊断是否有特定内存泄露的一个思路，我们的框架使用到弱引用又怀疑有内存泄露，就可以从这个角度检查。</p>
 <p>对于软引用、弱引用、幻象引用可以配合引用队列（ReferenceQueue）来使用，特别是幻象引用，get方法只返回null，如果再不指定引用队列，基本就没有任何意义了。</p>
 <p>上面分析了四种引用类型的使用，熟悉这几种应用类型对深入理解JVM也大有裨益。</p>
@@ -433,14 +432,14 @@
     <li class="popular-posts-item">
       
       
-      <div class="popular-posts-title"><a href="/2020/d6aff7a6.html" rel="bookmark">【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></div>
+      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
       
     </li>
   
     <li class="popular-posts-item">
       
       
-      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
+      <div class="popular-posts-title"><a href="/2020/d6aff7a6.html" rel="bookmark">【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></div>
       
     </li>
   
@@ -488,7 +487,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 09:37:43</p>
-  <p><span>最后更新:</span>2020年01月28日 - 00:43:18</p>
+  <p><span>最后更新:</span>2020年03月04日 - 14:18:00</p>
   <p><span>原始链接:</span><a href="/2020/22810993.html" title="【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用">https://yuanrengu.com/2020/22810993.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/22810993.html"  aria-label="复制成功！"></i></span>
   </p>
