@@ -77,7 +77,7 @@
 <meta property="og:image" content="https://image-static.segmentfault.com/110/658/1106581261-5d633d9a994ac_articlex">
 <meta property="og:image" content="https://image-static.segmentfault.com/210/838/2108386277-5d633d9c0be08_articlex">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110153711.png">
-<meta property="og:updated_time" content="2020-02-11T13:59:24.348Z">
+<meta property="og:updated_time" content="2020-03-04T12:47:24.189Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">
 <meta name="twitter:description" content="在Java中内存是由虚拟机自动管理的，虚拟机在内存中划出一片区域，作为满足程序内存分配请求的空间。内存的创建仍然是由程序猿来显示指定的，但是对象的释放却对程序猿是透明的。就是解放了程序猿手动回收内存的工作，交给垃圾回收器来自动回收。 在虚拟机中，释放哪些不再被使用的对象所占空间的过程称为垃圾收集（Garbage Collection，GC）。负责垃圾收集的程序模块，成为垃圾收集器（Garbage">
@@ -319,7 +319,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-11 21:59:24" itemprop="dateModified" datetime="2020-02-11T21:59:24+08:00">2020-02-11</time>
+                <time title="修改时间：2020-03-04 20:47:24" itemprop="dateModified" datetime="2020-03-04T20:47:24+08:00">2020-03-04</time>
               </span>
             
           
@@ -397,7 +397,7 @@
 </ol>
 <p><img src="https://image-static.segmentfault.com/404/754/4047541049-5d633d949ef4d_articlex" alt="垃圾收集算法.png"></p>
 <h2 id="1-垃圾回收"><a href="#1-垃圾回收" class="headerlink" title="1 垃圾回收"></a>1 垃圾回收</h2><p>在堆里面存放着Java世界中几乎所有的对象实例，垃圾收集器在堆进行回收前，第一件事就是要确定这些对象之中哪些还“存活”着，哪些已经“死亡”（即不可能再被任何途径使用的对象）。垃圾回收，其实就是将已经分配出去的，但不再使用的内存回收，以便能够再次分配。在Java虚拟机的规范中，<strong>垃圾指的就是死亡的对象所占据的堆空间</strong>。</p>
-<p>那怎么确定一个对象是存活还是死亡呢</p>
+<p>那怎么确定一个对象是存活还是死亡呢?</p>
 <h3 id="1-1-引用计数算法"><a href="#1-1-引用计数算法" class="headerlink" title="1.1 引用计数算法"></a>1.1 引用计数算法</h3><p>给对象中添加一个引用计数器，每当有一个地方引用它时，计数器值就加1；当引用失效时，计数器值就减1；任何时刻计数器为0的对象就是不可能再被使用的。<strong>也就是说，需要截获所有的引用更新操作，并且相应地增减目标对象的计数器</strong>。</p>
 <p><strong>题外话</strong>：记得研一那段时间对iOS开发感兴趣，找个公司去实习，现学现搞iOS开发，当时是做了一个模拟炒股的app。用的就是Objective-C，这门语言起初管理内存的方式就是用的这种引用计数算法，不过后面也有了自动管理内存。接触的对象多了，发现很多东西在本质的原理有非常多的相似之处。</p>
 <h4 id="引用计数算法缺点："><a href="#引用计数算法缺点：" class="headerlink" title="引用计数算法缺点："></a>引用计数算法缺点：</h4><ul>
@@ -422,9 +422,6 @@
 <li>已启动且未停止的Java线程。</li>
 </ul>
 <p>可达性分析算法可以解决引用计数算法不能解决的循环引用问题。举个例子，即便对象a和b相互引用，只要从GC Roots出发无法到达a或者b，那么可达性分析便不会将它们加入存活对象合集之中。</p>
-<blockquote>
-<p>关于Java中的引用的定义及分类（强引用、软引用、弱引用、虚引用）会在单独出一篇进行详细介绍，Java引用的内容虽然有点冷门，但是很多公司面试的常考点。</p>
-</blockquote>
 <p>可达性分析算法本身虽然很简明，但是在实践中还是有不少其他问题需要解决的。比如，在多线程环境下，其他线程可能会更新已经访问过的对象中的引用，从而造成<strong>误报</strong>（将引用设置为null）或者<strong>漏报</strong>（将引用设置为未被访问过的对象）。误杀还可以接受，Java虚拟机至多损失了部分垃圾回收的机会。<strong>漏报就问题大了，因为垃圾回收器可能回收事实上仍被引用的对象内存。一旦从原引用访问已经被回收了的对象，则很有可能会直接导致Java虚拟机奔溃。</strong></p>
 <h2 id="2-垃圾回收算法"><a href="#2-垃圾回收算法" class="headerlink" title="2 垃圾回收算法"></a>2 垃圾回收算法</h2><p>上面我们介绍什么是Java中的垃圾，接下来我们就开始介绍如何高效的回收这些垃圾。</p>
 <h3 id="2-1-标记-清除算法"><a href="#2-1-标记-清除算法" class="headerlink" title="2.1 标记-清除算法"></a>2.1 标记-清除算法</h3><p>标记-清除（Mark-Sweep）算法可以分为两个阶段：</p>
@@ -574,7 +571,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 15:38:17</p>
-  <p><span>最后更新:</span>2020年02月11日 - 21:59:24</p>
+  <p><span>最后更新:</span>2020年03月04日 - 20:47:24</p>
   <p><span>原始链接:</span><a href="/2020/a959fab8.html" title="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">https://yuanrengu.com/2020/a959fab8.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/a959fab8.html"  aria-label="复制成功！"></i></span>
   </p>
