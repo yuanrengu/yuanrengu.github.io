@@ -73,7 +73,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154339.png">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pLmxvbGkubmV0LzIwMTkvMTAvMTkvblRneGVCUG1HOWhWc1c0LnBuZw?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2020-03-05T06:01:32.279Z">
+<meta property="og:updated_time" content="2020-03-05T06:11:48.918Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="弄明白CMS和G1，就靠这一篇了">
 <meta name="twitter:description" content="在开始介绍CMS和G1前，我们可以剧透几点：  根据不同分代的特点，收集器可能不同。有些收集器可以同时用于新生代和老年代，而有些时候，则需要分别为新生代或老年代选用合适的收集器。一般来说，新生代收集器的收集频率较高，应选用性能高效的收集器；而老年代收集器收集次数相对较少，对空间较为敏感，应当避免选择基于复制算法的收集器。 在垃圾收集执行的时刻，应用程序需要暂停运行。 可以串行收集，也可以并行收集。">
@@ -315,7 +315,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-05 14:01:32" itemprop="dateModified" datetime="2020-03-05T14:01:32+08:00">2020-03-05</time>
+                <time title="修改时间：2020-03-05 14:11:48" itemprop="dateModified" datetime="2020-03-05T14:11:48+08:00">2020-03-05</time>
               </span>
             
           
@@ -352,7 +352,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">7k</span>
+              <span title="本文字数">7.1k</span>
             </span>
           
             <span class="post-meta-item">
@@ -525,7 +525,7 @@
 </blockquote>
 <h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h2><p>查了下度娘有关G1的文章，绝大部分文章对G1的介绍都是停留在JDK7或更早期的实现很多结论已经存在较大偏差了，甚至一些过去的GC选项已经不再推荐使用。举个例子，JDK9中JVM和GC日志进行了重构，如PrintGCDetails已经被标记为废弃，而PrintGCDateStamps已经被移除，指定它会导致JVM无法启动。</p>
 <p>本文对CMS和G1的介绍绝大部分内容也是基于JDK7，新版本中的内容有一点介绍，倒没做过多介绍（本人对新版本JVM还没有深入研究），后面有机会可以再出专门的文章来重点介绍。</p>
-<h2 id="4-参考"><a href="#4-参考" class="headerlink" title="4 参考"></a>4 参考</h2><p>《深入理解Java虚拟机》<br>《HotSpot实战》<br>《极客时间专栏》</p>
+<h2 id="4-参考"><a href="#4-参考" class="headerlink" title="4 参考"></a>4 参考</h2><p>《深入理解Java虚拟机》<br>《HotSpot实战》<br>《极客时间专栏》<br><a href="https://plumbr.io/handbook/garbage-collection-algorithms-implementations#g1" target="_blank" rel="noopener">https://plumbr.io/handbook/garbage-collection-algorithms-implementations#g1</a><br><a href="https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html</a></p>
 
     </div>
       
@@ -624,7 +624,7 @@
   <p><span>本文标题:</span>弄明白CMS和G1，就靠这一篇了</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 16:00:00</p>
-  <p><span>最后更新:</span>2020年03月05日 - 14:01:32</p>
+  <p><span>最后更新:</span>2020年03月05日 - 14:11:48</p>
   <p><span>原始链接:</span><a href="/2020/4c889127.html" title="弄明白CMS和G1，就靠这一篇了">https://yuanrengu.com/2020/4c889127.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/4c889127.html"  aria-label="复制成功！"></i></span>
   </p>
