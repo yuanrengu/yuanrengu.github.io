@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://yuanrengu.com/"/>
-  <updated>2020-02-26T07:14:13.318Z</updated>
+  <updated>2020-03-05T03:14:10.716Z</updated>
   <id>https://yuanrengu.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>通过jstack与jmap分析一次线上故障</title>
+    <link href="https://yuanrengu.com/2020/479c94ba.html"/>
+    <id>https://yuanrengu.com/2020/479c94ba.html</id>
+    <published>2020-03-05T03:12:09.000Z</published>
+    <updated>2020-03-05T03:14:10.716Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>来源：<a href="https://www.cnblogs.com/kingszelda/p/9034191.html" target="_blank" rel="noopener">https://www.cnblogs.com/kingszelda/p/9034191.html</a></p></blockquote><h1 id="一、发现问题"><a href="#一、发现问题" class="headerlink" title="一、发现问题"></a>一、发现问题</h1><p>  下面是线上机器的cpu使用率，可以看到从4月8日开始，随着时间cpu使用率在逐步增高，最终使用率达到100%导致线上服务不可用，后面重启了机器后恢复。<br><img src="https://img-blog.csdnimg.cn/20200305105832365.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><h1 id="二、排查思路"><a href="#二、排查思路" class="headerlink" title="二、排查思路"></a>二、排查思路</h1><p>简单分析下可能出问题的地方，分为5个方向：</p><ol><li>系统本身代码问题</li><li>内部下游系统的问题导致的雪崩效应</li><li>上游系统调用量突增</li><li>http请求第三方的问题</li><li>机器本身的问题</li></ol><h1 id="三、开始排查"><a href="#三、开始排查" class="headerlink" title="三、开始排查"></a>三、开始排查</h1><ol><li><p>查看日志，没有发现集中的错误日志，初步排除代码逻辑处理错误。</p></li><li><p>首先联系了内部下游系统观察了他们的监控，发现一起正常。可以排除下游系统故障对我们的影响。</p></li><li><p>查看provider接口的调用量，对比7天没有突增，排除业务方调用量的问题。</p></li><li><p>查看tcp监控，TCP状态正常，可以排除是http请求第三方超时带来的问题。</p></li><li><p>查看机器监控，6台机器cpu都在上升，每个机器情况一样。排除机器故障问题。</p><p>即通过上述方法没有直接定位到问题。</p></li></ol><h1 id="四、解决方案"><a href="#四、解决方案" class="headerlink" title="四、解决方案"></a>四、解决方案</h1><ol><li><p>重启了6台中问题比较严重的5台机器，先恢复业务。保留一台现场，用来分析问题。</p></li><li><p>查看当前的tomcat线程pid<br><img src="https://img-blog.csdnimg.cn/2020030510595055.png" alt="在这里插入图片描述"></p></li><li><p>查看该pid下线程对应的系统占用情况。top -Hp 384</p><blockquote><p><code>top -Hp  进程pid</code>  //该进程下的线程进行观察</p></blockquote></li><li><p>使用命令top -p <pid>，显示你的Java进程的内存情况，pid是你的java进程号，比如384</pid></p></li><li><p>按H，获取每个线程的内存情况</p></li></ol><p><img src="https://img-blog.csdnimg.cn/20200305110101634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><ol start="4"><li><p>发现pid 4430 4431 4432 4433 线程分别占用了约40%的cpu</p></li><li><p>将这几个pid转为16进制，分别为114e 114f 1150 1151</p><blockquote><p>//转换成为 16 进制<br>printf  “%x” your_pid</p></blockquote></li><li><p>下载当前的java线程栈  sudo -u tomcat jstack -l 384&gt;/1.txt</p></li><li><p>查询5中对应的线程情况，发现都是gc线程导致的</p><blockquote><p><code>jstack [进程] | grep -A 10 [线程的16进制]</code><br>即： jstack 21125 | grep -A 10 52f1  </p></blockquote></li></ol><p>-A 10表示查找到所在行的后10行。21233用计算器转换为16进制52f1，注意字母是小写。 </p><p><img src="https://img-blog.csdnimg.cn/20200305110232969.png" alt="在这里插入图片描述"> </p><ol start="8"><li>dump java堆数据<blockquote><p>sudo -u tomcat jmap -dump:live,format=b,file=/dump201612271310.dat 384<br>// 获取所有对象的dump<br><code>jmap -dump:format=b,file=/tmp/heap.hprof &lt;PID&gt;</code><br>// 获取存活对象的dump，实际效果是先执行一次FULL GC<br><code>jmap -dump:live,format=b,file=/tmp/heap-live.hprof &lt;PID&gt;</code></p></blockquote></li></ol><p><code>heap dump会造成JVM比较长时间的停顿，必须摘流量执行</code><br>dump文件一定要zip后再传输，能节约大量传输时间</p><blockquote><p>tar -zcf /tmp/heap.hprof.gz /tmp/heap.hprof</p></blockquote><ol start="9"><li>使用MAT加载堆文件，可以看到javax.crypto.JceSecurity对象占用了95%的内存空间，初步定位到问题。</li></ol><p>MAT下载地址：<a href="http://www.eclipse.org/mat/" target="_blank" rel="noopener">http://www.eclipse.org/mat/</a><br><img src="https://img-blog.csdnimg.cn/20200305110426851.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200305110452977.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><ol start="10"><li>查看类的引用树，看到BouncyCastleProvider对象持有过多。即我们代码中对该对象的处理方式是错误的，定位到问题。</li></ol><h1 id="五、代码分析"><a href="#五、代码分析" class="headerlink" title="五、代码分析"></a>五、代码分析</h1><p>我们代码中有一块是这样写的:<br><img src="https://img-blog.csdnimg.cn/20200305110533462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这是加解密的功能，每次运行加解密都会new一个BouncyCastleProvider对象,放倒Cipher.getInstance()方法中。</p><p>看下Cipher.getInstance()的实现，这是jdk的底层代码实现，追踪到JceSecurity类中<br><img src="https://img-blog.csdnimg.cn/2020030511055331.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>verifyingProviders每次put后都会remove,verificationResults只会put，不会remove。<br><img src="https://img-blog.csdnimg.cn/20200305110609588.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看到verificationResults是一个static的map，即属于JceSecurity类的。</p><p><strong>所以每次运行到加解密都会向这个map put一个对象，而这个map属于类的维度，所以不会被GC回收。这就导致了大量的new的对象不被回收</strong>。</p><h1 id="六、代码改进"><a href="#六、代码改进" class="headerlink" title="六、代码改进"></a>六、代码改进</h1><p>将有问题的对象置为static，每个类持有一个，不会多次新建。<br><img src="https://img-blog.csdnimg.cn/20200305110641562.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><h1 id="七、本文总结"><a href="#七、本文总结" class="headerlink" title="七、本文总结"></a>七、本文总结</h1><p>遇到线上问题不要慌，首先确认排查问题的思路：</p><ol><li>查看日志</li><li>查看CPU情况</li><li>查看TCP情况</li><li>查看java线程，jstack</li><li>查看java堆，jmap</li><li>通过MAT分析堆文件，寻找无法被回收的对象</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;来源：&lt;a href=&quot;https://www.cnblogs.com/kingszelda/p/9034191.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.cnblogs.com/kingsz
+      
+    
+    </summary>
+    
+    
+      <category term="问题排查" scheme="https://yuanrengu.com/categories/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"/>
+    
+    
+      <category term="java" scheme="https://yuanrengu.com/tags/java/"/>
+    
+      <category term="JVM" scheme="https://yuanrengu.com/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>深入浅出Mysql索引的那些事儿</title>
@@ -569,33 +598,6 @@
       <category term="弱引用" scheme="https://yuanrengu.com/tags/%E5%BC%B1%E5%BC%95%E7%94%A8/"/>
     
       <category term="虚引用" scheme="https://yuanrengu.com/tags/%E8%99%9A%E5%BC%95%E7%94%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java中List求并集、交集、差集、无重复并集</title>
-    <link href="https://yuanrengu.com/2020/fb3dc37a.html"/>
-    <id>https://yuanrengu.com/2020/fb3dc37a.html</id>
-    <published>2020-01-09T09:45:55.000Z</published>
-    <updated>2020-01-13T06:42:16.348Z</updated>
-    
-    <content type="html"><![CDATA[<p>在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">List&lt;String&gt; list1 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list1.add(<span class="string">"11111111111"</span>);</span><br><span class="line">list1.add(<span class="string">"22222222222"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;String&gt; list2 = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list2.add(<span class="string">"22222222222"</span>);</span><br><span class="line">list2.add(<span class="string">"33333333333"</span>);</span><br><span class="line">list2.add(<span class="string">"44444444444"</span>);</span><br><span class="line"></span><br><span class="line">list2.addAll(list1); <span class="comment">//并集</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//list2.removeAll(list1); //差集</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//list2.retainAll(list1); //交集</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//无重复并集（即先求差集，再做并集）</span></span><br><span class="line"><span class="comment">//list2.removeAll(list1);</span></span><br><span class="line"><span class="comment">//list1.addAll(list2);</span></span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">"--------------------------------------"</span>);</span><br><span class="line">System.out.println(list2.size());</span><br><span class="line">System.out.println(list2.toString());</span><br><span class="line">System.out.println(<span class="string">"--------------------------------------"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>注意如下求交集的形式：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list2.retainAll(list1)</span><br></pre></td></tr></table></figure><p>这里list2的结果会变为list1和list2的交集，而list1是不改变的。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;在实际的开发过程中，某些特定场合，可能会遇到处理list求并集、交集、差集、无重复并集的问题。在实际的项目开发中，非常容易在这些小细节上出错，特此总结如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;g
-      
-    
-    </summary>
-    
-    
-      <category term="java" scheme="https://yuanrengu.com/categories/java/"/>
-    
-    
-      <category term="java" scheme="https://yuanrengu.com/tags/java/"/>
     
   </entry>
   

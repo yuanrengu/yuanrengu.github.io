@@ -63,20 +63,31 @@
   };
 </script>
 
-  <meta name="description" content="说明：此篇文章的内容绝大部分来源于《极客时间》专栏。  以下讨论是基于InnoDB引擎。 至于分析性能差别的时候，可以记住以下几个原则：  server层要什么就给什么 InnoDB只给必要的值 现在的优化器只优化了count(*)的语义为“取行数”，其它“显而易见”的优化并没有做。接下来，我们一个个来进行分析。  对于count(主键id)来说，InnoDB引擎会遍历整张表，把每一行的id值都">
-<meta name="keywords" content="Mysql">
+  <meta name="description" content="来源：https://www.cnblogs.com/kingszelda/p/9034191.html  一、发现问题  下面是线上机器的cpu使用率，可以看到从4月8日开始，随着时间cpu使用率在逐步增高，最终使用率达到100%导致线上服务不可用，后面重启了机器后恢复。 二、排查思路简单分析下可能出问题的地方，分为5个方向：  系统本身代码问题 内部下游系统的问题导致的雪崩效应 上游系统调用">
+<meta name="keywords" content="java,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）">
-<meta property="og:url" content="https://yuanrengu.com/2020/c00d182e.html">
+<meta property="og:title" content="通过jstack与jmap分析一次线上故障">
+<meta property="og:url" content="https://yuanrengu.com/2020/479c94ba.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="说明：此篇文章的内容绝大部分来源于《极客时间》专栏。  以下讨论是基于InnoDB引擎。 至于分析性能差别的时候，可以记住以下几个原则：  server层要什么就给什么 InnoDB只给必要的值 现在的优化器只优化了count(*)的语义为“取行数”，其它“显而易见”的优化并没有做。接下来，我们一个个来进行分析。  对于count(主键id)来说，InnoDB引擎会遍历整张表，把每一行的id值都">
+<meta property="og:description" content="来源：https://www.cnblogs.com/kingszelda/p/9034191.html  一、发现问题  下面是线上机器的cpu使用率，可以看到从4月8日开始，随着时间cpu使用率在逐步增高，最终使用率达到100%导致线上服务不可用，后面重启了机器后恢复。 二、排查思路简单分析下可能出问题的地方，分为5个方向：  系统本身代码问题 内部下游系统的问题导致的雪崩效应 上游系统调用">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-26T06:45:54.137Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305105832365.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020030510595055.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305110101634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305110232969.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305110426851.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305110452977.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305110533462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020030511055331.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305110609588.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305110641562.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2020-03-05T03:14:10.716Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）">
-<meta name="twitter:description" content="说明：此篇文章的内容绝大部分来源于《极客时间》专栏。  以下讨论是基于InnoDB引擎。 至于分析性能差别的时候，可以记住以下几个原则：  server层要什么就给什么 InnoDB只给必要的值 现在的优化器只优化了count(*)的语义为“取行数”，其它“显而易见”的优化并没有做。接下来，我们一个个来进行分析。  对于count(主键id)来说，InnoDB引擎会遍历整张表，把每一行的id值都">
+<meta name="twitter:title" content="通过jstack与jmap分析一次线上故障">
+<meta name="twitter:description" content="来源：https://www.cnblogs.com/kingszelda/p/9034191.html  一、发现问题  下面是线上机器的cpu使用率，可以看到从4月8日开始，随着时间cpu使用率在逐步增高，最终使用率达到100%导致线上服务不可用，后面重启了机器后恢复。 二、排查思路简单分析下可能出问题的地方，分为5个方向：  系统本身代码问题 内部下游系统的问题导致的雪崩效应 上游系统调用">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200305105832365.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
-  <link rel="canonical" href="https://yuanrengu.com/2020/c00d182e">
+  <link rel="canonical" href="https://yuanrengu.com/2020/479c94ba">
 
 
 <script id="page.configurations">
@@ -85,7 +96,7 @@
   };
 </script>
 
-  <title>性能对比：Count(字段)、Count（主键）、Count（1）、Count（*） | 猿人谷</title>
+  <title>通过jstack与jmap分析一次线上故障 | 猿人谷</title>
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87311079-1"></script>
   <script>
@@ -265,7 +276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/c00d182e.html">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/479c94ba.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -279,7 +290,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）
+          <h1 class="post-title" itemprop="name headline">通过jstack与jmap分析一次线上故障
 
               
             
@@ -299,7 +310,7 @@
                 
               
 
-              <time title="创建时间：2020-02-26 14:44:30 / 修改时间：14:45:54" itemprop="dateCreated datePublished" datetime="2020-02-26T14:44:30+08:00">2020-02-26</time>
+              <time title="创建时间：2020-03-05 11:12:09 / 修改时间：11:14:10" itemprop="dateCreated datePublished" datetime="2020-03-05T11:12:09+08:00">2020-03-05</time>
             </span>
           
             
@@ -314,7 +325,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/问题排查/" itemprop="url" rel="index"><span itemprop="name">问题排查</span></a></span>
 
                 
                 
@@ -339,7 +350,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">834</span>
+              <span title="本文字数">1.8k</span>
             </span>
           
             <span class="post-meta-item">
@@ -349,7 +360,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">1 分钟</span>
+              <span title="阅读时长">2 分钟</span>
             </span>
           
 
@@ -363,27 +374,94 @@
 
       
         <blockquote>
-<p>说明：此篇文章的内容绝大部分来源于《极客时间》专栏。</p>
+<p>来源：<a href="https://www.cnblogs.com/kingszelda/p/9034191.html" target="_blank" rel="noopener">https://www.cnblogs.com/kingszelda/p/9034191.html</a></p>
 </blockquote>
-<p>以下讨论是基于InnoDB引擎。</p>
-<p>至于分析性能差别的时候，可以记住以下几个原则：</p>
+<h1 id="一、发现问题"><a href="#一、发现问题" class="headerlink" title="一、发现问题"></a>一、发现问题</h1><p>  下面是线上机器的cpu使用率，可以看到从4月8日开始，随着时间cpu使用率在逐步增高，最终使用率达到100%导致线上服务不可用，后面重启了机器后恢复。<br><img src="https://img-blog.csdnimg.cn/20200305105832365.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="二、排查思路"><a href="#二、排查思路" class="headerlink" title="二、排查思路"></a>二、排查思路</h1><p>简单分析下可能出问题的地方，分为5个方向：</p>
 <ol>
-<li>server层要什么就给什么</li>
-<li>InnoDB只给必要的值</li>
-<li>现在的优化器只优化了count(*)的语义为“取行数”，其它“显而易见”的优化并没有做。接下来，我们一个个来进行分析。</li>
+<li>系统本身代码问题</li>
+<li>内部下游系统的问题导致的雪崩效应</li>
+<li>上游系统调用量突增</li>
+<li>http请求第三方的问题</li>
+<li>机器本身的问题</li>
 </ol>
-<p>对于<code>count(主键id)</code>来说，InnoDB引擎会遍历整张表，把每一行的id值都取出来，返回给server层。server层拿到id后，判断是不可能为空的，就按行累加。</p>
-<p>对于<code>count(1)</code>来说，InnoDB引擎遍历整张表，但不取值。server层对于返回的每一行，放一个数字“1”进去，判断是不可能为空的，按行累加。</p>
-<p>单看这两个用法的差别的话，你就能对比出来，<strong>count(1)执行的要比count(主键id)快。因为从引擎返回id会涉及到解析数据行，以及拷贝字段值的操作</strong>。</p>
-<p>对于<code>count(字段)</code>来说：</p>
-<ul>
-<li>如果这个“字段”是定义为not null的话，一行行地从记录里面读出这个字段，判断不能为null，按行累加；</li>
-<li>如果这个“字段”定义允许为null，那么执行的时候，判断到有可能是null，还要把值取出来再判断一下，不是null才累加。也就是前面的第一条原则，server层要什么字段，InnoDB就返回什么字段。</li>
-</ul>
-<p>但是<code>count(*)</code>是例外，并不会把全部字段取出来，而是专门做了优化，不取值。count(*)肯定不是null，按行累加。</p>
-<p>看到这里，你一定会说，优化器就不能自己判断一下吗，主键id肯定非空啊，为什么不能按照count(*)来处理，多么简单的优化啊。</p>
-<p>当然，mysql专门针对这个语句进行优化，也不是不可以。但是这种需要专门优化的情况太多了，而且mysql已经优化过count(*)了，直接使用这种用法就可以了。</p>
-<p>所以结论是：按照效率排序的话，<code>count(字段) &lt; count(主键id) &lt; count(1) ≈ count(*)</code>。所以建议尽量使用<code>count(*)</code>。</p>
+<h1 id="三、开始排查"><a href="#三、开始排查" class="headerlink" title="三、开始排查"></a>三、开始排查</h1><ol>
+<li><p>查看日志，没有发现集中的错误日志，初步排除代码逻辑处理错误。</p>
+</li>
+<li><p>首先联系了内部下游系统观察了他们的监控，发现一起正常。可以排除下游系统故障对我们的影响。</p>
+</li>
+<li><p>查看provider接口的调用量，对比7天没有突增，排除业务方调用量的问题。</p>
+</li>
+<li><p>查看tcp监控，TCP状态正常，可以排除是http请求第三方超时带来的问题。</p>
+</li>
+<li><p>查看机器监控，6台机器cpu都在上升，每个机器情况一样。排除机器故障问题。</p>
+<p>即通过上述方法没有直接定位到问题。</p>
+</li>
+</ol>
+<h1 id="四、解决方案"><a href="#四、解决方案" class="headerlink" title="四、解决方案"></a>四、解决方案</h1><ol>
+<li><p>重启了6台中问题比较严重的5台机器，先恢复业务。保留一台现场，用来分析问题。</p>
+</li>
+<li><p>查看当前的tomcat线程pid<br><img src="https://img-blog.csdnimg.cn/2020030510595055.png" alt="在这里插入图片描述"></p>
+</li>
+<li><p>查看该pid下线程对应的系统占用情况。top -Hp 384</p>
+<blockquote>
+<p><code>top -Hp  进程pid</code>  //该进程下的线程进行观察</p>
+</blockquote>
+</li>
+<li><p>使用命令top -p <pid>，显示你的Java进程的内存情况，pid是你的java进程号，比如384</pid></p>
+</li>
+<li><p>按H，获取每个线程的内存情况</p>
+</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20200305110101634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ol start="4">
+<li><p>发现pid 4430 4431 4432 4433 线程分别占用了约40%的cpu</p>
+</li>
+<li><p>将这几个pid转为16进制，分别为114e 114f 1150 1151</p>
+<blockquote>
+<p>//转换成为 16 进制<br>printf  “%x” your_pid</p>
+</blockquote>
+</li>
+<li><p>下载当前的java线程栈  sudo -u tomcat jstack -l 384&gt;/1.txt</p>
+</li>
+<li><p>查询5中对应的线程情况，发现都是gc线程导致的</p>
+<blockquote>
+<p><code>jstack [进程] | grep -A 10 [线程的16进制]</code><br>即： jstack 21125 | grep -A 10 52f1  </p>
+</blockquote>
+</li>
+</ol>
+<p>-A 10表示查找到所在行的后10行。21233用计算器转换为16进制52f1，注意字母是小写。 </p>
+<p><img src="https://img-blog.csdnimg.cn/20200305110232969.png" alt="在这里插入图片描述"> </p>
+<ol start="8">
+<li>dump java堆数据<blockquote>
+<p>sudo -u tomcat jmap -dump:live,format=b,file=/dump201612271310.dat 384<br>// 获取所有对象的dump<br><code>jmap -dump:format=b,file=/tmp/heap.hprof &lt;PID&gt;</code><br>// 获取存活对象的dump，实际效果是先执行一次FULL GC<br><code>jmap -dump:live,format=b,file=/tmp/heap-live.hprof &lt;PID&gt;</code></p>
+</blockquote>
+</li>
+</ol>
+<p><code>heap dump会造成JVM比较长时间的停顿，必须摘流量执行</code><br>dump文件一定要zip后再传输，能节约大量传输时间</p>
+<blockquote>
+<p>tar -zcf /tmp/heap.hprof.gz /tmp/heap.hprof</p>
+</blockquote>
+<ol start="9">
+<li>使用MAT加载堆文件，可以看到javax.crypto.JceSecurity对象占用了95%的内存空间，初步定位到问题。</li>
+</ol>
+<p>MAT下载地址：<a href="http://www.eclipse.org/mat/" target="_blank" rel="noopener">http://www.eclipse.org/mat/</a><br><img src="https://img-blog.csdnimg.cn/20200305110426851.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200305110452977.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ol start="10">
+<li>查看类的引用树，看到BouncyCastleProvider对象持有过多。即我们代码中对该对象的处理方式是错误的，定位到问题。</li>
+</ol>
+<h1 id="五、代码分析"><a href="#五、代码分析" class="headerlink" title="五、代码分析"></a>五、代码分析</h1><p>我们代码中有一块是这样写的:<br><img src="https://img-blog.csdnimg.cn/20200305110533462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这是加解密的功能，每次运行加解密都会new一个BouncyCastleProvider对象,放倒Cipher.getInstance()方法中。</p>
+<p>看下Cipher.getInstance()的实现，这是jdk的底层代码实现，追踪到JceSecurity类中<br><img src="https://img-blog.csdnimg.cn/2020030511055331.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>verifyingProviders每次put后都会remove,verificationResults只会put，不会remove。<br><img src="https://img-blog.csdnimg.cn/20200305110609588.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看到verificationResults是一个static的map，即属于JceSecurity类的。</p>
+<p><strong>所以每次运行到加解密都会向这个map put一个对象，而这个map属于类的维度，所以不会被GC回收。这就导致了大量的new的对象不被回收</strong>。</p>
+<h1 id="六、代码改进"><a href="#六、代码改进" class="headerlink" title="六、代码改进"></a>六、代码改进</h1><p>将有问题的对象置为static，每个类持有一个，不会多次新建。<br><img src="https://img-blog.csdnimg.cn/20200305110641562.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h5ZzA4MTE=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="七、本文总结"><a href="#七、本文总结" class="headerlink" title="七、本文总结"></a>七、本文总结</h1><p>遇到线上问题不要慌，首先确认排查问题的思路：</p>
+<ol>
+<li>查看日志</li>
+<li>查看CPU情况</li>
+<li>查看TCP情况</li>
+<li>查看java线程，jstack</li>
+<li>查看java堆，jmap</li>
+<li>通过MAT分析堆文件，寻找无法被回收的对象</li>
+</ol>
 
     </div>
       
@@ -392,14 +470,56 @@
     <li class="popular-posts-item">
       
       
-      <div class="popular-posts-title"><a href="/2020/e867cb8.html" rel="bookmark">Mysql中Left Join、Right Join、Inner Join的区别</a></div>
+      <div class="popular-posts-title"><a href="/2020/6bbb74ca.html" rel="bookmark">Integer和Integer比较以及Integer和Int的比较分析</a></div>
       
     </li>
   
     <li class="popular-posts-item">
       
       
-      <div class="popular-posts-title"><a href="/2020/fb519654.html" rel="bookmark">深入浅出Mysql索引的那些事儿</a></div>
+      <div class="popular-posts-title"><a href="/2020/fb3dc37a.html" rel="bookmark">Java中List求并集、交集、差集、无重复并集</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/4a91d705.html" rel="bookmark">内存泄漏与内存溢出</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/11ea27b.html" rel="bookmark">【JVM从小白学成大佬】1.开篇</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d386b2ef.html" rel="bookmark">【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d6aff7a6.html" rel="bookmark">【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/22810993.html" rel="bookmark">【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
       
     </li>
   
@@ -429,38 +549,6 @@
     <div>
     
         
-<div class="my_post_copyright">
-  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
-  
-  <!-- JS库 sweetalert 可修改路径 -->
-  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
-  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
-
-  <p><span>本文标题:</span>性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）</a></p>
-  <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年02月26日 - 14:44:30</p>
-  <p><span>最后更新:</span>2020年02月26日 - 14:45:54</p>
-  <p><span>原始链接:</span><a href="/2020/c00d182e.html" title="性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）">https://yuanrengu.com/2020/c00d182e.html</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/c00d182e.html"  aria-label="复制成功！"></i></span>
-  </p>
-  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
-</div>
-<script> 
-    var clipboard = new Clipboard('.fa-clipboard');
-    clipboard.on('success', $(function(){
-      $(".fa-clipboard").click(function(){
-        swal({   
-          title: "",   
-          text: '复制成功',   
-          html: false,
-          timer: 500,   
-          showConfirmButton: false
-        });
-      });
-    }));  
-</script>
-
 
     
     </div>
@@ -469,13 +557,15 @@
           
         
         <div class="post-tags">
-            <a href="/tags/Mysql/" rel="tag"><i class="fa fa-tag"></i> Mysql</a>
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/9cfe2ad6.html" rel="next" title="Mysql字符串截取总结：Left()、Right()、Substring()、Substring_index()">
-                <i class="fa fa-chevron-left"></i> Mysql字符串截取总结：Left()、Right()、Substring()、Substring_index()
+              <a href="/2020/fb519654.html" rel="next" title="深入浅出Mysql索引的那些事儿">
+                <i class="fa fa-chevron-left"></i> 深入浅出Mysql索引的那些事儿
               </a>
             
           </div>
@@ -483,10 +573,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/4a91d705.html" rel="prev" title="内存泄漏与内存溢出">
-                内存泄漏与内存溢出 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
     </footer>
@@ -519,8 +605,17 @@
 
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -676,6 +771,23 @@
 
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、发现问题"><span class="nav-text">一、发现问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、排查思路"><span class="nav-text">二、排查思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、开始排查"><span class="nav-text">三、开始排查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、解决方案"><span class="nav-text">四、解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、代码分析"><span class="nav-text">五、代码分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、代码改进"><span class="nav-text">六、代码改进</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、本文总结"><span class="nav-text">七、本文总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
     </div>
   </aside>

@@ -263,6 +263,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/479c94ba.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="猿人谷">
+      <meta itemprop="description" content="技术成长，没有捷径，唯有积累。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿人谷">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/479c94ba.html" class="post-title-link" itemprop="url">通过jstack与jmap分析一次线上故障</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-05 11:12:09 / 修改时间：11:14:10" itemprop="dateCreated datePublished" datetime="2020-03-05T11:12:09+08:00">2020-03-05</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/问题排查/" itemprop="url" rel="index"><span itemprop="name">问题排查</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">1.8k</span>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+            <p>
+              
+来源：https://www.cnblogs.com/kingszelda/p/9034191.html
+
+一、发现问题  下面是线上机器的cpu使用率，可以看到从4月8日开始，随着时间cpu使用率在逐步增高，最终使用率达到100%导致线上服务不可用，后面重启了机器后恢复。
+二、排查思路简单分析下可能出问题的地方，分为5个方向：
+
+系统本身代码问题
+内部下游系统的问题导致的雪崩效应
+上游系统调用量突增
+http请求第三方的问题
+机器本身的问题
+
+三、开始排查
+查看日志，没有发现集中的错误日志，初步排除代码逻辑处理错误。
+
+首先联系了内部下游系统观察了他们的监控，发现一起正常。可以排除下游系统
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2020/479c94ba.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+
+    
+    
+    
+    <div>
+      
+    </div>
+
+    <div>
+    
+    </div>
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/fb519654.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1546,148 +1698,6 @@ package com.yaoguang.common.utils.field;import java.beans.BeanInfo;import java.b
   </article>
 
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/baec5dff.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="猿人谷">
-      <meta itemprop="description" content="技术成长，没有捷径，唯有积累。">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="猿人谷">
-    </span>
-      <header class="post-header">
-
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2020/baec5dff.html" class="post-title-link" itemprop="url">Lombok介绍、使用方法和总结</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-01-13 14:25:45 / 修改时间：15:39:16" itemprop="dateCreated datePublished" datetime="2020-01-13T14:25:45+08:00">2020-01-13</time>
-            </span>
-          
-            
-
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          <br>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">12k</span>
-            </span>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              
-              <span title="阅读时长">11 分钟</span>
-            </span>
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-            <p>
-              1 Lombok背景介绍官方介绍如下：        
-
-Project Lombok makes java a spicier language by adding ‘handlers’ that know how to build and compile simple, boilerplate-free, not-quite-java code.
-
-大致意思是Lombok通过增加一些“处理程序”，可以让java变得简洁、快速。
-2 Lombok使用方法Lombok能以简单的注解形式来简化java代码，提高开发人员的开发效率。例如开发中经常需要写的javabean，都需要花时间去添加相应的g
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2020/baec5dff.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-
-    
-    
-    
-    <div>
-      
-    </div>
-
-    <div>
-    
-    </div>
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1725,7 +1735,7 @@ Project Lombok makes java a spicier language by adding ‘handlers’ that know 
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1758,7 +1768,9 @@ Project Lombok makes java a spicier language by adding ‘handlers’ that know 
         
           
         
-        <span class="site-state-item-count">9</span>
+          
+        
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -1900,7 +1912,7 @@ Project Lombok makes java a spicier language by adding ‘handlers’ that know 
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">80k</span> 字
+      博客全站共： <span class="post-count">81k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
