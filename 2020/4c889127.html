@@ -64,7 +64,7 @@
 </script>
 
   <meta name="description" content="在开始介绍CMS和G1前，我们可以剧透几点：  根据不同分代的特点，收集器可能不同。有些收集器可以同时用于新生代和老年代，而有些时候，则需要分别为新生代或老年代选用合适的收集器。一般来说，新生代收集器的收集频率较高，应选用性能高效的收集器；而老年代收集器收集次数相对较少，对空间较为敏感，应当避免选择基于复制算法的收集器。 在垃圾收集执行的时刻，应用程序需要暂停运行。 可以串行收集，也可以并行收集。">
-<meta name="keywords" content="CMS,G1">
+<meta name="keywords" content="JVM,CMS,G1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="弄明白CMS和G1，就靠这一篇了">
 <meta property="og:url" content="https://yuanrengu.com/2020/4c889127.html">
@@ -73,7 +73,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154339.png">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pLmxvbGkubmV0LzIwMTkvMTAvMTkvblRneGVCUG1HOWhWc1c0LnBuZw?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2020-03-05T02:42:46.777Z">
+<meta property="og:updated_time" content="2020-03-05T06:01:32.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="弄明白CMS和G1，就靠这一篇了">
 <meta name="twitter:description" content="在开始介绍CMS和G1前，我们可以剧透几点：  根据不同分代的特点，收集器可能不同。有些收集器可以同时用于新生代和老年代，而有些时候，则需要分别为新生代或老年代选用合适的收集器。一般来说，新生代收集器的收集频率较高，应选用性能高效的收集器；而老年代收集器收集次数相对较少，对空间较为敏感，应当避免选择基于复制算法的收集器。 在垃圾收集执行的时刻，应用程序需要暂停运行。 可以串行收集，也可以并行收集。">
@@ -302,7 +302,7 @@
                 
               
 
-              <time title="创建时间：2020-01-10 16:00:32" itemprop="dateCreated datePublished" datetime="2020-01-10T16:00:32+08:00">2020-01-10</time>
+              <time title="创建时间：2020-01-10 16:00:00" itemprop="dateCreated datePublished" datetime="2020-01-10T16:00:00+08:00">2020-01-10</time>
             </span>
           
             
@@ -315,7 +315,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-05 10:42:46" itemprop="dateModified" datetime="2020-03-05T10:42:46+08:00">2020-03-05</time>
+                <time title="修改时间：2020-03-05 14:01:32" itemprop="dateModified" datetime="2020-03-05T14:01:32+08:00">2020-03-05</time>
               </span>
             
           
@@ -352,7 +352,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">6.5k</span>
+              <span title="本文字数">7k</span>
             </span>
           
             <span class="post-meta-item">
@@ -426,7 +426,8 @@
 </li>
 </ul>
 <h3 id="安全区域"><a href="#安全区域" class="headerlink" title="安全区域"></a>安全区域</h3><p>指在一段代码片段中，引用关系不会发生变化。在这个区域中任意地方开始GC都是安全的。也可以把Safe Region看作是被扩展了的Safepoint。</p>
-<h2 id="2-G1收集器"><a href="#2-G1收集器" class="headerlink" title="2 G1收集器"></a>2 G1收集器</h2><p>G1重新定义了堆空间，打破了原有的分代模型，将堆划分为一个个区域。这么做的目的是在进行收集时不必在全堆范围内进行，这是它最显著的特点。区域划分的好处就是带来了停顿时间可预测的收集模型：用户可以指定收集操作在多长时间内完成。即G1提供了接近实时的收集特性。</p>
+<h2 id="2-G1收集器"><a href="#2-G1收集器" class="headerlink" title="2 G1收集器"></a>2 G1收集器</h2><p>G1重新定义了堆空间，打破了原有的分代模型，将堆划分为一个个区域。这么做的目的是在进行收集时不必在全堆范围内进行，这是它最显著的特点。区域划分的好处就是带来了<code>停顿时间可预测</code>的收集模型：用户可以指定收集操作在多长时间内完成。即G1提供了接近实时的收集特性。G1 的主要关注点在于达到可控的停顿时间，在这个基础上尽可能提高吞吐量。</p>
+<p>G1 使用了停顿预测模型来满足用户指定的停顿时间目标，并基于目标来选择进行垃圾回收的区块数量。G1 采用<code>增量回收</code>的方式，每次回收一些区块，而不是整堆回收。要清楚 G1 不是一个实时收集器（只是接近实时），它会尽力满足我们的停顿时间要求，但也不是绝对的，它基于之前垃圾收集的数据统计，估计出在用户指定的停顿时间内能收集多少个区块。</p>
 <p>G1与CMS的特征对比如下：</p>
 <table>
 <thead>
@@ -479,9 +480,9 @@
 <li>空间整合：与CMS的标记-清除算法不同，G1从整体来看是基于<strong>标记-整理算法</strong>实现的收集器，从局部（两个Region之间）上来看是基于“<strong>复制</strong>”算法实现的。但无论如何，这两种算法都意味着G1运作期间不会产生内存空间碎片，收集后能提供规整的可用内存。<strong>这种特性有利于程序长时间运行，分配大对象时不会因为无法找到连续内存空间而提前触发下一次GC</strong>。</li>
 <li>可预测的停顿：这是G1相对于CMS的一个优势，降低停顿时间是G1和CMS共同的关注点。</li>
 </ul>
-<p>在G1之前的其他收集器进行收集的范围都是整个新生代或者老年代，而G1不再是这样。在堆的结构设计时，G1打破了以往将收集范围固定在新生代或老年代的模式，G1将堆分成许多相同大小的区域单元，每个单元称为Region。Region是一块地址连续的内存空间，G1模块的组成如下图所示：</p>
+<p>在G1之前的其他收集器进行收集的范围都是整个新生代或者老年代，而G1不再是这样。在堆的结构设计时，G1打破了以往将收集范围固定在新生代或老年代的模式，G1收集器将整个Java堆划分为多个大小相等的独立区域（Region）。Region是一块地址连续的内存空间，G1模块的组成如下图所示：</p>
 <p><img src="http://cdn.yuanrengu.com/img/20200110154339.png" alt="G1堆的Region布局.png"></p>
-<p>G1收集器将整个Java堆划分为多个大小相等的独立区域（Region），虽然还保留有新生代和老年代的概念，但新生代和老年代不再是物理隔离的了，它们都是一部分Region（不需要连续）的集合。Region的大小是一致的，数值是在<code>1M到32M</code>字节之间的一个2的幂值数，JVM会尽量划分<code>2048</code>个左右、同等大小的Region，这一点可以参看如下<a href="http://hg.openjdk.java.net/jdk/jdk/file/fa2f93f99dbc/src/hotspot/share/gc/g1/heapRegionBounds.hpp" target="_blank" rel="noopener">源码</a>。其实这个数字既可以手动调整，G1也会根据堆大小自动进行调整。</p>
+<p>虽然还保留有新生代和老年代的概念，但新生代和老年代不再是物理隔离的了，它们都是一部分Region（不需要连续）的集合。Region的大小是一致的，数值是在<code>1M到32M</code>字节之间的一个2的幂值数，JVM会尽量划分<code>2048</code>个左右、同等大小的Region，这一点可以参看如下<a href="http://hg.openjdk.java.net/jdk/jdk/file/fa2f93f99dbc/src/hotspot/share/gc/g1/heapRegionBounds.hpp" target="_blank" rel="noopener">源码</a>。其实这个数字既可以手动调整，G1也会根据堆大小自动进行调整。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#ifndef SHARE_VM_GC_G1_HEAPREGIONBOUNDS_HPP</span><br><span class="line">#define SHARE_VM_GC_G1_HEAPREGIONBOUNDS_HPP</span><br><span class="line"></span><br><span class="line">#include &quot;memory/allocation.hpp&quot;</span><br><span class="line"></span><br><span class="line">class HeapRegionBounds : public AllStatic &#123;</span><br><span class="line">private:</span><br><span class="line">  // Minimum region size; we won&apos;t go lower than that.</span><br><span class="line">  // We might want to decrease this in the future, to deal with small</span><br><span class="line">  // heaps a bit more efficiently.</span><br><span class="line">  static const size_t MIN_REGION_SIZE = 1024 * 1024;</span><br><span class="line"></span><br><span class="line">  // Maximum region size; we don&apos;t go higher than that. There&apos;s a good</span><br><span class="line">  // reason for having an upper bound. We don&apos;t want regions to get too</span><br><span class="line">  // large, otherwise cleanup&apos;s effectiveness would decrease as there</span><br><span class="line">  // will be fewer opportunities to find totally empty regions after</span><br><span class="line">  // marking.</span><br><span class="line">  static const size_t MAX_REGION_SIZE = 32 * 1024 * 1024;</span><br><span class="line"></span><br><span class="line">  // The automatic region size calculation will try to have around this</span><br><span class="line">  // many regions in the heap (based on the min heap size).</span><br><span class="line">  static const size_t TARGET_REGION_NUMBER = 2048;</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">  static inline size_t min_size();</span><br><span class="line">  static inline size_t max_size();</span><br><span class="line">  static inline size_t target_number();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">#endif // SHARE_VM_GC_G1_HEAPREGIONBOUNDS_HPP</span><br></pre></td></tr></table></figure>
 
 <p><strong>G1收集器之所以能建立可预测的停顿时间模型，是因为它可以有计划地避免在整个Java堆中进行全区域的垃圾收集</strong>。G1会通过一个合理的计算模型，计算出每个Region的收集成本并量化，这样一来，收集器在给定了“停顿”时间限制的情况下，总是能选择一组恰当的Regions作为收集目标，让其收集开销满足这个限制条件，以此达到实时收集的目的。</p>
@@ -508,6 +509,11 @@
 </ul>
 <p>全局变量和栈中引用的对象是可以列入根集合的，这样在寻找垃圾时，就可以从根集合出发扫描堆空间。在G1中，引入了一种新的能加入根集合的类型，就是<code>记忆集</code>（Remembered Set）。Remembered Sets（也叫RSets）用来跟踪对象引用。G1的很多开源都是源自Remembered Set，例如，它通常约占Heap大小的20%或更高。并且，我们进行对象复制的时候，因为需要扫描和更改Card Table的信息，这个速度影响了复制的速度，进而影响暂停时间。</p>
 <p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pLmxvbGkubmV0LzIwMTkvMTAvMTkvblRneGVCUG1HOWhWc1c0LnBuZw?x-oss-process=image/format,png" alt="image.png"></p>
+<p>G1 比 ParallelOld 和 CMS 会需要更多的内存消耗，那是因为有部分内存消耗于簿记（accounting）上，如以下两个数据结构：</p>
+<ul>
+<li>Remembered Sets：每个区块都有一个 RSet，用于记录进入该区块的对象引用（如区块 A 中的对象引用了区块 B，区块 B 的 Rset 需要记录这个信息），它用于实现收集过程的并行化以及使得区块能进行独立收集。</li>
+<li>Collection Sets：将要被回收的区块集合。GC 时，在这些区块中的对象会被复制到其他区块中，总体上 Collection Sets 消耗的内存小于 1%。</li>
+</ul>
 <h3 id="卡表（Card-Table）"><a href="#卡表（Card-Table）" class="headerlink" title="卡表（Card Table）"></a>卡表（Card Table）</h3><p>有个场景，老年代的对象可能引用新生代的对象，那标记存活对象的时候，需要扫描老年代中的所有对象。因为该对象拥有对新生代对象的引用，那么这个引用也会被称为GC Roots。那不是得又做全堆扫描？成本太高了吧。</p>
 <p>HotSpot给出的解决方案是一项叫做<code>卡表</code>（Card Table）的技术。该技术将整个堆划分为一个个大小为512字节的卡，并且维护一个卡表，用来存储每张卡的一个标识位。这个标识位代表对应的卡是否可能存有指向新生代对象的引用。如果可能存在，那么我们就认为这张卡是脏的。</p>
 <p>在进行Minor GC的时候，我们便可以不用扫描整个老年代，而是在卡表中寻找脏卡，并将脏卡中的对象加入到Minor GC的GC Roots里。当完成所有脏卡的扫描之后，Java虚拟机便会将所有脏卡的标识位清零。</p>
@@ -523,6 +529,65 @@
 
     </div>
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/479c94ba.html" rel="bookmark">通过jstack与jmap分析一次线上故障</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/11ea27b.html" rel="bookmark">【JVM从小白学成大佬】1.开篇</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d386b2ef.html" rel="bookmark">【JVM从小白学成大佬】6.创建对象及对象的访问定位</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/1977ac11.html" rel="bookmark">【面试必备】小伙伴栽在了JVM的内存分配策略。。。</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/d6aff7a6.html" rel="bookmark">【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/22810993.html" rel="bookmark">【JVM从小白学成大佬】3.深入解析强引用、软引用、弱引用、幻象引用</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/a959fab8.html" rel="bookmark">【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/9ed477f0.html" rel="bookmark">【JVM从小白学成大佬】5.垃圾收集器及内存分配策略</a></div>
+      
+    </li>
+  
+  </ul>
 
 
 
@@ -558,8 +623,8 @@
 
   <p><span>本文标题:</span>弄明白CMS和G1，就靠这一篇了</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年01月10日 - 16:00:32</p>
-  <p><span>最后更新:</span>2020年03月05日 - 10:42:46</p>
+  <p><span>发布时间:</span>2020年01月10日 - 16:00:00</p>
+  <p><span>最后更新:</span>2020年03月05日 - 14:01:32</p>
   <p><span>原始链接:</span><a href="/2020/4c889127.html" title="弄明白CMS和G1，就靠这一篇了">https://yuanrengu.com/2020/4c889127.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/4c889127.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -588,6 +653,8 @@
           
         
         <div class="post-tags">
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
             <a href="/tags/CMS/" rel="tag"><i class="fa fa-tag"></i> CMS</a>
           
             <a href="/tags/G1/" rel="tag"><i class="fa fa-tag"></i> G1</a>
@@ -595,8 +662,8 @@
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/1977ac11.html" rel="next" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
-                <i class="fa fa-chevron-left"></i> 【面试必备】小伙伴栽在了JVM的内存分配策略。。。
+              <a href="/2020/d386b2ef.html" rel="next" title="【JVM从小白学成大佬】6.创建对象及对象的访问定位">
+                <i class="fa fa-chevron-left"></i> 【JVM从小白学成大佬】6.创建对象及对象的访问定位
               </a>
             
           </div>
@@ -604,8 +671,8 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/77eef79f.html" rel="prev" title="面试官，不要再问我三次握手和四次挥手">
-                面试官，不要再问我三次握手和四次挥手 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/1977ac11.html" rel="prev" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
+                【面试必备】小伙伴栽在了JVM的内存分配策略。。。 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -856,7 +923,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">81k</span> 字
+      博客全站共： <span class="post-count">81.3k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
