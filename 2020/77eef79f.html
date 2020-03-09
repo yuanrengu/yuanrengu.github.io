@@ -75,7 +75,7 @@
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200210134500.png">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200210134547.png">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200210134621.png">
-<meta property="og:updated_time" content="2020-02-10T05:49:05.870Z">
+<meta property="og:updated_time" content="2020-03-09T07:42:50.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试官，不要再问我三次握手和四次挥手">
 <meta name="twitter:description" content="三次握手和四次挥手是各个公司常见的考点，也具有一定的水平区分度，也被一些面试官作为热身题。很多小伙伴说这个问题刚开始回答的挺好，但是后面越回答越冒冷汗，最后就歇菜了。 见过比较典型的面试场景是这样的:  面试官：请介绍下三次握手求职者：第一次握手就是客户端给服务器端发送一个报文，第二次就是服务器收到报文之后，会应答一个报文给客户端，第三次握手就是客户端收到报文后再给服务器发送一个报文，三次握手就成">
@@ -317,7 +317,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-10 13:49:05" itemprop="dateModified" datetime="2020-02-10T13:49:05+08:00">2020-02-10</time>
+                <time title="修改时间：2020-03-09 15:42:50" itemprop="dateModified" datetime="2020-03-09T15:42:50+08:00">2020-03-09</time>
               </span>
             
           
@@ -425,14 +425,14 @@
 </blockquote>
 <h3 id="1-2-什么是半连接队列？"><a href="#1-2-什么是半连接队列？" class="headerlink" title="1.2 什么是半连接队列？"></a>1.2 什么是半连接队列？</h3><p>服务器第一次收到客户端的 SYN 之后，就会处于 SYN_RCVD 状态，此时双方还没有完全建立其连接，服务器会把此种状态下请求连接放在一个<strong>队列</strong>里，我们把这种队列称之为<strong>半连接队列</strong>。</p>
 <p>当然还有一个<strong>全连接队列</strong>，就是已经完成三次握手，建立起连接的就会放在全连接队列中。如果队列满了就有可能会出现丢包现象。</p>
-<p>这里在补充一点关于<strong>SYN-ACK 重传次数</strong>的问题：<br>服务器发送完SYN-ACK包，如果未收到客户确认包，服务器进行首次重传，等待一段时间仍未收到客户确认包，进行第二次重传。如果重传次数超过系统规定的最大重传次数，系统将该连接信息从半连接队列中删除。<br>注意，每次重传等待的时间不一定相同，一般会是指数增长，例如间隔时间为 1s，2s，4s，8s……</p>
+<p>这里再补充一点关于<strong>SYN-ACK 重传次数</strong>的问题：<br>服务器发送完SYN-ACK包，如果未收到客户确认包，服务器进行首次重传，等待一段时间仍未收到客户确认包，进行第二次重传。如果重传次数超过系统规定的最大重传次数，系统将该连接信息从半连接队列中删除。<br>注意，每次重传等待的时间不一定相同，一般会是指数增长，例如间隔时间为 1s，2s，4s，8s……</p>
 <h3 id="1-3-ISN-Initial-Sequence-Number-是固定的吗？"><a href="#1-3-ISN-Initial-Sequence-Number-是固定的吗？" class="headerlink" title="1.3 ISN(Initial Sequence Number)是固定的吗？"></a>1.3 ISN(Initial Sequence Number)是固定的吗？</h3><p>当一端为建立连接而发送它的SYN时，它为连接选择一个初始序号。ISN随时间而变化，因此每个连接都将具有不同的ISN。ISN可以看作是一个32比特的计数器，每4ms加1 。这样选择序号的目的在于防止在网络中被延迟的分组在以后又被传送，而导致某个连接的一方对它做错误的解释。</p>
 <p><strong>三次握手的其中一个重要功能是客户端和服务端交换 ISN(Initial Sequence Number)，以便让对方知道接下来接收数据的时候如何按序列号组装数据。如果 ISN 是固定的，攻击者很容易猜出后续的确认号，因此 ISN 是动态生成的。</strong></p>
-<h3 id="1-4-三次握手过程中可以携带数据吗？"><a href="#1-4-三次握手过程中可以携带数据吗？" class="headerlink" title="1.4 三次握手过程中可以携带数据吗？"></a>1.4 三次握手过程中可以携带数据吗？</h3><p>其实第三次握手的时候，是可以携带数据的。但是，<strong>第一次、第二次握手不可以携带数据</strong></p>
+<h3 id="1-4-三次握手过程中可以携带数据吗？"><a href="#1-4-三次握手过程中可以携带数据吗？" class="headerlink" title="1.4 三次握手过程中可以携带数据吗？"></a>1.4 三次握手过程中可以携带数据吗？</h3><p>其实第三次握手的时候，是可以携带数据的。但是，<strong>第一次、第二次握手不可以携带数据</strong>。</p>
 <p>为什么这样呢?大家可以想一个问题，假如第一次握手可以携带数据的话，如果有人要恶意攻击服务器，那他每次都在第一次握手中的 SYN 报文中放入大量的数据。因为攻击者根本就不理服务器的接收、发送能力是否正常，然后疯狂着重复发 SYN 报文的话，这会让服务器花费很多时间、内存空间来接收这些报文。</p>
 <p>也就是说，<strong>第一次握手不可以放数据，其中一个简单的原因就是会让服务器更加容易受到攻击了。而对于第三次的话，此时客户端已经处于 ESTABLISHED 状态。对于客户端来说，他已经建立起连接了，并且也已经知道服务器的接收、发送能力是正常的了，所以能携带数据也没啥毛病。</strong></p>
 <h3 id="1-5-SYN攻击是什么？"><a href="#1-5-SYN攻击是什么？" class="headerlink" title="1.5 SYN攻击是什么？"></a>1.5 SYN攻击是什么？</h3><p><strong>服务器端的资源分配是在二次握手时分配的，而客户端的资源是在完成三次握手时分配的</strong>，所以服务器容易受到SYN洪泛攻击。SYN攻击就是Client在短时间内伪造大量不存在的IP地址，并向Server不断地发送SYN包，Server则回复确认包，并等待Client确认，由于源地址不存在，因此Server需要不断重发直至超时，这些伪造的SYN包将长时间占用未连接队列，导致正常的SYN请求因为队列满而被丢弃，从而引起网络拥塞甚至系统瘫痪。SYN 攻击是一种典型的 DoS/DDoS 攻击。</p>
-<p>检测 SYN 攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源IP地址是随机的，基本上可以断定这是一次SYN攻击。在 Linux/Unix 上可以使用系统自带的 netstats 命令来检测 SYN 攻击。</p>
+<p>检测 SYN 攻击非常的方便，当你在服务器上看到大量的<code>半连接状态</code>时，特别是源IP地址是随机的，基本上可以断定这是一次SYN攻击。在 Linux/Unix 上可以使用系统自带的 netstats 命令来检测 SYN 攻击。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -n -p TCP | grep SYN_RECV</span><br></pre></td></tr></table></figure>
 
 <p>常见的防御 SYN 攻击的方法有如下几种：</p>
@@ -537,7 +537,7 @@
   <p><span>本文标题:</span>面试官，不要再问我三次握手和四次挥手</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 16:07:33</p>
-  <p><span>最后更新:</span>2020年02月10日 - 13:49:05</p>
+  <p><span>最后更新:</span>2020年03月09日 - 15:42:50</p>
   <p><span>原始链接:</span><a href="/2020/77eef79f.html" title="面试官，不要再问我三次握手和四次挥手">https://yuanrengu.com/2020/77eef79f.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/77eef79f.html"  aria-label="复制成功！"></i></span>
   </p>
