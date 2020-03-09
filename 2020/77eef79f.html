@@ -75,7 +75,7 @@
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200210134500.png">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200210134547.png">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200210134621.png">
-<meta property="og:updated_time" content="2020-03-09T07:42:50.666Z">
+<meta property="og:updated_time" content="2020-03-09T08:21:00.296Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试官，不要再问我三次握手和四次挥手">
 <meta name="twitter:description" content="三次握手和四次挥手是各个公司常见的考点，也具有一定的水平区分度，也被一些面试官作为热身题。很多小伙伴说这个问题刚开始回答的挺好，但是后面越回答越冒冷汗，最后就歇菜了。 见过比较典型的面试场景是这样的:  面试官：请介绍下三次握手求职者：第一次握手就是客户端给服务器端发送一个报文，第二次就是服务器收到报文之后，会应答一个报文给客户端，第三次握手就是客户端收到报文后再给服务器发送一个报文，三次握手就成">
@@ -317,7 +317,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-09 15:42:50" itemprop="dateModified" datetime="2020-03-09T15:42:50+08:00">2020-03-09</time>
+                <time title="修改时间：2020-03-09 16:21:00" itemprop="dateModified" datetime="2020-03-09T16:21:00+08:00">2020-03-09</time>
               </span>
             
           
@@ -463,7 +463,7 @@
 <p>为了保证客户端发送的最后一个ACK报文段能够到达服务器。因为这个ACK有可能丢失，从而导致处在LAST-ACK状态的服务器收不到对FIN-ACK的确认报文。服务器会超时重传这个FIN-ACK，接着客户端再重传一次确认，重新启动时间<code>等待计时器</code>。最后客户端和服务器都能正常的关闭。假设客户端不等待2MSL，而是在发送完ACK之后直接释放关闭，一但这个ACK丢失的话，服务器就无法正常的进入关闭连接状态。</p>
 <h4 id="两个理由："><a href="#两个理由：" class="headerlink" title="两个理由："></a>两个理由：</h4><ol>
 <li><p><strong>保证客户端发送的最后一个ACK报文段能够到达服务端</strong>。</p>
-<p> 这个ACK报文段有可能丢失，使得处于LAST-ACK状态的B收不到对已发送的FIN+ACK报文段的确认，服务端超时重传FIN+ACK报文段，而客户端能在2MSL时间内收到这个重传的FIN+ACK报文段，接着客户端重传一次确认，重新启动2MSL计时器，最后客户端和服务端都进入到CLOSED状态，若客户端在TIME-WAIT状态不等待一段时间，而是发送完ACK报文段后立即释放连接，则无法收到服务端重传的FIN+ACK报文段，所以不会再发送一次确认报文段，则服务端无法正常进入到CLOSED状态。</p>
+<p> 这个ACK报文段有可能丢失，使得处于LAST-ACK状态的服务端收不到对已发送的FIN+ACK报文段的确认，服务端超时重传FIN+ACK报文段，而客户端能在2MSL时间内收到这个重传的FIN+ACK报文段，接着客户端重传一次确认，重新启动2MSL计时器，最后客户端和服务端都进入到CLOSED状态，若客户端在TIME-WAIT状态不等待一段时间，而是发送完ACK报文段后立即释放连接，则无法收到服务端重传的FIN+ACK报文段，所以不会再发送一次确认报文段，则服务端无法正常进入到CLOSED状态。</p>
 </li>
 <li><p><strong>防止“已失效的连接请求报文段”出现在本连接中</strong>。</p>
 <p>客户端在发送完最后一个ACK报文段后，再经过2MSL，就可以使本连接持续的时间内所产生的所有报文段都从网络中消失，使下一个新的连接中不会出现这种旧的连接请求报文段。</p>
@@ -537,7 +537,7 @@
   <p><span>本文标题:</span>面试官，不要再问我三次握手和四次挥手</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 16:07:33</p>
-  <p><span>最后更新:</span>2020年03月09日 - 15:42:50</p>
+  <p><span>最后更新:</span>2020年03月09日 - 16:21:00</p>
   <p><span>原始链接:</span><a href="/2020/77eef79f.html" title="面试官，不要再问我三次握手和四次挥手">https://yuanrengu.com/2020/77eef79f.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/77eef79f.html"  aria-label="复制成功！"></i></span>
   </p>
