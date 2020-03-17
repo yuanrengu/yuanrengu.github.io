@@ -63,20 +63,20 @@
   };
 </script>
 
-  <meta name="description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
-<meta name="keywords" content="java">
+  <meta name="description" content="今天给大家介绍两个黑魔法，这都是压箱底的法宝。大家在使用时，一定要弄清他们的适用场景及用法，用好了，就是一把开天斧，用不好那就是画蛇添足。自从看过耗子哥（左耳朵耗子）的博客，都会给对相应专题有兴趣的小伙伴列出几篇拓展文章，我觉得这种方式还是非常不错，所以这篇文章我也会列出几篇扩展的文章，供想更深入思考的小伙伴查阅。 可能有人会认为这两个用法会比较冷门，但是在跨系统调用api的过程中，表的数据量比较">
+<meta name="keywords" content="索引">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Integer和Integer比较以及Integer和Int的比较分析">
-<meta property="og:url" content="https://yuanrengu.com/2020/6bbb74ca.html">
+<meta property="og:title" content="【黑魔法】Covering Indexes、STRAIGHT_JOIN">
+<meta property="og:url" content="https://yuanrengu.com/2020/c8872fad.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+<meta property="og:description" content="今天给大家介绍两个黑魔法，这都是压箱底的法宝。大家在使用时，一定要弄清他们的适用场景及用法，用好了，就是一把开天斧，用不好那就是画蛇添足。自从看过耗子哥（左耳朵耗子）的博客，都会给对相应专题有兴趣的小伙伴列出几篇拓展文章，我觉得这种方式还是非常不错，所以这篇文章我也会列出几篇扩展的文章，供想更深入思考的小伙伴查阅。 可能有人会认为这两个用法会比较冷门，但是在跨系统调用api的过程中，表的数据量比较">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T06:42:16.347Z">
+<meta property="og:updated_time" content="2020-03-17T08:10:41.456Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Integer和Integer比较以及Integer和Int的比较分析">
-<meta name="twitter:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+<meta name="twitter:title" content="【黑魔法】Covering Indexes、STRAIGHT_JOIN">
+<meta name="twitter:description" content="今天给大家介绍两个黑魔法，这都是压箱底的法宝。大家在使用时，一定要弄清他们的适用场景及用法，用好了，就是一把开天斧，用不好那就是画蛇添足。自从看过耗子哥（左耳朵耗子）的博客，都会给对相应专题有兴趣的小伙伴列出几篇拓展文章，我觉得这种方式还是非常不错，所以这篇文章我也会列出几篇扩展的文章，供想更深入思考的小伙伴查阅。 可能有人会认为这两个用法会比较冷门，但是在跨系统调用api的过程中，表的数据量比较">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
-  <link rel="canonical" href="https://yuanrengu.com/2020/6bbb74ca">
+  <link rel="canonical" href="https://yuanrengu.com/2020/c8872fad">
 
 
 <script id="page.configurations">
@@ -85,7 +85,7 @@
   };
 </script>
 
-  <title>Integer和Integer比较以及Integer和Int的比较分析 | 猿人谷</title>
+  <title>【黑魔法】Covering Indexes、STRAIGHT_JOIN | 猿人谷</title>
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87311079-1"></script>
   <script>
@@ -265,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/6bbb74ca.html">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/c8872fad.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="猿人谷">
@@ -279,7 +279,7 @@
       <header class="post-header">
 
         
-          <h1 class="post-title" itemprop="name headline">Integer和Integer比较以及Integer和Int的比较分析
+          <h1 class="post-title" itemprop="name headline">【黑魔法】Covering Indexes、STRAIGHT_JOIN
 
               
             
@@ -299,7 +299,7 @@
                 
               
 
-              <time title="创建时间：2020-01-13 14:24:18 / 修改时间：14:42:16" itemprop="dateCreated datePublished" datetime="2020-01-13T14:24:18+08:00">2020-01-13</time>
+              <time title="创建时间：2020-03-17 16:08:44 / 修改时间：16:10:41" itemprop="dateCreated datePublished" datetime="2020-03-17T16:08:44+08:00">2020-03-17</time>
             </span>
           
             
@@ -314,7 +314,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a></span>
 
                 
                 
@@ -339,7 +339,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">2.8k</span>
+              <span title="本文字数">3.4k</span>
             </span>
           
             <span class="post-meta-item">
@@ -362,46 +362,53 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。</p>
-<p>java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（boolean、byte、short、char、int、float、double、long、void）之一。Integer是int对应的包装类，它有一个int类型的字段存储数据，并且提供了基本操作，比如数学运算、int和字符串之间转换等。在<strong>java 5中引入了自动装箱和自动拆箱功能（boxing/unboxing）</strong>，java可以根据上下文，自动进行转换，极大地简化了相关编程。javac自动把<strong>装箱</strong>转换为<strong>Integer.valueOf()</strong>,把<strong>拆箱</strong>替换为<strong>Integer.intValue()</strong>。</p>
-<p>自动装箱实际上算是一种语法糖。什么是语法糖？可以简单理解为java平台为我们自动进行了一些转换，保证不同的写法在运行时等价，他们发生在<code>编译阶段</code>，也就是生产的字节码是一致的。（此句摘自极客时间专栏）</p>
-<p>原始数据类型的变量，需要使用并发相关手段才能保证线程安全。如果有线程安全的计算需要，建议考虑使用类似AtomicInteger、AtomicLong这样的线程安全类。</p>
-<p><code>原始数据类型和java泛型并不能配合使用</code>。因为java的泛型某种程度上可以算作伪泛型，它完全是一种<code>编译期</code>的技巧，java编译期会自动将类型转换为对应的特定类型。这就决定了使用泛型，必须保证相应类型可以转换为Object。</p>
-<p>废话不多说，直接来demo，这样效果更直接。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Integer a1 = <span class="number">6</span>;</span><br><span class="line">		Integer a2 = <span class="number">6</span>;</span><br><span class="line">		<span class="keyword">int</span> a11 = <span class="number">6</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a1 == a11); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a3 = <span class="number">128</span>;</span><br><span class="line">		Integer a4 = <span class="number">128</span>;</span><br><span class="line">		<span class="keyword">int</span> a33 = <span class="number">128</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a3 == a4); <span class="comment">//false</span></span><br><span class="line">		<span class="comment">//Integer会自动拆箱为int，所以为true</span></span><br><span class="line">		System.out.println(a3 == a33); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a5 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		Integer a6 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.println(a5 == a6); <span class="comment">//false</span></span><br><span class="line">		System.out.println(a5.equals(a6)); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-<p>需要明确的一点是，包装型（Integer）和基本型（int）比较会自动拆箱（jdk1.5以上）。</p>
-<p>在这里很多人比较容易迷惑的是如下情况：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer a1 = <span class="number">6</span>;</span><br><span class="line">Integer a2 = <span class="number">6</span>;</span><br><span class="line">System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3 == a4); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
-
-<p>如果研究过jdk源码，你就会发现Integer a3 = 128;在java编译时会被翻译成 Integer a3 = Integer.valueOf(128); 我们再来看看valueOf()的源码就更清晰了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>由以上源码就会发现，<code>对于-128到127之间的数，会进行缓存</code>，Integer a1 = 6时，会将6进行缓存，下次再写Integer a2 = 6;时，就会直接从缓存中取，也就不用new一个对象了，所以a1和a2比较时就为true。但a3和a4是超过范围，会new一个对象，<code>==是进行地址和值比较，是比较两个对象在JVM中的地址</code>，这时a3和a4虽然值相同但地址是不一样的，所以比较就为false了。</p>
-<p>通过上面的分析可知：</p>
-<ul>
-<li>两个都不是new出来的Integer，且数值在-128~127之间，用==比较时，基本值相等时为true，否则为false；</li>
-<li>两个都是new出来的Integer，为false</li>
-<li>int和Integer比较，数值相同，用==比较时为true。（因为Integer会自动拆箱为int去比较）</li>
-</ul>
+        <p>今天给大家介绍两个黑魔法，这都是压箱底的法宝。大家在使用时，一定要弄清他们的适用场景及用法，用好了，就是一把开天斧，用不好那就是画蛇添足。自从看过耗子哥（左耳朵耗子）的博客，都会给对相应专题有兴趣的小伙伴列出几篇拓展文章，我觉得这种方式还是非常不错，所以这篇文章我也会列出几篇扩展的文章，供想更深入思考的小伙伴查阅。</p>
+<p>可能有人会认为这两个用法会比较冷门，但是在跨系统调用api的过程中，表的数据量比较大时，sql查询性能太差，会导致接口响应超时，就会对相应的业务产生非常大的影响。<code>系统优化，大家千万不要以为只是后端的代码优化而已，sql的优化同样也是重点</code>。</p>
+<h1 id="1-Covering-Indexes"><a href="#1-Covering-Indexes" class="headerlink" title="1 Covering Indexes"></a>1 Covering Indexes</h1><p>可能有小伙伴会问，Covering Indexes到底是什么神器呢？它又是如何来提升性能的呢？接下来我会用最通俗易懂的语言来进行介绍，毕竟不是每个程序猿都要像DBA那样深刻理解数据库，知道如何用以及如何用好神器才是最关键的。</p>
+<p>Covering Indexes就是一个索引覆盖所有要查询的字段（ps：这句话我挖个坑，文末我来解释）。</p>
 <blockquote>
-<p><code>所有包装类对象之间值的比较，建议使用equals方法比较</code>。</p>
+<p>An index that contains all required information to resolve the query is known as a “Covering Index” – it completely covers the query.<br>Covering Index includes all the columns, the query refers to in the SELECT, JOIN, and WHERE clauses.</p>
 </blockquote>
-<p><code>==</code>判断对象是否同一个。</p>
-<p>Integer var = ?在<code>缓存区间</code>的赋值，会复用已有对象，因此这个区间内的Integer使用==进行判断可通过，但是区间之外的所有数据，则会在<code>堆</code>上新产生，不会通过。</p>
-<p>因此如果用== 来比较数值，很可能在小的测试数据中通过，而到了生产环境才出问题。</p>
-<p>为了节省内容，对与下列包装对象的两个实例，当他们的基本值相同时，用==判断会为true：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Boolean  </span><br><span class="line">Byte  </span><br><span class="line">Character, \u0000 - \u007f(7f是十进制的127)  </span><br><span class="line">Integer, -128 — 127</span><br></pre></td></tr></table></figure>
+<p>由于覆盖索引可以减少树的搜索次数，显著提升查询性能，所以使用覆盖索引是一个常用的性能优化手段。</p>
+<p>接下来我们通过一个非常简单的sql来进行分析：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column1, column2 <span class="keyword">FROM</span> tablename <span class="keyword">WHERE</span> column3=xxx;</span><br></pre></td></tr></table></figure>
 
-<p>我们也可以看看其它包装型的缓存情况：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Boolean：(全部缓存)</span><br><span class="line">Byte：(全部缓存)</span><br><span class="line"></span><br><span class="line">Character(缓存范围<span class="string">'\u0000'</span>到<span class="string">'\u007F'</span>)</span><br><span class="line">Short(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line">Long(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line"></span><br><span class="line">Float(没有缓存)</span><br><span class="line">﻿﻿﻿﻿﻿﻿Doulbe(没有缓存)</span><br></pre></td></tr></table></figure>
+<p>你能想象将sql的执行时间从1.8秒，降到1.2秒，继续压榨到0.5，0.2…..，酣畅淋漓，怎一个爽字了得。就跟排兵布阵一样，打胜仗固然重要，但得想出成本最低效果最好的阵法，定会收获满满的成就感。</p>
+<p>这条sql要如何来进行优化呢？第一反应可能就是说给“column3”加索引（普通索引或唯一索引）啊，没错，这样确实能在很大程度上提升这条sql的性能。</p>
+<p>我们来分析下上面sql的执行计划：因为给“column3”建了索引，就会快速根据这个索引查询到符合条件的结果；然后再去这些符合条件的结果里查找所需的column1、column2字段；请注意，整个过程出现了两次查询，一次是查询索引，另一次查询结果的所需字段。</p>
+<p>那能不能将上面说的执行计划再优化一下呢？大杀器Covering Indexes就是用来干这事的。给column3、column1、column2建个复合索引，如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> <span class="keyword">index</span> index_column3 (column3，column1，column2) ;</span><br></pre></td></tr></table></figure>
 
-<p>﻿﻿﻿﻿﻿﻿<br>如果要比较两个Integer对象的值（均为new的对象），可以通过<code>.intValue()</code>进行转换后来比较，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.intValue() == a4.intValue());</span><br></pre></td></tr></table></figure>
+<p><strong>这样就可以直接通过索引就能查询出符合条件的数据，而不必像上面那样先去查索引，然后再去查数据的两个过程</strong>。</p>
+<p>光说不练那是假把式！小伙伴们可以用explain去试试上面的两种情况，如果执行复合索引后的情况，你会发现Extra里出现Using index。</p>
+<p>刚开始我说挖了个坑，现在我把坑填上。既然神器Covering Indexes这么好用，以后select语句的我都不管三七二十一的都亮出神器。难不成你select *也要亮神器？一个表那么多字段，全建成索引？那索引文件会不堪重负的，这就会适得其反，带来一系列恶果的。索引文件过大会造成insert、update非常慢，你select倒是爽快了，不能不顾其他兄弟吧，不仗义的事咱不能干，切记！</p>
+<p>如果看完这个分析还不过瘾，下面我给几篇扩展文章：<br><a href="https://www.c-sharpcorner.com/UploadFile/b075e6/improving-sql-performance-using-covering-indexes/" target="_blank" rel="noopener">https://www.c-sharpcorner.com/UploadFile/b075e6/improving-sql-performance-using-covering-indexes/</a><br><a href="https://www.red-gate.com/simple-talk/sql/learn-sql-server/using-covering-indexes-to-improve-query-performance/" target="_blank" rel="noopener">https://www.red-gate.com/simple-talk/sql/learn-sql-server/using-covering-indexes-to-improve-query-performance/</a><br><a href="https://stackoverflow.com/questions/609343/what-are-covering-indexes-and-covered-queries-in-sql-server" target="_blank" rel="noopener">https://stackoverflow.com/questions/609343/what-are-covering-indexes-and-covered-queries-in-sql-server</a><br><a href="https://stackoverflow.com/questions/62137/what-is-a-covered-index" target="_blank" rel="noopener">https://stackoverflow.com/questions/62137/what-is-a-covered-index</a></p>
+<h1 id="2-STRAIGHT-JOIN"><a href="#2-STRAIGHT-JOIN" class="headerlink" title="2 STRAIGHT_JOIN"></a>2 STRAIGHT_JOIN</h1><p>接下来给大家下另一个性能提升神器-STRAIGHT_JOIN，在数据量大的联表查询中灵活运用的话，能大大缩短查询时间。</p>
+<p>首先来解释下STRAIGHT_JOIN到底是用做什么的：</p>
+<blockquote>
+<p>STRAIGHT_JOIN is similar to JOIN, except that the left table is always read before the right table.<br>This can be used for those (few) cases for which the join optimizer puts the tables in the wrong order.</p>
+</blockquote>
+<p>意思就是说STRAIGHT_JOIN功能同join类似，但能让左边的表来驱动右边的表，能改表优化器对于联表查询的执行顺序。</p>
+<p>接下来我们举个例子进行大致的分析：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t1.*</span><br><span class="line"><span class="keyword">from</span> Table1 t1</span><br><span class="line"><span class="keyword">inner</span> <span class="keyword">join</span> Table2 t2</span><br><span class="line"><span class="keyword">on</span> t1.CommonID = t2.CommonID</span><br><span class="line"><span class="keyword">where</span> t1.FilterID = <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
-<p>也可以使用<code>equal()</code>来进行比较，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<p>以上sql大数据量下执行需要30s，是不是很奇怪？明明Table1表的FilterID字段建了索引啊，Table1和Table2的CommonID也建了索引啊。通过explain来分析，你会发现执行计划中表的执行顺序是Table2-&gt;Table1。<code>这个时候要略微介绍下驱动表的概念，mysql中指定了连接条件时，满足查询条件的记录行数少的表为驱动表；如未指定查询条件，则扫描行数少的为驱动表。mysql优化器就是这么粗暴以小表驱动大表的方式来决定执行顺序的。</code></p>
+<p>但如下sql的执行时间都少于1s：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t1.*</span><br><span class="line"><span class="keyword">from</span> Table1 t1</span><br><span class="line"><span class="keyword">where</span> t1.FilterID = <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
+<p>或</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t1.*</span><br><span class="line"><span class="keyword">from</span> Table1 t1</span><br><span class="line"><span class="keyword">inner</span> <span class="keyword">join</span> Table2 t2</span><br><span class="line"><span class="keyword">on</span> t1.CommonID = t2.CommonID</span><br></pre></td></tr></table></figure>
+
+<p>这个时候STRAIGHT_JOIN就派上用场，我们对sql进行改造如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t1.*</span><br><span class="line"><span class="keyword">from</span> Table1 t1</span><br><span class="line"><span class="keyword">STRAIGHT_JOIN</span>  Table2 t2</span><br><span class="line"><span class="keyword">on</span> t1.CommonID = t2.CommonID</span><br><span class="line"><span class="keyword">where</span> t1.FilterID = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>用explain进行分析，发现执行顺序为Table1-&gt;Table2，这时就由Table1来作为驱动表了，Table1中相应的索引也就用上了，执行时间竟然低于1s了。</p>
+<p>分析到这里，必须要重点说下：</p>
+<ul>
+<li>STRAIGHT_JOIN只适用于inner join，并不能使用于left join，right join。（因为left join，right join已经代表指定了表的执行顺序）</li>
+<li>尽可能让优化器去判断，因为大部分情况下mysql优化器是比人要聪明的。使用STRAIGHT_JOIN一定要慎重，因为啊部分情况下认为指定的执行顺序并不一定会比优化引擎要靠谱。</li>
+</ul>
+<p>扩展阅读：<br><a href="https://stackoverflow.com/questions/512294/when-to-use-straight-join-with-mysql" target="_blank" rel="noopener">https://stackoverflow.com/questions/512294/when-to-use-straight-join-with-mysql</a><br><a href="https://stackoverflow.com/questions/5818837/why-does-straight-join-so-drastically-improve-this-query-and-what-does-it-mean" target="_blank" rel="noopener">https://stackoverflow.com/questions/5818837/why-does-straight-join-so-drastically-improve-this-query-and-what-does-it-mean</a><br><a href="https://dev.mysql.com/doc/refman/8.0/en/join.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/8.0/en/join.html</a></p>
 
     </div>
       
@@ -410,21 +417,7 @@
     <li class="popular-posts-item">
       
       
-      <div class="popular-posts-title"><a href="/2020/479c94ba.html" rel="bookmark">通过jstack与jmap分析一次线上故障</a></div>
-      
-    </li>
-  
-    <li class="popular-posts-item">
-      
-      
-      <div class="popular-posts-title"><a href="/2020/fb3dc37a.html" rel="bookmark">Java中List求并集、交集、差集、无重复并集</a></div>
-      
-    </li>
-  
-    <li class="popular-posts-item">
-      
-      
-      <div class="popular-posts-title"><a href="/2020/4a91d705.html" rel="bookmark">内存泄漏与内存溢出</a></div>
+      <div class="popular-posts-title"><a href="/2020/fb519654.html" rel="bookmark">深入浅出Mysql索引的那些事儿</a></div>
       
     </li>
   
@@ -462,12 +455,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>Integer和Integer比较以及Integer和Int的比较分析</a></p>
+  <p><span>本文标题:</span>【黑魔法】Covering Indexes、STRAIGHT_JOIN</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
-  <p><span>发布时间:</span>2020年01月13日 - 14:24:18</p>
-  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
-  <p><span>原始链接:</span><a href="/2020/6bbb74ca.html" title="Integer和Integer比较以及Integer和Int的比较分析">https://yuanrengu.com/2020/6bbb74ca.html</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/6bbb74ca.html"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2020年03月17日 - 16:08:44</p>
+  <p><span>最后更新:</span>2020年03月17日 - 16:10:41</p>
+  <p><span>原始链接:</span><a href="/2020/c8872fad.html" title="【黑魔法】Covering Indexes、STRAIGHT_JOIN">https://yuanrengu.com/2020/c8872fad.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/c8872fad.html"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -494,13 +487,13 @@
           
         
         <div class="post-tags">
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+            <a href="/tags/索引/" rel="tag"><i class="fa fa-tag"></i> 索引</a>
           
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/49f0797e.html" rel="next" title="1.Apollo本地运行环境搭建">
-                <i class="fa fa-chevron-left"></i> 1.Apollo本地运行环境搭建
+              <a href="/2020/479c94ba.html" rel="next" title="通过jstack与jmap分析一次线上故障">
+                <i class="fa fa-chevron-left"></i> 通过jstack与jmap分析一次线上故障
               </a>
             
           </div>
@@ -508,10 +501,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/baec5dff.html" rel="prev" title="Lombok介绍、使用方法和总结">
-                Lombok介绍、使用方法和总结 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
     </footer>
@@ -544,8 +533,17 @@
 
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -701,6 +699,23 @@
 
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Covering-Indexes"><span class="nav-text">1 Covering Indexes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-STRAIGHT-JOIN"><span class="nav-text">2 STRAIGHT_JOIN</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
     </div>
   </aside>
