@@ -71,7 +71,7 @@
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="一.索引的作用一般的应用系统，读写比例在10:1左右，而且插入操作和一般的更新操作很少出现性能问题，遇到最多的，也是最容易出问题的，还是一些复杂的查询操作，所以查询语句的优化显然是重中之重。 在数据量和访问量不大的情况下，mysql访问是非常快的，是否加索引对访问影响不大。但是当数据量和访问量剧增的时候，就会发现mysql变慢，甚至down掉，这就必须要考虑优化sql了，给数据库建立正确合理的索引">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-03-18T00:59:10.381Z">
+<meta property="og:updated_time" content="2020-03-18T02:59:20.050Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出Mysql索引的那些事儿">
 <meta name="twitter:description" content="一.索引的作用一般的应用系统，读写比例在10:1左右，而且插入操作和一般的更新操作很少出现性能问题，遇到最多的，也是最容易出问题的，还是一些复杂的查询操作，所以查询语句的优化显然是重中之重。 在数据量和访问量不大的情况下，mysql访问是非常快的，是否加索引对访问影响不大。但是当数据量和访问量剧增的时候，就会发现mysql变慢，甚至down掉，这就必须要考虑优化sql了，给数据库建立正确合理的索引">
@@ -312,7 +312,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-18 08:59:10" itemprop="dateModified" datetime="2020-03-18T08:59:10+08:00">2020-03-18</time>
+                <time title="修改时间：2020-03-18 10:59:20" itemprop="dateModified" datetime="2020-03-18T10:59:20+08:00">2020-03-18</time>
               </span>
             
           
@@ -349,7 +349,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">6.5k</span>
+              <span title="本文字数">6.6k</span>
             </span>
           
             <span class="post-meta-item">
@@ -477,9 +477,14 @@
 <ul>
 <li>表记录太少</li>
 <li>经常插入、删除、修改的表</li>
+<li><code>更新非常频繁的字段不适合创建索引</code></li>
 <li>数据重复且分布平均的表字段。如一个表有10万行记录，其中字段column1只有A和B两种值，且每个值的分布概率大约为50%，那么对这种表column1字段建索引一般不会提高数据库的查询速度。</li>
+<li>较频繁的查询字段应该创建索引</li>
+<li>唯一性太差的字段不适合单独创建索引，即使该字段频繁作为查询条件</li>
 </ul>
 </li>
+</ol>
+<ol start="18">
 <li><p>给表创建主键，对于没有主键的表，在查询和索引定义上有一定的影响。</p>
 </li>
 <li><p>避免表字段为null，建议设置默认值（如int类型设置默认值为0），这样在索引查询上，效率会高很多。</p>
@@ -573,7 +578,7 @@
   <p><span>本文标题:</span>深入浅出Mysql索引的那些事儿</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年02月26日 - 15:13:03</p>
-  <p><span>最后更新:</span>2020年03月18日 - 08:59:10</p>
+  <p><span>最后更新:</span>2020年03月18日 - 10:59:20</p>
   <p><span>原始链接:</span><a href="/2020/fb519654.html" title="深入浅出Mysql索引的那些事儿">https://yuanrengu.com/2020/fb519654.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/fb519654.html"  aria-label="复制成功！"></i></span>
   </p>
