@@ -73,7 +73,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154339.png">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pLmxvbGkubmV0LzIwMTkvMTAvMTkvblRneGVCUG1HOWhWc1c0LnBuZw?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2020-03-05T06:11:48.918Z">
+<meta property="og:updated_time" content="2020-03-24T06:07:15.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="弄明白CMS和G1，就靠这一篇了">
 <meta name="twitter:description" content="在开始介绍CMS和G1前，我们可以剧透几点：  根据不同分代的特点，收集器可能不同。有些收集器可以同时用于新生代和老年代，而有些时候，则需要分别为新生代或老年代选用合适的收集器。一般来说，新生代收集器的收集频率较高，应选用性能高效的收集器；而老年代收集器收集次数相对较少，对空间较为敏感，应当避免选择基于复制算法的收集器。 在垃圾收集执行的时刻，应用程序需要暂停运行。 可以串行收集，也可以并行收集。">
@@ -315,7 +315,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-05 14:11:48" itemprop="dateModified" datetime="2020-03-05T14:11:48+08:00">2020-03-05</time>
+                <time title="修改时间：2020-03-24 14:07:15" itemprop="dateModified" datetime="2020-03-24T14:07:15+08:00">2020-03-24</time>
               </span>
             
           
@@ -352,7 +352,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">7.1k</span>
+              <span title="本文字数">8.3k</span>
             </span>
           
             <span class="post-meta-item">
@@ -362,7 +362,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">6 分钟</span>
+              <span title="阅读时长">8 分钟</span>
             </span>
           
 
@@ -523,9 +523,57 @@
 <blockquote>
 <p>Future:<br>G1 is planned as the long term replacement for the Concurrent Mark-Sweep Collector (CMS). Comparing G1 with CMS, there are differences that make G1 a better solution. One difference is that G1 is a compacting collector. G1 compacts sufficiently to completely avoid the use of fine-grained free lists for allocation, and instead relies on regions. This considerably simplifies parts of the collector, and mostly eliminates potential fragmentation issues. Also, G1 offers more predictable garbage collection pauses than the CMS collector, and allows users to specify desired pause targets.</p>
 </blockquote>
-<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3 总结"></a>3 总结</h2><p>查了下度娘有关G1的文章，绝大部分文章对G1的介绍都是停留在JDK7或更早期的实现很多结论已经存在较大偏差了，甚至一些过去的GC选项已经不再推荐使用。举个例子，JDK9中JVM和GC日志进行了重构，如PrintGCDetails已经被标记为废弃，而PrintGCDateStamps已经被移除，指定它会导致JVM无法启动。</p>
+<h2 id="3-ZGC"><a href="#3-ZGC" class="headerlink" title="3 ZGC"></a>3 ZGC</h2><p>ZGC(Z Garbage Collector)作为一种比较新的收集器，目前还没有得到大范围的关注。作为一款低延迟的垃圾收集器，它有如下几个亮点：</p>
+<ul>
+<li>停顿时间不会超过 10ms</li>
+<li>停顿时间不会随着堆的增大而增大（控制停顿时间在10ms内）</li>
+<li>支持堆的大小范围很广（8MB-16TB）</li>
+</ul>
+<p>在ZGC中，连逻辑上的也是重新定义了堆空间（不区分年轻代和老年代），只分为一块块的page，每次进行GC时，都会对page进行压缩操作，所以没有碎片问题。虽然ZGC属于很新的GC技术, 但优点不一定真的出众，ZGC只在特定情况下具有绝对的优势, 如<code>巨大的堆和极低的暂停需求</code>。而实际上大多数开发在这两方面都不太成问题(尤其是在服务器端), 而对GC的性能/效率更在意。也有一种观点认为ZGC是为大内存、多cpu而生，它通过分区的思路来降低STW。</p>
+<p>ZGC在JDK14前只支持Linux, 从JDK14开始支持Mac和Windows。</p>
+<p>可以从官网看下ZGC的Change Log：</p>
+<ul>
+<li>JDK 15 (under development)<ul>
+<li>Improved NUMA awareness</li>
+<li>Support for Class Data Sharing (CDS)</li>
+<li>Support for placing the heap on NVRAM</li>
+<li><code>&lt;TBD&gt;</code></li>
+</ul>
+</li>
+<li>JDK 14<ul>
+<li>macOS support (JEP 364)</li>
+<li>Windows support (JEP 365)</li>
+<li>Support for tiny/small heaps (down to 8M)</li>
+<li>Support for JFR leak profiler</li>
+<li>Support for limited and discontiguous address space</li>
+<li>Parallel pre-touch (when using -XX:+AlwaysPreTouch)</li>
+<li>Performance improvements (clone intrinsic, etc)</li>
+<li>Stability improvements</li>
+</ul>
+</li>
+<li>JDK 13<ul>
+<li>Increased max heap size from 4TB to 16TB</li>
+<li>Support for uncommitting unused memory (JEP 351)</li>
+<li>Support for -XX:SoftMaxHeapSIze</li>
+<li>Support for the Linux/AArch64 platform</li>
+<li>Reduced Time-To-Safepoint</li>
+</ul>
+</li>
+<li>JDK 12<ul>
+<li>Support for concurrent class unloading</li>
+<li>Further pause time reductions</li>
+</ul>
+</li>
+<li>JDK 11<ul>
+<li>Initial version of ZGC</li>
+<li>Does not support class unloading (using -XX:+ClassUnloading has no effect)</li>
+</ul>
+</li>
+</ul>
+<p>可以看出ZGC未来可期，让我们拭目以待吧。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>查了下度娘有关G1的文章，绝大部分文章对G1的介绍都是停留在JDK7或更早期的实现很多结论已经存在较大偏差了，甚至一些过去的GC选项已经不再推荐使用。举个例子，JDK9中JVM和GC日志进行了重构，如PrintGCDetails已经被标记为废弃，而PrintGCDateStamps已经被移除，指定它会导致JVM无法启动。</p>
 <p>本文对CMS和G1的介绍绝大部分内容也是基于JDK7，新版本中的内容有一点介绍，倒没做过多介绍（本人对新版本JVM还没有深入研究），后面有机会可以再出专门的文章来重点介绍。</p>
-<h2 id="4-参考"><a href="#4-参考" class="headerlink" title="4 参考"></a>4 参考</h2><p>《深入理解Java虚拟机》<br>《HotSpot实战》<br>《极客时间专栏》<br><a href="https://plumbr.io/handbook/garbage-collection-algorithms-implementations#g1" target="_blank" rel="noopener">https://plumbr.io/handbook/garbage-collection-algorithms-implementations#g1</a><br><a href="https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html</a></p>
+<h2 id="5-参考"><a href="#5-参考" class="headerlink" title="5 参考"></a>5 参考</h2><p>《深入理解Java虚拟机》<br>《HotSpot实战》<br><a href="https://wiki.openjdk.java.net/display/zgc/Main" target="_blank" rel="noopener">https://wiki.openjdk.java.net/display/zgc/Main</a><br><a href="https://plumbr.io/handbook/garbage-collection-algorithms-implementations#g1" target="_blank" rel="noopener">https://plumbr.io/handbook/garbage-collection-algorithms-implementations#g1</a><br><a href="https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html" target="_blank" rel="noopener">https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html</a></p>
 
     </div>
       
@@ -624,7 +672,7 @@
   <p><span>本文标题:</span>弄明白CMS和G1，就靠这一篇了</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 16:00:00</p>
-  <p><span>最后更新:</span>2020年03月05日 - 14:11:48</p>
+  <p><span>最后更新:</span>2020年03月24日 - 14:07:15</p>
   <p><span>原始链接:</span><a href="/2020/4c889127.html" title="弄明白CMS和G1，就靠这一篇了">https://yuanrengu.com/2020/4c889127.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/4c889127.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -883,7 +931,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CMS收集器"><span class="nav-text">1 CMS收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全点-Safepoint"><span class="nav-text">安全点(Safepoint)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全区域"><span class="nav-text">安全区域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-G1收集器"><span class="nav-text">2 G1收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卡表（Card-Table）"><span class="nav-text">卡表（Card Table）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-总结"><span class="nav-text">3 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-参考"><span class="nav-text">4 参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CMS收集器"><span class="nav-text">1 CMS收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全点-Safepoint"><span class="nav-text">安全点(Safepoint)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全区域"><span class="nav-text">安全区域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-G1收集器"><span class="nav-text">2 G1收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卡表（Card-Table）"><span class="nav-text">卡表（Card Table）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-ZGC"><span class="nav-text">3 ZGC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-text">4 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-参考"><span class="nav-text">5 参考</span></a></li></ol></div>
             
 
           </div>
@@ -923,7 +971,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">83.4k</span> 字
+      博客全站共： <span class="post-count">83.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
