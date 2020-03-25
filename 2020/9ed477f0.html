@@ -73,7 +73,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154339.png">
 <meta property="og:image" content="https://image-static.segmentfault.com/210/199/2101995172-5d67311d24dfb_articlex">
-<meta property="og:updated_time" content="2020-03-05T01:35:32.098Z">
+<meta property="og:updated_time" content="2020-03-25T03:09:11.483Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】5.垃圾收集器及内存分配策略">
 <meta name="twitter:description" content="前面介绍了垃圾回收算法，接下来我们介绍垃圾收集器和内存分配的策略。有没有一种牛逼的收集器像银弹一样适配所有场景？很明显，不可能有，不然我也没必要单独搞一篇文章来介绍垃圾收集器了。熟悉不同收集器的优缺点，在实际的场景中灵活运用，才是王道。 在开始介绍垃圾收集器前，我们可以剧透几点：  根据不同分代的特点，收集器可能不同。有些收集器可以同时用于新生代和老年代，而有些时候，则需要分别为新生代或老年代选用">
@@ -315,7 +315,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-05 09:35:32" itemprop="dateModified" datetime="2020-03-05T09:35:32+08:00">2020-03-05</time>
+                <time title="修改时间：2020-03-25 11:09:11" itemprop="dateModified" datetime="2020-03-25T11:09:11+08:00">2020-03-25</time>
               </span>
             
           
@@ -352,7 +352,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">7k</span>
+              <span title="本文字数">7.1k</span>
             </span>
           
             <span class="post-meta-item">
@@ -412,6 +412,11 @@
 <li>-XX：UseAdaptiveSizePolicy：自动分代大小调节策略。</li>
 </ul>
 <p>但要注意停顿时间与吞吐量这两个目标是相悖的，降低停顿时间的同时也会引起吞吐的降低。因此需要将目标控制在一个合理的范围中。</p>
+<p>它与ParNew的主要区别是：</p>
+<ul>
+<li>Parallel Scavenge：追求CPU吞吐量，能够在较短时间内完成指定任务，适合没有交互的后台计算。弱交互强计算。</li>
+<li>ParNew：追求降低用户停顿时间，适合交互式应用。强交互弱计算。</li>
+</ul>
 <h3 id="1-4-Serial-Old收集器"><a href="#1-4-Serial-Old收集器" class="headerlink" title="1.4 Serial Old收集器"></a>1.4 Serial Old收集器</h3><p>Serial Old是Serial收集器的<strong>老年代</strong>版本，单线程收集器，使用<strong>标记-整理算法</strong>。这个收集器的主要意义也是在于给Client模式下的虚拟机使用。</p>
 <h3 id="1-5-Parallel-Old收集器"><a href="#1-5-Parallel-Old收集器" class="headerlink" title="1.5 Parallel Old收集器"></a>1.5 Parallel Old收集器</h3><p>Parallel Old是Parallel Scanvenge收集器的<strong>老年代</strong>版本，<strong>多线程</strong>收集器，使用<strong>标记-整理算法</strong>。</p>
 <h3 id="1-6-CMS收集器"><a href="#1-6-CMS收集器" class="headerlink" title="1.6 CMS收集器"></a>1.6 CMS收集器</h3><p><strong>CMS（Concurrent Mark Sweep）收集器是一种以获取最短回收停顿时间为目标的收集器</strong>。</p>
@@ -638,7 +643,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】5.垃圾收集器及内存分配策略</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 15:38:45</p>
-  <p><span>最后更新:</span>2020年03月05日 - 09:35:32</p>
+  <p><span>最后更新:</span>2020年03月25日 - 11:09:11</p>
   <p><span>原始链接:</span><a href="/2020/9ed477f0.html" title="【JVM从小白学成大佬】5.垃圾收集器及内存分配策略">https://yuanrengu.com/2020/9ed477f0.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/9ed477f0.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -935,7 +940,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">84k</span> 字
+      博客全站共： <span class="post-count">84.1k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
