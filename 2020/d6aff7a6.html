@@ -75,7 +75,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/18/QYD4cLRIl9zU52j.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/17/DbdKMswgfNeQAFW.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/17/WmFPQwVrRlExnjz.png">
-<meta property="og:updated_time" content="2020-03-24T03:07:28.028Z">
+<meta property="og:updated_time" content="2020-03-25T01:37:03.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">
 <meta name="twitter:description" content="这里我们先说句题外话，相信大家在面试中经常被问到介绍Java内存模型，我在面试别人时也会经常问这个问题。但是，往往都会令我比较尴尬，我还话音未落，面试者就会“背诵”一段（Java虚拟机是由堆、方法区、虚拟机栈，吧啦吧啦。。。），估计心里还一脸自豪的想幸好哥提前在网上搜过，早有准备。每每这个时候，我都不忍心打断，因为“背诵”的真的太顺畅了！ 这也怪不得面试者，首先Java虚拟机方面的知识，对中高级程">
@@ -317,7 +317,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-24 11:07:28" itemprop="dateModified" datetime="2020-03-24T11:07:28+08:00">2020-03-24</time>
+                <time title="修改时间：2020-03-25 09:37:03" itemprop="dateModified" datetime="2020-03-25T09:37:03+08:00">2020-03-25</time>
               </span>
             
           
@@ -354,7 +354,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">3.9k</span>
+              <span title="本文字数">4.2k</span>
             </span>
           
             <span class="post-meta-item">
@@ -390,6 +390,7 @@
 <h3 id="是否可能有两个对象共用一段内存的事故？"><a href="#是否可能有两个对象共用一段内存的事故？" class="headerlink" title="是否可能有两个对象共用一段内存的事故？"></a>是否可能有两个对象共用一段内存的事故？</h3><p>当调用new指令时，会在Eden区划出一块作为存储对象的内存。由于堆空间是线程共享的，因此直接在这里边划空间是需要进行<strong>同步</strong>的。否则，将有可能出现两个对象共用一段内存的事故。解决方法就是，Java堆中可能划出多个线程私有的分配缓冲区<strong>TLAB</strong>（Thread Local Allocation Buffer，对应的虚拟机参数-XX：+UseTLAB，默认开启）。</p>
 <p>具体来说，每个线程可以向Java虚拟机申请一段连续内存，比如2048字节，作为<code>线程私有</code>的TLAB。这个操作需要加锁，线程需要维护两个指针（实际上可能更多，但重要也就两个），一个指向TLAB中空余内存的起始位置，一个则指向TLAB末尾。接下来的new指令，便可以直接通过指针加法（bump the pointer），也有人叫做指针碰撞来实现，即把指向空余内存位置的指针加上所请求的字节数。如果加法后空余内存指针的值仍小于或等于指向末尾的指针，则代表分配成功。否则，TLAB已经没有足够的空间来满足本次新建操作。这个时候，便需要当前线程重新申请新的TLAB。</p>
 <p>JVM默认给每个线程分配一个buffer区域，用来加速对象分配，这个buffer就放在<code>Eden</code>中。对象的分配优化在TLAB上分配，但TLAB通常都不大，遇到对象比较大时，会在Eden区的共享区域进行分配。</p>
+<p>这里有一点要特别说明下，虽然上面说TLAB是线程私有的，也只是说在分配这个举动上是线程私有的，在其读取及垃圾回收上都是线程共享的，所以绝大部分情况下在使用上没什么区别。听闻有些“刁钻”一点的面试官在面试很喜欢挖坑问<code>“堆是线程共享的内存区域吗？”</code>其实回答是在很大程度上也没啥毛病，如果非要较真，就略微说下TLAB，因为TLAB是堆内存的一部分，它又是线程私有的，就让“堆是线程共享”这句话显得没有那么准确。</p>
 <h2 id="3-方法区（Method-Area）"><a href="#3-方法区（Method-Area）" class="headerlink" title="3.方法区（Method Area）"></a>3.方法区（Method Area）</h2><p>方法区与堆一样是线程共享的，在虚拟机启动的时候创建，方法区可视为堆的一个逻辑部分，但是它却有一个别名叫做Non-Heap（非堆），目的应该是与Java堆区分开来。</p>
 <p><strong>方法区类似于传统语言编译后的代码存储区域，它存储每个类的结构信息</strong>，如：</p>
 <ul>
@@ -519,7 +520,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月08日 - 15:49:25</p>
-  <p><span>最后更新:</span>2020年03月24日 - 11:07:28</p>
+  <p><span>最后更新:</span>2020年03月25日 - 09:37:03</p>
   <p><span>原始链接:</span><a href="/2020/d6aff7a6.html" title="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">https://yuanrengu.com/2020/d6aff7a6.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/d6aff7a6.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -818,7 +819,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">83.8k</span> 字
+      博客全站共： <span class="post-count">84k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
