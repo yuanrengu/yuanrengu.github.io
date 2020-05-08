@@ -63,19 +63,19 @@
   };
 </script>
 
-  <meta name="description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
+  <meta name="description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求诗">
 <meta name="keywords" content="面试,HashMap">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap在Jdk1.7和1.8中的实现">
 <meta property="og:url" content="https://yuanrengu.com/2020/ba184259.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
+<meta property="og:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求诗">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200114094745.png">
-<meta property="og:updated_time" content="2020-03-01T09:06:40.254Z">
+<meta property="og:updated_time" content="2020-05-08T03:18:52.684Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap在Jdk1.7和1.8中的实现">
-<meta name="twitter:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求">
+<meta name="twitter:description" content="Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求诗">
 <meta name="twitter:image" content="http://cdn.yuanrengu.com/img/20200114094745.png">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
   <link rel="canonical" href="https://yuanrengu.com/2020/ba184259">
@@ -314,7 +314,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-01 17:06:40" itemprop="dateModified" datetime="2020-03-01T17:06:40+08:00">2020-03-01</time>
+                <time title="修改时间：2020-05-08 11:18:52" itemprop="dateModified" datetime="2020-05-08T11:18:52+08:00">2020-05-08</time>
               </span>
             
           
@@ -374,7 +374,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧（，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求诗和远方（源码）。</p>
+        <p>Java集合类的源码是深入学习Java非常好的素材，源码里很多优雅的写法和思路，会让人叹为观止。HashMap的源码尤为经典，是非常值得去深入研究的，jdk1.8中HashMap发生了比较大的变化，这方面的东西也是各个公司高频的考点。网上也有很多应对面试的标准答案，我之前也写过类似的面试技巧，应付一般的面试应该是够了，但个人觉得这还是远远不够，毕竟我们不能只苟且于得到offer，更应去勇敢的追求诗和远方（源码）。</p>
 <p>jdk版本目前更新的相对频繁，好多小伙伴说jdk1.7才刚真正弄明白，1.8就出现了，1.8还用都没开始用，更高的jdk版本就又发布了。很多小伙伴大声疾呼：臣妾真的学不动啦！这也许就是技术的最大魅力吧，活到老学到老，没有人能说精通所有技术。不管jdk版本如何更新，目前jdk1.7和1.8还是各个公司的主力版本。不管是否学得动，难道各位小伙伴忘记了《倚天屠龙记》里九阳真经里的口诀：他强由他强，清风拂山岗；他横由他横，明月照大江。他自狠来他自恶，我自一口真气足。（原谅我插入广告缅怀金庸大师，年少时期读的最多的书就是金庸大师的，遍布侠骨柔情大义啊）。这里的“真气”就是先掌握好jdk1.7和1.8，其它学不动的版本以后再说。</p>
 <h1 id="一、初窥HashMap"><a href="#一、初窥HashMap" class="headerlink" title="一、初窥HashMap"></a>一、初窥HashMap</h1><p>HashMap是应用更广泛的<code>哈希表</code>实现，而且大部分情况下，都能在常数时间性能的情况下进行put和get操作。要掌握HashMap，主要从如下几点来把握：</p>
 <ul>
@@ -580,7 +580,7 @@
   <p><span>本文标题:</span>HashMap在Jdk1.7和1.8中的实现</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月05日 - 10:17:00</p>
-  <p><span>最后更新:</span>2020年03月01日 - 17:06:40</p>
+  <p><span>最后更新:</span>2020年05月08日 - 11:18:52</p>
   <p><span>原始链接:</span><a href="/2020/ba184259.html" title="HashMap在Jdk1.7和1.8中的实现">https://yuanrengu.com/2020/ba184259.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/ba184259.html"  aria-label="复制成功！"></i></span>
   </p>
