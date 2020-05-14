@@ -71,10 +71,12 @@
 <meta property="og:site_name" content="猿人谷">
 <meta property="og:description" content="一.索引的作用一般的应用系统，读写比例在10:1左右，而且插入操作和一般的更新操作很少出现性能问题，遇到最多的，也是最容易出问题的，还是一些复杂的查询操作，所以查询语句的优化显然是重中之重。 在数据量和访问量不大的情况下，mysql访问是非常快的，是否加索引对访问影响不大。但是当数据量和访问量剧增的时候，就会发现mysql变慢，甚至down掉，这就必须要考虑优化sql了，给数据库建立正确合理的索引">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-03-18T02:59:20.050Z">
+<meta property="og:image" content="http://cdn.yuanrengu.com/img/20200514101841.png">
+<meta property="og:updated_time" content="2020-05-14T02:30:54.677Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入浅出Mysql索引的那些事儿">
 <meta name="twitter:description" content="一.索引的作用一般的应用系统，读写比例在10:1左右，而且插入操作和一般的更新操作很少出现性能问题，遇到最多的，也是最容易出问题的，还是一些复杂的查询操作，所以查询语句的优化显然是重中之重。 在数据量和访问量不大的情况下，mysql访问是非常快的，是否加索引对访问影响不大。但是当数据量和访问量剧增的时候，就会发现mysql变慢，甚至down掉，这就必须要考虑优化sql了，给数据库建立正确合理的索引">
+<meta name="twitter:image" content="http://cdn.yuanrengu.com/img/20200514101841.png">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
   <link rel="canonical" href="https://yuanrengu.com/2020/fb519654">
 
@@ -312,7 +314,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-18 10:59:20" itemprop="dateModified" datetime="2020-03-18T10:59:20+08:00">2020-03-18</time>
+                <time title="修改时间：2020-05-14 10:30:54" itemprop="dateModified" datetime="2020-05-14T10:30:54+08:00">2020-05-14</time>
               </span>
             
           
@@ -349,7 +351,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">6.6k</span>
+              <span title="本文字数">7.2k</span>
             </span>
           
             <span class="post-meta-item">
@@ -359,7 +361,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span title="阅读时长">6 分钟</span>
+              <span title="阅读时长">7 分钟</span>
             </span>
           
 
@@ -423,8 +425,109 @@
 
 <h1 id="三-索引的使用及注意事项"><a href="#三-索引的使用及注意事项" class="headerlink" title="三.索引的使用及注意事项"></a>三.索引的使用及注意事项</h1><p><strong>EXPLAIN</strong>可以帮助开发人员分析SQL问题,explain显示了mysql如何使用索引来处理select语句以及连接表,可以帮助选择更好的索引和写出更优化的查询语句。</p>
 <p>使用方法,在select语句前加上Explain就可以了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Explain select * from user where id=1;</span><br></pre></td></tr></table></figure>
-
+<p><img src="http://cdn.yuanrengu.com/img/20200514101841.png" alt></p>
+<p>简要说明下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>选择标识符。id越大优先级越高，就越先被执行</td>
+</tr>
+<tr>
+<td>select_type</td>
+<td>查询的类型</td>
+</tr>
+<tr>
+<td>table</td>
+<td>输出结果集的表</td>
+</tr>
+<tr>
+<td>partitions</td>
+<td>匹配的分区</td>
+</tr>
+<tr>
+<td>type</td>
+<td>表的连接类型</td>
+</tr>
+<tr>
+<td>possible_keys</td>
+<td>查询时可能使用的索引</td>
+</tr>
+<tr>
+<td>key</td>
+<td>查询时可能使用的索引</td>
+</tr>
+<tr>
+<td>key_len</td>
+<td>索引字段的长度</td>
+</tr>
+<tr>
+<td>ref</td>
+<td>列与索引的比较</td>
+</tr>
+<tr>
+<td>rows</td>
+<td>大概估算的行数</td>
+</tr>
+<tr>
+<td>filtered</td>
+<td>按表条件过滤的行百分比</td>
+</tr>
+<tr>
+<td>Extra</td>
+<td>执行情况的描述和说明</td>
+</tr>
+</tbody></table>
+<p>以上字段中type字段是非常重要的，表的连接类型如下：</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>all</td>
+<td>扫描全表数据</td>
+</tr>
+<tr>
+<td>index</td>
+<td>遍历索引</td>
+</tr>
+<tr>
+<td>range</td>
+<td>索引范围查找</td>
+</tr>
+<tr>
+<td>index_subquery</td>
+<td>在子查询中使用ref</td>
+</tr>
+<tr>
+<td>unique_subquery</td>
+<td>在子查询中使用eq_ref</td>
+</tr>
+<tr>
+<td>ref_or_null</td>
+<td>对null进行索引的优化的ref</td>
+</tr>
+<tr>
+<td>fulltext</td>
+<td>使用全文索引</td>
+</tr>
+<tr>
+<td>ref</td>
+<td>使用非唯一索引查找数据</td>
+</tr>
+<tr>
+<td>eq_ref</td>
+<td>在join查询中使用主键或唯一索引关联</td>
+</tr>
+</tbody></table>
 <p>尽量避免这些不走索引的sql：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span>,phone <span class="keyword">FROM</span> <span class="string">`user`</span> <span class="keyword">WHERE</span> <span class="string">`age`</span>+<span class="number">10</span>=<span class="number">30</span>; <span class="comment">-- 不会使用索引,因为所有索引列参与了计算</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span>,phone  <span class="keyword">FROM</span> <span class="string">`user`</span> <span class="keyword">WHERE</span> <span class="keyword">LEFT</span>(<span class="string">`date`</span>,<span class="number">4</span>) &lt;<span class="number">1990</span>; <span class="comment">-- 不会使用索引,因为使用了函数运算,原理与上面相同</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`user`</span> <span class="keyword">WHERE</span> <span class="string">`name`</span> <span class="keyword">LIKE</span><span class="string">'后盾%'</span> <span class="comment">-- 走索引</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`user`</span> <span class="keyword">WHERE</span> <span class="string">`name`</span> <span class="keyword">LIKE</span> <span class="string">"%后盾%"</span> <span class="comment">-- 不走索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 正则表达式不使用索引,这应该很好理解,所以为什么在SQL中很难看到regexp关键字的原因</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 字符串与数字比较不使用索引;</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`a`</span> (<span class="string">`a`</span> <span class="built_in">char</span>(<span class="number">10</span>));</span><br><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`a`</span> <span class="keyword">WHERE</span> <span class="string">`a`</span>=<span class="string">"1"</span> <span class="comment">-- 走索引</span></span><br><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`a`</span> <span class="keyword">WHERE</span> <span class="string">`a`</span>=<span class="number">1</span> <span class="comment">-- 不走索引</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dept <span class="keyword">where</span> dname=<span class="string">'xxx'</span> <span class="keyword">or</span> loc=<span class="string">'xx'</span> <span class="keyword">or</span> deptno=<span class="number">45</span> <span class="comment">--如果条件中有or,即使其中有条件带索引也不会使用。换言之,就是要求使用的所有字段,都必须建立索引, 我们建议大家尽量避免使用or 关键字</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 如果mysql估计使用全表扫描要比使用索引快,则不使用索引</span></span><br></pre></td></tr></table></figure>
 
@@ -435,6 +538,7 @@
 <li>建立索引会占用磁盘空间的索引文件。一般情况这个问题不太严重，但如果你在要给大表上建了多种组合索引，索引文件会膨胀很宽</li>
 </ul>
 <p>索引只是提高效率的一个方式，如果mysql有大数据量的表，就要花时间研究建立最优的索引，或优化查询语句。</p>
+<p>尽可能的使用主键查询，因为主键查询不会触发<code>回表查询</code>，能节省一部分时间，变相提高了查询的性能。</p>
 <h2 id="使用索引时，有一些技巧"><a href="#使用索引时，有一些技巧" class="headerlink" title="使用索引时，有一些技巧"></a>使用索引时，有一些技巧</h2><ol>
 <li><p>索引不会包含有NULL的列<br> 只要列中包含有NULL值，都将不会被包含在索引中，复合索引中只要有一列含有NULL值，那么这一列对于此复合索引就是无效的。</p>
 </li>
@@ -483,37 +587,37 @@
 <li>唯一性太差的字段不适合单独创建索引，即使该字段频繁作为查询条件</li>
 </ul>
 </li>
-</ol>
-<ol start="18">
 <li><p>给表创建主键，对于没有主键的表，在查询和索引定义上有一定的影响。</p>
 </li>
 <li><p>避免表字段为null，建议设置默认值（如int类型设置默认值为0），这样在索引查询上，效率会高很多。</p>
 </li>
 <li><p>关于order by的索引问题重点说下:</p>
-</li>
-</ol>
 <ul>
-<li><p>无条件查询如果只有order by create_time，即便create_time上有索引，也不会使用到。<br> 因为优化器认为走二级索引再去回表成本比全表扫描排序更高，所以选择走全表扫描。</p>
+<li><p>无条件查询如果只有order by create_time，即便create_time上有索引，也不会使用到。<br>因为优化器认为走二级索引再去回表成本比全表扫描排序更高，所以选择走全表扫描。</p>
 </li>
-<li><p>无条件查询但是order by create_time limit m，如果m值较小，是可以走索引的。</p>
-<pre><code>因为优化器认为根据索引有序性去回表查数据，然后得到m条数据，就可以终止循环，
-那么成本比全表扫描小，则选择走二级索引。
-即便没有二级索引，mysql针对order by limit也做了优化，采用堆排序。</code></pre></li>
+<li><p>无条件查询但是order by create_time limit m，如果m值较小，是可以走索引的。<br>因为优化器认为根据索引有序性去回表查数据，然后得到m条数据，就可以终止循环，<br>那么成本比全表扫描小，则选择走二级索引。<br>即便没有二级索引，mysql针对order by limit也做了优化，采用堆排序。</p>
+</li>
 <li><p>order by排序分为file sort和index，index的效率更高。但以下情况不会使用index排序：</p>
 <ul>
-<li><p>检查的行数过多，并且没有使用覆盖索引</p>
-</li>
-<li><p>使用了多个索引，mysql一次只会采用一个索引</p>
-</li>
-<li><p>where和order by使用了不同的索引，与上一条类似</p>
-</li>
-<li><p>order by中加入了非索引列，且非索引列不在where中</p>
-</li>
-<li><p>当使用left join，使用右边的表字段排序</p>
-</li>
+<li>检查的行数过多，并且没有使用覆盖索引</li>
+<li>使用了多个索引，mysql一次只会采用一个索引</li>
+<li>where和order by使用了不同的索引，与上一条类似</li>
+<li>order by中加入了非索引列，且非索引列不在where中</li>
+<li>当使用left join，使用右边的表字段排序</li>
 </ul>
 </li>
 </ul>
+</li>
+<li><p>优化子查询</p>
+<p>尽量使用join语句来替代子查询。因为子查询是嵌套查询，而嵌套查询会新建一张临时表，而临时表的创建和销毁会占用一定的系统资源，也花费一定的时间。但join语句并不会创建临时表，因此性能会高一点。</p>
+</li>
+<li><p>留意查询结果集</p>
+<p>尽量使用<code>小表驱动大表</code>的方式进行查询。也就是如果B表的数据小于A表的数据，那执行的顺序就是先查B表再查A表。</p>
+</li>
+<li><p>适当增加冗余字段</p>
+<p>增加冗余字段可以减少大量的连表查询，因为多张表的连表查询性能很低，所以可以适当的增加冗余字段，以减少多张表的关联查询，这就是用<code>空间换时间</code>的优化策略。</p>
+</li>
+</ol>
 <p>参考：<br><a href="http://dev.mysql.com/doc/refman/5.5/en/explain-output.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/explain-output.html</a></p>
 
     </div>
@@ -578,7 +682,7 @@
   <p><span>本文标题:</span>深入浅出Mysql索引的那些事儿</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年02月26日 - 15:13:03</p>
-  <p><span>最后更新:</span>2020年03月18日 - 10:59:20</p>
+  <p><span>最后更新:</span>2020年05月14日 - 10:30:54</p>
   <p><span>原始链接:</span><a href="/2020/fb519654.html" title="深入浅出Mysql索引的那些事儿">https://yuanrengu.com/2020/fb519654.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/fb519654.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -877,7 +981,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">89.1k</span> 字
+      博客全站共： <span class="post-count">89.6k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
