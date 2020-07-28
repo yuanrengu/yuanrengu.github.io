@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://yuanrengu.com/"/>
-  <updated>2020-07-28T05:43:30.195Z</updated>
+  <updated>2020-07-28T06:01:26.543Z</updated>
   <id>https://yuanrengu.com/</id>
   
   <author>
@@ -21,9 +21,17 @@
     <link href="https://yuanrengu.com/2020/7973a95d.html"/>
     <id>https://yuanrengu.com/2020/7973a95d.html</id>
     <published>2020-07-28T05:41:51.000Z</published>
-    <updated>2020-07-28T05:43:30.195Z</updated>
+    <updated>2020-07-28T06:01:26.543Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="JVM从小白学成大佬"><a href="#JVM从小白学成大佬" class="headerlink" title="JVM从小白学成大佬"></a>JVM从小白学成大佬</h1><ul><li><a href="https://yuanrengu.com/2020/11ea27b.html">1.开篇</a></li><li><a href="https://yuanrengu.com/2020/d6aff7a6.html">2.Java虚拟机运行时数据区</a></li><li><a href="https://yuanrengu.com/2020/22810993.html">3.深入解析强引用、软引用、弱引用、幻象引用</a></li><li><a href="https://yuanrengu.com/2020/a959fab8.html">4.Java虚拟机何谓垃圾及垃圾回收算法</a></li><li><a href="https://yuanrengu.com/2020/9ed477f0.html">5.垃圾收集器及内存分配策略</a></li><li><a href="https://yuanrengu.com/2020/d386b2ef.html">6.创建对象及对象的访问定位</a></li><li><a href="https://yuanrengu.com/2020/1977ac11.html">【面试必备】小伙伴栽在了JVM的内存分配策略。。。</a></li><li><a href="https://yuanrengu.com/2020/4c889127.html">弄明白CMS和G1，就靠这一篇了</a></li></ul><h1 id="ZooKeeper"><a href="#ZooKeeper" class="headerlink" title="ZooKeeper"></a>ZooKeeper</h1><ul><li><a href="https://yuanrengu.com/2020/3bf330a5.html">1.ZooKeeper单机版、伪集群和集群环境搭建</a></li><li><a href="https://yuanrengu.com/2020/469cbe7.html">2.用Java实现ZooKeeper API的调用</a></li><li><a href="https://yuanrengu.com/2020/7bf54924.html">3.ZooKeeper源码环境搭建</a></li></ul><h1 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h1><ul><li><a href="https://yuanrengu.com/2020/fb519654.html">深入浅出Mysql索引的那些事儿</a></li><li><a href="https://yuanrengu.com/2020/c8872fad.html">【黑魔法】Covering Indexes、STRAIGHT_JOIN</a></li><li><a href="https://yuanrengu.com/2020/c00d182e.html">性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）</a></li><li><a href="https://yuanrengu.com/2020/e867cb8.html">Mysql中Left Join、Right Join、Inner Join的区别</a></li><li><a href="https://yuanrengu.com/2020/9cfe2ad6.html">Mysql字符串截取总结：Left()、Right()、Substring()、Substring_index()</a></li></ul><h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><ul><li><a href="https://yuanrengu.com/2020/77eef79f.html">面试官，不要再问我三次握手和四次挥手</a></li></ul><h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><ul><li><a href="https://yuanrengu.com/2020/ba184259.html">HashMap在Jdk1.7和1.8中的实现</a></li><li><a href="https://yuanrengu.com/2020/baec5dff.html">Lombok介绍、使用方法和总结</a></li><li><a href="https://yuanrengu.com/2020/513ead88.html">获取对象属性类型、属性名称、属性值的研究：反射和JEXL解析引擎</a></li><li><a href="https://yuanrengu.com/2020/6bbb74ca.html">Integer和Integer比较以及Integer和Int的比较分析</a></li><li><a href="https://yuanrengu.com/2020/4a91d705.html">内存泄漏与内存溢出</a></li></ul>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;JVM从小白学成大佬&quot;&gt;&lt;a href=&quot;#JVM从小白学成大佬&quot; class=&quot;headerlink&quot; title=&quot;JVM从小白学成大佬&quot;&gt;&lt;/a&gt;JVM从小白学成大佬&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://yuanrengu.com/2
+      
     
     </summary>
     

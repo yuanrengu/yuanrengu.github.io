@@ -63,18 +63,18 @@
   };
 </script>
 
-  <meta name="description" content="技术成长，没有捷径，唯有积累。">
+  <meta name="description" content="JVM从小白学成大佬 1.开篇 2.Java虚拟机运行时数据区 3.深入解析强引用、软引用、弱引用、幻象引用 4.Java虚拟机何谓垃圾及垃圾回收算法 5.垃圾收集器及内存分配策略 6.创建对象及对象的访问定位 【面试必备】小伙伴栽在了JVM的内存分配策略。。。 弄明白CMS和G1，就靠这一篇了  ZooKeeper 1.ZooKeeper单机版、伪集群和集群环境搭建 2.用Java实现ZooKe">
 <meta name="keywords" content="资源集合">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不用搜了，你想要的全在这里">
 <meta property="og:url" content="https://yuanrengu.com/2020/7973a95d.html">
 <meta property="og:site_name" content="猿人谷">
-<meta property="og:description" content="技术成长，没有捷径，唯有积累。">
+<meta property="og:description" content="JVM从小白学成大佬 1.开篇 2.Java虚拟机运行时数据区 3.深入解析强引用、软引用、弱引用、幻象引用 4.Java虚拟机何谓垃圾及垃圾回收算法 5.垃圾收集器及内存分配策略 6.创建对象及对象的访问定位 【面试必备】小伙伴栽在了JVM的内存分配策略。。。 弄明白CMS和G1，就靠这一篇了  ZooKeeper 1.ZooKeeper单机版、伪集群和集群环境搭建 2.用Java实现ZooKe">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-28T05:43:30.195Z">
+<meta property="og:updated_time" content="2020-07-28T06:01:26.543Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="不用搜了，你想要的全在这里">
-<meta name="twitter:description" content="技术成长，没有捷径，唯有积累。">
+<meta name="twitter:description" content="JVM从小白学成大佬 1.开篇 2.Java虚拟机运行时数据区 3.深入解析强引用、软引用、弱引用、幻象引用 4.Java虚拟机何谓垃圾及垃圾回收算法 5.垃圾收集器及内存分配策略 6.创建对象及对象的访问定位 【面试必备】小伙伴栽在了JVM的内存分配策略。。。 弄明白CMS和G1，就靠这一篇了  ZooKeeper 1.ZooKeeper单机版、伪集群和集群环境搭建 2.用Java实现ZooKe">
   <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
   <link rel="canonical" href="https://yuanrengu.com/2020/7973a95d">
 
@@ -305,7 +305,7 @@
                 
               
 
-              <time title="创建时间：2020-07-28 13:41:51 / 修改时间：13:43:30" itemprop="dateCreated datePublished" datetime="2020-07-28T13:41:51+08:00">2020-07-28</time>
+              <time title="创建时间：2020-07-28 13:41:51 / 修改时间：14:01:26" itemprop="dateCreated datePublished" datetime="2020-07-28T13:41:51+08:00">2020-07-28</time>
             </span>
           
             
@@ -345,7 +345,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">0</span>
+              <span title="本文字数">545</span>
             </span>
           
             <span class="post-meta-item">
@@ -368,7 +368,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="JVM从小白学成大佬"><a href="#JVM从小白学成大佬" class="headerlink" title="JVM从小白学成大佬"></a>JVM从小白学成大佬</h1><ul>
+<li><a href="https://yuanrengu.com/2020/11ea27b.html">1.开篇</a></li>
+<li><a href="https://yuanrengu.com/2020/d6aff7a6.html">2.Java虚拟机运行时数据区</a></li>
+<li><a href="https://yuanrengu.com/2020/22810993.html">3.深入解析强引用、软引用、弱引用、幻象引用</a></li>
+<li><a href="https://yuanrengu.com/2020/a959fab8.html">4.Java虚拟机何谓垃圾及垃圾回收算法</a></li>
+<li><a href="https://yuanrengu.com/2020/9ed477f0.html">5.垃圾收集器及内存分配策略</a></li>
+<li><a href="https://yuanrengu.com/2020/d386b2ef.html">6.创建对象及对象的访问定位</a></li>
+<li><a href="https://yuanrengu.com/2020/1977ac11.html">【面试必备】小伙伴栽在了JVM的内存分配策略。。。</a></li>
+<li><a href="https://yuanrengu.com/2020/4c889127.html">弄明白CMS和G1，就靠这一篇了</a></li>
+</ul>
+<h1 id="ZooKeeper"><a href="#ZooKeeper" class="headerlink" title="ZooKeeper"></a>ZooKeeper</h1><ul>
+<li><a href="https://yuanrengu.com/2020/3bf330a5.html">1.ZooKeeper单机版、伪集群和集群环境搭建</a></li>
+<li><a href="https://yuanrengu.com/2020/469cbe7.html">2.用Java实现ZooKeeper API的调用</a></li>
+<li><a href="https://yuanrengu.com/2020/7bf54924.html">3.ZooKeeper源码环境搭建</a></li>
+</ul>
+<h1 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h1><ul>
+<li><a href="https://yuanrengu.com/2020/fb519654.html">深入浅出Mysql索引的那些事儿</a></li>
+<li><a href="https://yuanrengu.com/2020/c8872fad.html">【黑魔法】Covering Indexes、STRAIGHT_JOIN</a></li>
+<li><a href="https://yuanrengu.com/2020/c00d182e.html">性能对比：Count(字段)、Count（主键）、Count（1）、Count（*）</a></li>
+<li><a href="https://yuanrengu.com/2020/e867cb8.html">Mysql中Left Join、Right Join、Inner Join的区别</a></li>
+<li><a href="https://yuanrengu.com/2020/9cfe2ad6.html">Mysql字符串截取总结：Left()、Right()、Substring()、Substring_index()</a></li>
+</ul>
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><ul>
+<li><a href="https://yuanrengu.com/2020/77eef79f.html">面试官，不要再问我三次握手和四次挥手</a></li>
+</ul>
+<h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><ul>
+<li><a href="https://yuanrengu.com/2020/ba184259.html">HashMap在Jdk1.7和1.8中的实现</a></li>
+<li><a href="https://yuanrengu.com/2020/baec5dff.html">Lombok介绍、使用方法和总结</a></li>
+<li><a href="https://yuanrengu.com/2020/513ead88.html">获取对象属性类型、属性名称、属性值的研究：反射和JEXL解析引擎</a></li>
+<li><a href="https://yuanrengu.com/2020/6bbb74ca.html">Integer和Integer比较以及Integer和Int的比较分析</a></li>
+<li><a href="https://yuanrengu.com/2020/4a91d705.html">内存泄漏与内存溢出</a></li>
+</ul>
+
     </div>
       
 
@@ -407,7 +439,7 @@
   <p><span>本文标题:</span>不用搜了，你想要的全在这里</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年07月28日 - 13:41:51</p>
-  <p><span>最后更新:</span>2020年07月28日 - 13:43:30</p>
+  <p><span>最后更新:</span>2020年07月28日 - 14:01:26</p>
   <p><span>原始链接:</span><a href="/2020/7973a95d.html" title="不用搜了，你想要的全在这里">https://yuanrengu.com/2020/7973a95d.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/7973a95d.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -482,8 +514,17 @@
 
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
 
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -643,6 +684,23 @@
 
         </div>
       </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM从小白学成大佬"><span class="nav-text">JVM从小白学成大佬</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZooKeeper"><span class="nav-text">ZooKeeper</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mysql"><span class="nav-text">Mysql</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP"><span class="nav-text">TCP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java"><span class="nav-text">Java</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
     </div>
   </aside>
@@ -676,7 +734,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">93.6k</span> 字
+      博客全站共： <span class="post-count">93.9k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
