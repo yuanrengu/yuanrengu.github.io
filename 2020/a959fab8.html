@@ -77,7 +77,7 @@
 <meta property="og:image" content="https://image-static.segmentfault.com/110/658/1106581261-5d633d9a994ac_articlex">
 <meta property="og:image" content="https://image-static.segmentfault.com/210/838/2108386277-5d633d9c0be08_articlex">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110153711.png">
-<meta property="og:updated_time" content="2020-03-09T02:36:01.852Z">
+<meta property="og:updated_time" content="2021-02-28T14:41:20.777Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">
 <meta name="twitter:description" content="在Java中内存是由虚拟机自动管理的，虚拟机在内存中划出一片区域，作为满足程序内存分配请求的空间。内存的创建仍然是由程序猿来显示指定的，但是对象的释放却对程序猿是透明的。就是解放了程序猿手动回收内存的工作，交给垃圾回收器来自动回收。 在虚拟机中，释放哪些不再被使用的对象所占空间的过程称为垃圾收集（Garbage Collection，GC）。负责垃圾收集的程序模块，成为垃圾收集器（Garbage">
@@ -321,7 +321,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-09 10:36:01" itemprop="dateModified" datetime="2020-03-09T10:36:01+08:00">2020-03-09</time>
+                <time title="修改时间：2021-02-28 22:41:20" itemprop="dateModified" datetime="2021-02-28T22:41:20+08:00">2021-02-28</time>
               </span>
             
           
@@ -358,7 +358,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">5k</span>
+              <span title="本文字数">5.2k</span>
             </span>
           
             <span class="post-meta-item">
@@ -498,7 +498,10 @@
 <p>可达性分析时必须在一个能确保一致性的快照中进行，这里“一致性”的意思是指在整个分析期间整个执行系统看起来就像被冻结在某个时间点上，不可以出现分析过程中对象引用关系还在不断变化的情况，这一点不满足的话分析结果准确性就无法得到保证。</p>
 <p>Stop-the-world是通过安全点机制来实现的。当Java虚拟机接收到Stop-the-world请求，它便会等待所有的线程都到达安全点，才允许请求Stop-the-world的线程进行独占的工作。</p>
 <h3 id="4-3-卡表"><a href="#4-3-卡表" class="headerlink" title="4.3 卡表"></a>4.3 卡表</h3><p>有个场景，老年代的对象可能引用新生代的对象，那标记存活对象的时候，需要扫描老年代中的所有对象。因为该对象拥有对新生代对象的引用，那么这个引用也会被称为GC Roots。那不是得又做全堆扫描？成本太高了吧。</p>
-<p>HotSpot给出的解决方案是一项叫做<strong>卡表</strong>（Card Table）的技术。该技术将整个堆划分为一个个大小为512字节的卡，并且维护一个卡表，用来存储每张卡的一个标识位。这个标识位代表对应的卡是否可能存有指向新生代对象的引用。如果可能存在，那么我们就认为这张卡是脏的。</p>
+<p>为方便处理，HotSpot维护了一个叫作<strong>卡表</strong>（card table）的结构，以帮助记录哪些老年代对象可能指向新生代对象。卡表本质上是一个由JVM管理的字节数组，该数组的每个元素对应于<code>老年代</code>中一个512字节的区域，并且维护一个卡表，用来存储每张卡的一个标识位。这个标识位代表对应的卡是否可能存有指向新生代对象的引用。如果可能存在，那么我们就认为这张卡是脏的。其核心思想是，当老年代中对象o中的一个引用类型的字段被修改时，包含与o相对应的instanceOop的卡表项被标记为“脏”。当更新引用字段时，HotSpot通过一个简单的<strong>写屏障</strong>（write barrier）来实现这一点。它本质上可以归结为在字段存储后执行了这样一段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cards[*instanceOop &gt;&gt; <span class="number">9</span>] = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>注意卡片的脏值为1，右移9位后得到卡表的大小为512字节。</p>
 <p>在进行Minor GC的时候，我们便可以不用扫描整个老年代，而是在卡表中寻找脏卡，并将脏卡中的对象加入到Minor GC的GC Roots里。当完成所有脏卡的扫描之后，Java虚拟机便会将所有脏卡的标识位清零。</p>
 <p>想要保证每个可能有指向新生代对象引用的卡都被标记为脏卡，那么Java虚拟机需要截获每个引用型实例变量的写操作，并作出对应的写标识位操作。</p>
 <p><strong>卡表能用于减少老年代的全堆空间扫描，这能很大的提升GC效率</strong>。</p>
@@ -517,14 +520,14 @@
     <li class="popular-posts-item">
       
       
-      <div class="popular-posts-title"><a href="/2020/1977ac11.html" rel="bookmark">【面试必备】小伙伴栽在了JVM的内存分配策略。。。</a></div>
+      <div class="popular-posts-title"><a href="/2020/4c889127.html" rel="bookmark">弄明白CMS和G1，就靠这一篇了</a></div>
       
     </li>
   
     <li class="popular-posts-item">
       
       
-      <div class="popular-posts-title"><a href="/2020/4c889127.html" rel="bookmark">弄明白CMS和G1，就靠这一篇了</a></div>
+      <div class="popular-posts-title"><a href="/2020/1977ac11.html" rel="bookmark">【面试必备】小伙伴栽在了JVM的内存分配策略。。。</a></div>
       
     </li>
   
@@ -600,7 +603,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 15:38:17</p>
-  <p><span>最后更新:</span>2020年03月09日 - 10:36:01</p>
+  <p><span>最后更新:</span>2021年02月28日 - 22:41:20</p>
   <p><span>原始链接:</span><a href="/2020/a959fab8.html" title="【JVM从小白学成大佬】4.Java虚拟机何谓垃圾及垃圾回收算法">https://yuanrengu.com/2020/a959fab8.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/a959fab8.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -903,7 +906,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">94.2k</span> 字
+      博客全站共： <span class="post-count">94.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
