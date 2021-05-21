@@ -73,7 +73,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154339.png">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pLmxvbGkubmV0LzIwMTkvMTAvMTkvblRneGVCUG1HOWhWc1c0LnBuZw?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2021-05-21T09:04:05.146Z">
+<meta property="og:updated_time" content="2021-05-21T09:41:31.535Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="弄明白CMS和G1，就靠这一篇了">
 <meta name="twitter:description" content="在开始介绍CMS和G1前，我们可以剧透几点：  根据不同分代的特点，收集器可能不同。有些收集器可以同时用于新生代和老年代，而有些时候，则需要分别为新生代或老年代选用合适的收集器。一般来说，新生代收集器的收集频率较高，应选用性能高效的收集器；而老年代收集器收集次数相对较少，对空间较为敏感，应当避免选择基于复制算法的收集器。 在垃圾收集执行的时刻，应用程序需要暂停运行。 可以串行收集，也可以并行收集。">
@@ -317,7 +317,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2021-05-21 17:04:05" itemprop="dateModified" datetime="2021-05-21T17:04:05+08:00">2021-05-21</time>
+                <time title="修改时间：2021-05-21 17:41:31" itemprop="dateModified" datetime="2021-05-21T17:41:31+08:00">2021-05-21</time>
               </span>
             
           
@@ -354,7 +354,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">8.6k</span>
+              <span title="本文字数">9k</span>
             </span>
           
             <span class="post-meta-item">
@@ -534,19 +534,33 @@
 </blockquote>
 <h2 id="3-ZGC"><a href="#3-ZGC" class="headerlink" title="3 ZGC"></a>3 ZGC</h2><p>ZGC(Z Garbage Collector)作为一种比较新的收集器，目前还没有得到大范围的关注。作为一款低延迟的垃圾收集器，它有如下几个亮点：</p>
 <ul>
-<li>停顿时间不会超过 10ms</li>
-<li>停顿时间不会随着堆的增大而增大（控制停顿时间在10ms内）</li>
+<li>亚毫秒级别的停顿时间（Sub-millisecond max pause times） <del>停顿时间不会超过 10ms</del></li>
+<li>停顿时间不会随着堆的增大而增大</li>
 <li>支持堆的大小范围很广（8MB-16TB）</li>
 </ul>
+<blockquote>
+<p>去年看官网文档时，写的还是停顿时间不超10ms，现在竟然将停顿时间控制在亚毫秒级别，大写的服气！！！</p>
+</blockquote>
 <p>在ZGC中，连逻辑上的也是重新定义了堆空间（不区分年轻代和老年代），只分为一块块的page，每次进行GC时，都会对page进行压缩操作，所以没有碎片问题。虽然ZGC属于很新的GC技术, 但优点不一定真的出众，ZGC只在特定情况下具有绝对的优势, 如<code>巨大的堆和极低的暂停需求</code>。而实际上大多数开发在这两方面都不太成问题(尤其是在服务器端), 而对GC的性能/效率更在意。也有一种观点认为ZGC是为大内存、多cpu而生，它通过分区的思路来降低STW。</p>
 <p>ZGC在JDK14前只支持Linux, 从JDK14开始支持Mac和Windows。</p>
 <p>可以从官网看下ZGC的Change Log：</p>
 <ul>
-<li>JDK 15 (under development)<ul>
+<li>JDK 16<ul>
+<li>Concurrent Thread Stack Scanning (JEP 376)</li>
+<li>Support for in-place relocation</li>
+<li>Performance improvements (allocation/initialization of forwarding tables, etc)</li>
+</ul>
+</li>
+<li>JDK 15<ul>
+<li>Production ready (JEP 377)</li>
 <li>Improved NUMA awareness</li>
+<li>Improved allocation concurrency</li>
 <li>Support for Class Data Sharing (CDS)</li>
 <li>Support for placing the heap on NVRAM</li>
-<li><code>&lt;TBD&gt;</code></li>
+<li>Support for compressed class pointers</li>
+<li>Support for incremental uncommit</li>
+<li>Fixed support for transparent huge pages</li>
+<li>Additional JFR events</li>
 </ul>
 </li>
 <li>JDK 14<ul>
@@ -682,7 +696,7 @@
   <p><span>本文标题:</span>弄明白CMS和G1，就靠这一篇了</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 16:00:00</p>
-  <p><span>最后更新:</span>2021年05月21日 - 17:04:05</p>
+  <p><span>最后更新:</span>2021年05月21日 - 17:41:31</p>
   <p><span>原始链接:</span><a href="/2020/4c889127.html" title="弄明白CMS和G1，就靠这一篇了">https://yuanrengu.com/2020/4c889127.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/4c889127.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -720,8 +734,8 @@
         </div>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
-              <a href="/2020/1977ac11.html" rel="next" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
-                <i class="fa fa-chevron-left"></i> 【面试必备】小伙伴栽在了JVM的内存分配策略。。。
+              <a href="/2020/d386b2ef.html" rel="next" title="【JVM从小白学成大佬】6.创建对象及对象的访问定位">
+                <i class="fa fa-chevron-left"></i> 【JVM从小白学成大佬】6.创建对象及对象的访问定位
               </a>
             
           </div>
@@ -729,8 +743,8 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-              <a href="/2020/77eef79f.html" rel="prev" title="面试官，不要再问我三次握手和四次挥手">
-                面试官，不要再问我三次握手和四次挥手 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/1977ac11.html" rel="prev" title="【面试必备】小伙伴栽在了JVM的内存分配策略。。。">
+                【面试必备】小伙伴栽在了JVM的内存分配策略。。。 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -985,7 +999,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">94.5k</span> 字
+      博客全站共： <span class="post-count">94.6k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
