@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<script data-ad-client="ca-pub-6394975472135022" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: ''
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="在系列的前两篇文章中，介绍了ZooKeeper环境的搭建（包括单机版、伪集群和集群），对创建、删除、修改节点等场景用命令行的方式进行了测试，让大家对ZooKeeper环境搭建及常用命令行有初步的认识，也为搭建ZooKeeper的开发环境、生产环境起到了抛砖引玉的作用。也介绍了用Java来实现API的调用，包括节点的增、删、改、查。通过对这两篇的学习，让大家对ZooKeeper的使用有了初步认识，也">
+<meta name="keywords" content="ZooKeeper,源码解读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【ZooKeeper系列】3.ZooKeeper源码环境搭建">
+<meta property="og:url" content="https://yuanrengu.com/2020/7bf54924.html">
+<meta property="og:site_name" content="猿人谷">
+<meta property="og:description" content="在系列的前两篇文章中，介绍了ZooKeeper环境的搭建（包括单机版、伪集群和集群），对创建、删除、修改节点等场景用命令行的方式进行了测试，让大家对ZooKeeper环境搭建及常用命令行有初步的认识，也为搭建ZooKeeper的开发环境、生产环境起到了抛砖引玉的作用。也介绍了用Java来实现API的调用，包括节点的增、删、改、查。通过对这两篇的学习，让大家对ZooKeeper的使用有了初步认识，也">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230152211788.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230152345614.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230152519906.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230152653707.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230155040951.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230155439579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230153718683.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019123015440042.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230154623937.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191230175008781.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191231095122793.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191231100610526.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191231114421581.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191231101754442.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191231103551902.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191231105710706.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019123111251754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2020-02-09T15:11:44.171Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【ZooKeeper系列】3.ZooKeeper源码环境搭建">
+<meta name="twitter:description" content="在系列的前两篇文章中，介绍了ZooKeeper环境的搭建（包括单机版、伪集群和集群），对创建、删除、修改节点等场景用命令行的方式进行了测试，让大家对ZooKeeper环境搭建及常用命令行有初步的认识，也为搭建ZooKeeper的开发环境、生产环境起到了抛砖引玉的作用。也介绍了用Java来实现API的调用，包括节点的增、删、改、查。通过对这两篇的学习，让大家对ZooKeeper的使用有了初步认识，也">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20191230152211788.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70">
+  <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
+  <link rel="canonical" href="https://yuanrengu.com/2020/7bf54924">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>【ZooKeeper系列】3.ZooKeeper源码环境搭建 | 猿人谷</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87311079-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !false) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87311079-1');
+    }
+  </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499dfe5d674d943f23758606c7806bed";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">猿人谷</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">技术成长，没有捷径，唯有积累</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-links">
+      
+    
+
+    <a href="/links" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>友链</a>
+
+  </li>
+    </ul>
+    
+
+</nav>
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/7bf54924.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="猿人谷">
+      <meta itemprop="description" content="技术成长，没有捷径，唯有积累。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿人谷">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">【ZooKeeper系列】3.ZooKeeper源码环境搭建
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-09 16:44:58" itemprop="dateCreated datePublished" datetime="2020-01-09T16:44:58+08:00">2020-01-09</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-02-09 23:11:44" itemprop="dateModified" datetime="2020-02-09T23:11:44+08:00">2020-02-09</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/ZooKeeper/" itemprop="url" rel="index"><span itemprop="name">ZooKeeper</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon"
+              >
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">7.1k</span>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">6 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在系列的前两篇文章中，介绍了ZooKeeper环境的搭建（包括单机版、伪集群和集群），对创建、删除、修改节点等场景用命令行的方式进行了测试，让大家对ZooKeeper环境搭建及常用命令行有初步的认识，也为搭建ZooKeeper的开发环境、生产环境起到了抛砖引玉的作用。也介绍了用Java来实现API的调用，包括节点的增、删、改、查。通过对这两篇的学习，让大家对ZooKeeper的使用有了初步认识，也可用于实现系列后面篇章要介绍的命名服务、集群管理、分布式锁、负载均衡、分布式队列等。</p>
+<p>在前两篇中，强调了阅读英文文档的重要性，也带领大家解读了部分官方文档，想传达出的理念是ZooKeeper没有想象中的那么难，阅读官方文档也没那么难。后面的篇章中，结合官方文档，在实战演练和解读源码的基础上加深理解。</p>
+<blockquote>
+<p>上联：说你行你就行不行也行<br>下联：说不行就不行行也不行<br>横批：不服不行<br><code>阅读源码就跟这个对联一模一样，就看你选上联，还是下联了！</code></p>
+</blockquote>
+<p>这一篇开始源码环境的搭建，<code>here we go</code>！</p>
+<p>很多老铁留言说很想研读些github上的开源项目，但代码clone下来后总出现这样或那样奇奇怪怪的问题，很影响学习的积极性。学习ZooKeeper的源码尤其如此，很多人clone代码后，报各种错，提示少各种包。问了下度娘ZooKeeper源码环境，搜出来的文章真的差强人意，有些文章错的竟然非常离谱。这里我重新搭建了一遍，也会介绍遇到的一些坑。</p>
+<p>很多老铁上来一堆猛操作，从github上下载了ZooKeeper源码后，按常规方式导入IDEA，最后发现少各种包。起初我也是这样弄的，以为ZooKeeper是用Maven来构建的，仔细去了解了下ZooKeeper的版本历史，其实是用的Ant。如今一般用的Maven或Gradle，很少见到Ant的项目了，这里不对Ant多做介绍。</p>
+<h2 id="1-Ant环境搭建"><a href="#1-Ant环境搭建" class="headerlink" title="1 Ant环境搭建"></a>1 Ant环境搭建</h2><p>Ant官网地址：<a href="https://ant.apache.org/bindownload.cgi" target="_blank" rel="noopener">https://ant.apache.org/bindownload.cgi</a></p>
+<p>下载解压后，跟配置jdk一样配置几个环境变量：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//修改为自己本地安装的目录</span><br><span class="line">ANT_HOMT=D:\apache-ant-1.10.7 </span><br><span class="line">PATH=%ANT_HOME%/bin</span><br><span class="line">CLASSPATH=%ANT_HOME%/lib</span><br></pre></td></tr></table></figure>
+
+<p>配置好后，测试下Ant是否安装成功。<strong>ant -version</strong>,得到如下信息则代表安装成功：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Apache Ant(TM) version 1.10.7 compiled on September 1 2019</span><br></pre></td></tr></table></figure>
+
+<p>Ant的安装跟JDK的安装和配置非常相似，这里不做过多介绍。</p>
+<h2 id="2-下载ZooKeeper源码"><a href="#2-下载ZooKeeper源码" class="headerlink" title="2 下载ZooKeeper源码"></a>2 下载ZooKeeper源码</h2><p>源码地址：<a href="https://github.com/apache/zookeeper" target="_blank" rel="noopener">https://github.com/apache/zookeeper</a></p>
+<p>猿人谷在写本篇文章时，releases列表里的最新版本为<code>release-3.5.6</code>，我们以此版本来进行源码环境的搭建。</p>
+<h2 id="3-编译ZooKeeper源码"><a href="#3-编译ZooKeeper源码" class="headerlink" title="3 编译ZooKeeper源码"></a>3 编译ZooKeeper源码</h2><p>切换到源码所在目录，运行<code>ant eclipse</code>将项目编译并转成eclipse的项目结构。<br><img src="https://img-blog.csdnimg.cn/20191230152211788.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这个编译过程会比较长，差不多等了7分钟。如果编译成功，会出现如下结果：<br><img src="https://img-blog.csdnimg.cn/20191230152345614.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="4-导入IDEA"><a href="#4-导入IDEA" class="headerlink" title="4 导入IDEA"></a>4 导入IDEA</h2><p>上面已经将项目编译并转成eclipse的项目结构，按eclipse的形式导入项目。<br><img src="https://img-blog.csdnimg.cn/20191230152519906.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20191230152653707.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="5-特别说明"><a href="#5-特别说明" class="headerlink" title="5 特别说明"></a>5 特别说明</h2><p>将源码导入IDEA后在<code>org.apache.zookeeper.Version</code>中发现很多红色警告，很明显少了<code>org.apache.zookeeper.version.Info</code>类。<br><img src="https://img-blog.csdnimg.cn/20191230155040951.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查询源码得知是用来发布的时候生成版本用的，我们只是研读源码，又不发布版本所以直接写死就ok了。<br><img src="https://img-blog.csdnimg.cn/20191230155439579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>即新增Info类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.apache.zookeeper.version;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Info</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> MAJOR = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">int</span> MINOR = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> MICRO = <span class="number">6</span>;</span><br><span class="line">    String QUALIFIER = <span class="keyword">null</span>;</span><br><span class="line">    String REVISION_HASH = <span class="string">"c11b7e26bc554b8523dc929761dd28808913f091"</span>;</span><br><span class="line">    String BUILD_DATE = <span class="string">"10/08/2019 20:18 GMT"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-启动zookeeper"><a href="#6-启动zookeeper" class="headerlink" title="6 启动zookeeper"></a>6 启动zookeeper</h2><p>针对单机版本和集群版本，分别对应两个启动类：</p>
+<ul>
+<li>单机：ZooKeeperServerMain</li>
+<li>集群：QuorumPeerMain</li>
+</ul>
+<p>这里我们只做单机版的测试。</p>
+<p><strong>在conf目录里有个zoo_sample.cfg，复制一份重命名为zoo.cfg</strong>。</p>
+<p>zoo.cfg里的内容做点修改（也可以不做修改），方便日志查询。dataDir和dataLogDir根据自己的情况设定。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dataDir=E:\\02private\\1opensource\\zk\\zookeeper\\dataDir</span><br><span class="line">dataLogDir=E:\\02private\\1opensource\\zk\\zookeeper\\dataLogDir</span><br></pre></td></tr></table></figure>
+
+<p>运行主类  <code>org.apache.zookeeper.server.ZooKeeperServerMain</code>，将zoo.cfg的完整路径配置在Program arguments。<br><img src="https://img-blog.csdnimg.cn/20191230153718683.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>运行<code>ZooKeeperServerMain</code>，得到的结果如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Connected to the target VM, address: '127.0.0.1:0', transport: 'socket'</span><br><span class="line">log4j:WARN No appenders could be found for logger (org.apache.zookeeper.jmx.ManagedUtil).</span><br><span class="line">log4j:WARN Please initialize the log4j system properly.</span><br><span class="line">log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.</span><br></pre></td></tr></table></figure>
+
+<p>告知日志无法输出，日志文件配置有误。这里需要指定日志文件log4j.properties。<br><img src="https://img-blog.csdnimg.cn/2019123015440042.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>在VM options配置，即指定到conf目录下的log4j.properties：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Dlog4j.configuration=file:E:/02private/1opensource/zk/zookeeper/conf/log4j.properties</span><br></pre></td></tr></table></figure>
+
+<p>配置后重新运行<code>ZooKeeperServerMain</code>，输出日志如下，<br><img src="https://img-blog.csdnimg.cn/20191230154623937.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>可以得知单机版启动成功，单机版服务端地址为127.0.0.1:2181。</p>
+<h2 id="7-启动客户端"><a href="#7-启动客户端" class="headerlink" title="7 启动客户端"></a>7 启动客户端</h2><p>通过运行<code>ZooKeeperServerMain</code>得到的日志，可以得知ZooKeeper服务端已经启动，服务的地址为<code>127.0.0.1:2181</code>。启动客户端来进行连接测试。</p>
+<p>客户端的启动类为<code>org.apache.zookeeper.ZooKeeperMain</code>，进行如下配置：<br><img src="https://img-blog.csdnimg.cn/20191230175008781.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>即客户端连接127.0.0.1:2181，获取节点<code>/yuanrengu</code>的信息。</p>
+<p>下面带领大家一起看看客户端启动的源码（<code>org.apache.zookeeper.ZooKeeperMain</code>）。<strong>这里要给大家说下我阅读源码的习惯，很多老铁以为阅读源码就是顺着代码看，这样也没啥不对，只是很多开源项目代码量惊人，这么个干看法，容易注意力分散也容易看花眼。我一般是基于某个功能点，从入口开始debug跑一遍，弄清这个功能的“代码线”，就像跑马圈块地儿一样，弄清楚功能有关的代码，了解参数传递的过程，这样看代码时就更有针对性，也能排除很多干扰代码。</strong></p>
+<h3 id="7-1-main"><a href="#7-1-main" class="headerlink" title="7.1 main"></a>7.1 main</h3><p>main里就两行代码，通过debug得知args里包含的信息就是上面我们配置在<strong>Program arguments</strong>里的信息：<br><img src="https://img-blog.csdnimg.cn/20191231095122793.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="7-1-1-ZooKeeperMain"><a href="#7-1-1-ZooKeeperMain" class="headerlink" title="7.1.1 ZooKeeperMain"></a>7.1.1 ZooKeeperMain</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ZooKeeperMain</span><span class="params">(String args[])</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">    <span class="comment">// 用于解析参数里的命令行的</span></span><br><span class="line">    cl.parseOptions(args);</span><br><span class="line">    System.out.println(<span class="string">"Connecting to "</span> + cl.getOption(<span class="string">"server"</span>));</span><br><span class="line">    <span class="comment">// 用于连接ZooKeeper服务端</span></span><br><span class="line">    connectToZK(cl.getOption(<span class="string">"server"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过下图可以看出，解析参数后，就尝试连接127.0.0.1:2181，即ZooKeeper服务端。cl.getOption(“server”)得到的就是127.0.0.1:2181。<br><img src="https://img-blog.csdnimg.cn/20191231100610526.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="7-1-2-parseOptions"><a href="#7-1-2-parseOptions" class="headerlink" title="7.1.2 parseOptions"></a>7.1.2 parseOptions</h4><p><img src="https://img-blog.csdnimg.cn/20191231114421581.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>可以很清楚的得知解析args的过程，主要从”-server”，”-timeout”，”-r”，”-“这几个维度来进行解析。</strong></p>
+<h4 id="7-1-3-connectToZK"><a href="#7-1-3-connectToZK" class="headerlink" title="7.1.3 connectToZK"></a>7.1.3 connectToZK</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">connectToZK</span><span class="params">(String newHost)</span> <span class="keyword">throws</span> InterruptedException, IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 用于判断现在ZooKeeper连接是否还有效</span></span><br><span class="line">    <span class="comment">// zk.getState().isAlive() 注意这个会话是否有效的判断，客户端与 Zookeeper连接断开不一定会话失效</span></span><br><span class="line">    <span class="keyword">if</span> (zk != <span class="keyword">null</span> &amp;&amp; zk.getState().isAlive()) &#123;</span><br><span class="line">        zk.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 此时newHost为127.0.0.1:2181</span></span><br><span class="line">    host = newHost;</span><br><span class="line">    <span class="comment">// 判断是否为只读模式，关于只读模式的概念在前一篇文章中有介绍</span></span><br><span class="line">    <span class="keyword">boolean</span> readOnly = cl.getOption(<span class="string">"readonly"</span>) != <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 用于判断是否建立安全连接</span></span><br><span class="line">    <span class="keyword">if</span> (cl.getOption(<span class="string">"secure"</span>) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        System.setProperty(ZKClientConfig.SECURE_CLIENT, <span class="string">"true"</span>);</span><br><span class="line">        System.out.println(<span class="string">"Secure connection is enabled"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    zk = <span class="keyword">new</span> ZooKeeperAdmin(host, Integer.parseInt(cl.getOption(<span class="string">"timeout"</span>)), <span class="keyword">new</span> MyWatcher(), readOnly);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ZKClientConfig.SECURE_CLIENT</code>已经被标注为deprecation了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Setting this to "true" will enable encrypted client-server communication.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"deprecation"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String SECURE_CLIENT = ZooKeeper.SECURE_CLIENT;</span><br></pre></td></tr></table></figure>
+
+<p>debug查看关键点处的信息，可以得知这是建立一个ZooKeeper连接的过程（【ZooKeeper系列】2.用Java实现ZooKeeper API的调用,这篇文章里详细介绍过ZooKeeper建立连接的过程）</p>
+<p>下图看看几处关键信息：<br><img src="https://img-blog.csdnimg.cn/20191231101754442.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>Integer.parseInt(cl.getOption(“timeout”))为30000。</p>
+<p>至此完成了ZooKeeperMain main = new ZooKeeperMain(args);的整个过程。简短点说就是：</p>
+<ol>
+<li>解析Program arguments里的参数</li>
+<li>连接ZooKeeper服务端</li>
+</ol>
+<h3 id="7-2-main-run"><a href="#7-2-main-run" class="headerlink" title="7.2 main.run()"></a>7.2 main.run()</h3><p><strong>敲黑板，重头戏来了哦！</strong></p>
+<p>一起来看下run()的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> CliException, IOException, InterruptedException </span>&#123;</span><br><span class="line">    <span class="comment">// cl.getCommand()得到的是 “get”，就是上文传进来的</span></span><br><span class="line">    <span class="keyword">if</span> (cl.getCommand() == <span class="keyword">null</span>) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Welcome to ZooKeeper!"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> jlinemissing = <span class="keyword">false</span>;</span><br><span class="line">        <span class="comment">// only use jline if it's in the classpath</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class&lt;?&gt; consoleC = Class.forName(<span class="string">"jline.console.ConsoleReader"</span>);</span><br><span class="line">            Class&lt;?&gt; completorC =</span><br><span class="line">                Class.forName(<span class="string">"org.apache.zookeeper.JLineZNodeCompleter"</span>);</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">"JLine support is enabled"</span>);</span><br><span class="line"></span><br><span class="line">            Object console =</span><br><span class="line">                consoleC.getConstructor().newInstance();</span><br><span class="line"></span><br><span class="line">            Object completor =</span><br><span class="line">                completorC.getConstructor(ZooKeeper.class).newInstance(zk);</span><br><span class="line">            Method addCompletor = consoleC.getMethod(<span class="string">"addCompleter"</span>,</span><br><span class="line">                    Class.forName(<span class="string">"jline.console.completer.Completer"</span>));</span><br><span class="line">            addCompletor.invoke(console, completor);</span><br><span class="line"></span><br><span class="line">            String line;</span><br><span class="line">            Method readLine = consoleC.getMethod(<span class="string">"readLine"</span>, String.class);</span><br><span class="line">            <span class="keyword">while</span> ((line = (String)readLine.invoke(console, getPrompt())) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                executeLine(line);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            LOG.debug(<span class="string">"Unable to start jline"</span>, e);</span><br><span class="line">            jlinemissing = <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">            LOG.debug(<span class="string">"Unable to start jline"</span>, e);</span><br><span class="line">            jlinemissing = <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">            LOG.debug(<span class="string">"Unable to start jline"</span>, e);</span><br><span class="line">            jlinemissing = <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">            LOG.debug(<span class="string">"Unable to start jline"</span>, e);</span><br><span class="line">            jlinemissing = <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</span><br><span class="line">            LOG.debug(<span class="string">"Unable to start jline"</span>, e);</span><br><span class="line">            jlinemissing = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (jlinemissing) &#123;</span><br><span class="line">            System.out.println(<span class="string">"JLine support is disabled"</span>);</span><br><span class="line">            BufferedReader br =</span><br><span class="line">                <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line"></span><br><span class="line">            String line;</span><br><span class="line">            <span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                executeLine(line);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 处理传进来的参数</span></span><br><span class="line">        processCmd(cl);</span><br><span class="line">    &#125;</span><br><span class="line">    System.exit(exitCode);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过下图可以看出<code>processCmd(cl);</code>里<code>cl</code>包含的信息：<br><img src="https://img-blog.csdnimg.cn/20191231103551902.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>debug到<code>processCmd(MyCommandOptions co)</code> 就到了决战时刻。里面的<code>processZKCmd(MyCommandOptions co)</code>就是核心了，代码太长，只说下processZKCmd里的重点代码，获取节点/yuanrengu的信息：<br><img src="https://img-blog.csdnimg.cn/20191231105710706.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>因为我之前没有创建过/yuanrengu节点，会抛异常<code>org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for /yuanrengu</code> ， 如下图所示：<br><img src="https://img-blog.csdnimg.cn/2019123111251754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly95dWFucmVuZ3UuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>经过上面的步骤后exitCode为1，执行System.exit(exitCode);退出。</p>
+<p>至此带领大家dubug了一遍org.apache.zookeeper.ZooKeeperMain，上面我说过，阅读源码干看效果很小，只有debug才能有助于梳理流程和思路，也能清楚参数传递的过程发生了什么变化。</p>
+<h2 id="温馨提示"><a href="#温馨提示" class="headerlink" title="温馨提示"></a>温馨提示</h2><p>上面我们介绍了源码环境的搭建过程，运行运行主类  <code>org.apache.zookeeper.server.ZooKeeperServerMain</code> 启动ZooKeeper服务端，运行<code>org.apache.zookeeper.ZooKeeperMain</code>连接服务端。</p>
+<p><strong>阅读源码最好能动起来(debug)读，这样代码才是活的，干看的话代码如死水一样，容易让人索然无味！</strong></p>
+<p>每个人操作的方式不一样，有可能遇到的问题也不一样，搭建过程中遇到什么问题，大家可以在评论区留言。</p>
+
+    </div>
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/469cbe7.html" rel="bookmark">【ZooKeeper系列】2.用Java实现ZooKeeper API的调用</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/3bf330a5.html" rel="bookmark">【ZooKeeper系列】1.ZooKeeper单机版、伪集群和集群环境搭建</a></div>
+      
+    </li>
+  
+  </ul>
+
+
+
+    
+    
+    
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------本文结束<i class="fa fa-paw"></i>记得扫描下方二维码-------</div>
+    
+</div>
+
+      
+    </div>
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/images/wechat.png" alt="猿人谷 wechat" style="width: 200px; max-width: 100%;">
+  <div>关注公众号可获取更多学习资料哦！</div>
+</div>
+
+
+    <div>
+    
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>【ZooKeeper系列】3.ZooKeeper源码环境搭建</a></p>
+  <p><span>文章作者:</span>猿人谷</a></p>
+  <p><span>发布时间:</span>2020年01月09日 - 16:44:58</p>
+  <p><span>最后更新:</span>2020年02月09日 - 23:11:44</p>
+  <p><span>原始链接:</span><a href="/2020/7bf54924.html" title="【ZooKeeper系列】3.ZooKeeper源码环境搭建">https://yuanrengu.com/2020/7bf54924.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/7bf54924.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+    
+    </div>
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/ZooKeeper/" rel="tag"><i class="fa fa-tag"></i> ZooKeeper</a>
+          
+            <a href="/tags/源码解读/" rel="tag"><i class="fa fa-tag"></i> 源码解读</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2020/469cbe7.html" rel="next" title="【ZooKeeper系列】2.用Java实现ZooKeeper API的调用">
+                <i class="fa fa-chevron-left"></i> 【ZooKeeper系列】2.用Java实现ZooKeeper API的调用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+              <a href="/2020/abb6453a.html" rel="prev" title="程序猿菜鸟打怪升级—一路火花带闪电">
+                程序猿菜鸟打怪升级—一路火花带闪电 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">猿人谷</p>
+  <div class="site-description motion-element" itemprop="description">技术成长，没有捷径，唯有积累。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Ant环境搭建"><span class="nav-text">1 Ant环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-下载ZooKeeper源码"><span class="nav-text">2 下载ZooKeeper源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-编译ZooKeeper源码"><span class="nav-text">3 编译ZooKeeper源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-导入IDEA"><span class="nav-text">4 导入IDEA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-特别说明"><span class="nav-text">5 特别说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-启动zookeeper"><span class="nav-text">6 启动zookeeper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-启动客户端"><span class="nav-text">7 启动客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-main"><span class="nav-text">7.1 main</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-1-ZooKeeperMain"><span class="nav-text">7.1.1 ZooKeeperMain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-2-parseOptions"><span class="nav-text">7.1.2 parseOptions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-3-connectToZK"><span class="nav-text">7.1.3 connectToZK</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-main-run"><span class="nav-text">7.2 main.run()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#温馨提示"><span class="nav-text">温馨提示</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">粤ICP备16101484号-1 </a>&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fas fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">猿人谷</span>
+</div>
+
+<!-- 新增访客统计代码 -->
+<div class="busuanzi-count">
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">94.4k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/16/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+  <script type="text/javascript" src="/js/src/clicksocialvalue.js"></script>
+    
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '68e907fd5dfe1754893d',
+    clientSecret: 'ed0325900afb015d44f872be297e4c2b33bc9ef6',
+    repo: 'yuanrengu.github.io',
+    owner: 'yuanrengu',
+    admin: ['yuanrengu'],
+    id: md5(location.pathname),
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+
+<!--
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+-->
+
+</body>
+</html>

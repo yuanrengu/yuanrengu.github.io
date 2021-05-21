@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<script data-ad-client="ca-pub-6394975472135022" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: ''
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Integer和Integer比较以及Integer和Int的比较分析">
+<meta property="og:url" content="https://yuanrengu.com/2020/6bbb74ca.html">
+<meta property="og:site_name" content="猿人谷">
+<meta property="og:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-13T06:42:16.347Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Integer和Integer比较以及Integer和Int的比较分析">
+<meta name="twitter:description" content="发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。 java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（bool">
+  <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
+  <link rel="canonical" href="https://yuanrengu.com/2020/6bbb74ca">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Integer和Integer比较以及Integer和Int的比较分析 | 猿人谷</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87311079-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !false) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87311079-1');
+    }
+  </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499dfe5d674d943f23758606c7806bed";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">猿人谷</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">技术成长，没有捷径，唯有积累</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-links">
+      
+    
+
+    <a href="/links" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>友链</a>
+
+  </li>
+    </ul>
+    
+
+</nav>
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/6bbb74ca.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="猿人谷">
+      <meta itemprop="description" content="技术成长，没有捷径，唯有积累。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿人谷">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">Integer和Integer比较以及Integer和Int的比较分析
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-13 14:24:18 / 修改时间：14:42:16" itemprop="dateCreated datePublished" datetime="2020-01-13T14:24:18+08:00">2020-01-13</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon"
+              >
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">2.8k</span>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">3 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>发现做项目的过程中，在数值类型的比较上容易犯错，特别是Integer和Integer的比较，Integer和int的比较。虽然这些都是些基础语法，但稍不留意就容易犯错，在实际开发过程中如果出现这类失误，很容易失之毫厘谬以千里。在这里，总结下这些基础知识点。</p>
+<p>java虽然宣称一切都是对象，但原始数据类型是例外。int是整形数字，是java的9个原始数据类型（Primitive Types）（boolean、byte、short、char、int、float、double、long、void）之一。Integer是int对应的包装类，它有一个int类型的字段存储数据，并且提供了基本操作，比如数学运算、int和字符串之间转换等。在<strong>java 5中引入了自动装箱和自动拆箱功能（boxing/unboxing）</strong>，java可以根据上下文，自动进行转换，极大地简化了相关编程。javac自动把<strong>装箱</strong>转换为<strong>Integer.valueOf()</strong>,把<strong>拆箱</strong>替换为<strong>Integer.intValue()</strong>。</p>
+<p>自动装箱实际上算是一种语法糖。什么是语法糖？可以简单理解为java平台为我们自动进行了一些转换，保证不同的写法在运行时等价，他们发生在<code>编译阶段</code>，也就是生产的字节码是一致的。（此句摘自极客时间专栏）</p>
+<p>原始数据类型的变量，需要使用并发相关手段才能保证线程安全。如果有线程安全的计算需要，建议考虑使用类似AtomicInteger、AtomicLong这样的线程安全类。</p>
+<p><code>原始数据类型和java泛型并不能配合使用</code>。因为java的泛型某种程度上可以算作伪泛型，它完全是一种<code>编译期</code>的技巧，java编译期会自动将类型转换为对应的特定类型。这就决定了使用泛型，必须保证相应类型可以转换为Object。</p>
+<p>废话不多说，直接来demo，这样效果更直接。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Integer a1 = <span class="number">6</span>;</span><br><span class="line">		Integer a2 = <span class="number">6</span>;</span><br><span class="line">		<span class="keyword">int</span> a11 = <span class="number">6</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a1 == a11); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a3 = <span class="number">128</span>;</span><br><span class="line">		Integer a4 = <span class="number">128</span>;</span><br><span class="line">		<span class="keyword">int</span> a33 = <span class="number">128</span>;</span><br><span class="line">		</span><br><span class="line">		System.out.println(a3 == a4); <span class="comment">//false</span></span><br><span class="line">		<span class="comment">//Integer会自动拆箱为int，所以为true</span></span><br><span class="line">		System.out.println(a3 == a33); <span class="comment">//true</span></span><br><span class="line">		System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------------"</span>);</span><br><span class="line">		</span><br><span class="line">		Integer a5 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		Integer a6 = <span class="keyword">new</span> Integer(<span class="number">6</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.println(a5 == a6); <span class="comment">//false</span></span><br><span class="line">		System.out.println(a5.equals(a6)); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要明确的一点是，包装型（Integer）和基本型（int）比较会自动拆箱（jdk1.5以上）。</p>
+<p>在这里很多人比较容易迷惑的是如下情况：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer a1 = <span class="number">6</span>;</span><br><span class="line">Integer a2 = <span class="number">6</span>;</span><br><span class="line">System.out.println(a1 == a2); <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3 == a4); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<p>如果研究过jdk源码，你就会发现Integer a3 = 128;在java编译时会被翻译成 Integer a3 = Integer.valueOf(128); 我们再来看看valueOf()的源码就更清晰了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由以上源码就会发现，<code>对于-128到127之间的数，会进行缓存</code>，Integer a1 = 6时，会将6进行缓存，下次再写Integer a2 = 6;时，就会直接从缓存中取，也就不用new一个对象了，所以a1和a2比较时就为true。但a3和a4是超过范围，会new一个对象，<code>==是进行地址和值比较，是比较两个对象在JVM中的地址</code>，这时a3和a4虽然值相同但地址是不一样的，所以比较就为false了。</p>
+<p>通过上面的分析可知：</p>
+<ul>
+<li>两个都不是new出来的Integer，且数值在-128~127之间，用==比较时，基本值相等时为true，否则为false；</li>
+<li>两个都是new出来的Integer，为false</li>
+<li>int和Integer比较，数值相同，用==比较时为true。（因为Integer会自动拆箱为int去比较）</li>
+</ul>
+<blockquote>
+<p><code>所有包装类对象之间值的比较，建议使用equals方法比较</code>。</p>
+</blockquote>
+<p><code>==</code>判断对象是否同一个。</p>
+<p>Integer var = ?在<code>缓存区间</code>的赋值，会复用已有对象，因此这个区间内的Integer使用==进行判断可通过，但是区间之外的所有数据，则会在<code>堆</code>上新产生，不会通过。</p>
+<p>因此如果用== 来比较数值，很可能在小的测试数据中通过，而到了生产环境才出问题。</p>
+<p>为了节省内容，对与下列包装对象的两个实例，当他们的基本值相同时，用==判断会为true：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Boolean  </span><br><span class="line">Byte  </span><br><span class="line">Character, \u0000 - \u007f(7f是十进制的127)  </span><br><span class="line">Integer, -128 — 127</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以看看其它包装型的缓存情况：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Boolean：(全部缓存)</span><br><span class="line">Byte：(全部缓存)</span><br><span class="line"></span><br><span class="line">Character(缓存范围<span class="string">'\u0000'</span>到<span class="string">'\u007F'</span>)</span><br><span class="line">Short(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line">Long(-<span class="number">128</span> — <span class="number">127</span>缓存)</span><br><span class="line"></span><br><span class="line">Float(没有缓存)</span><br><span class="line">﻿﻿﻿﻿﻿﻿Doulbe(没有缓存)</span><br></pre></td></tr></table></figure>
+
+<p>﻿﻿﻿﻿﻿﻿<br>如果要比较两个Integer对象的值（均为new的对象），可以通过<code>.intValue()</code>进行转换后来比较，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.intValue() == a4.intValue());</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用<code>equal()</code>来进行比较，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer a3 = <span class="number">128</span>;</span><br><span class="line">Integer a4 = <span class="number">128</span>;</span><br><span class="line">System.out.println(a3.equals(a4)); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/479c94ba.html" rel="bookmark">通过jstack与jmap分析一次线上故障</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/4a91d705.html" rel="bookmark">内存泄漏与内存溢出</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/fb3dc37a.html" rel="bookmark">Java中List求并集、交集、差集、无重复并集</a></div>
+      
+    </li>
+  
+  </ul>
+
+
+
+    
+    
+    
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------本文结束<i class="fa fa-paw"></i>记得扫描下方二维码-------</div>
+    
+</div>
+
+      
+    </div>
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/images/wechat.png" alt="猿人谷 wechat" style="width: 200px; max-width: 100%;">
+  <div>关注公众号可获取更多学习资料哦！</div>
+</div>
+
+
+    <div>
+    
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>Integer和Integer比较以及Integer和Int的比较分析</a></p>
+  <p><span>文章作者:</span>猿人谷</a></p>
+  <p><span>发布时间:</span>2020年01月13日 - 14:24:18</p>
+  <p><span>最后更新:</span>2020年01月13日 - 14:42:16</p>
+  <p><span>原始链接:</span><a href="/2020/6bbb74ca.html" title="Integer和Integer比较以及Integer和Int的比较分析">https://yuanrengu.com/2020/6bbb74ca.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/6bbb74ca.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+    
+    </div>
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2020/49f0797e.html" rel="next" title="1.Apollo本地运行环境搭建">
+                <i class="fa fa-chevron-left"></i> 1.Apollo本地运行环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+              <a href="/2020/baec5dff.html" rel="prev" title="Lombok介绍、使用方法和总结">
+                Lombok介绍、使用方法和总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">猿人谷</p>
+  <div class="site-description motion-element" itemprop="description">技术成长，没有捷径，唯有积累。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">粤ICP备16101484号-1 </a>&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fas fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">猿人谷</span>
+</div>
+
+<!-- 新增访客统计代码 -->
+<div class="busuanzi-count">
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">94.4k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/16/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+  <script type="text/javascript" src="/js/src/clicksocialvalue.js"></script>
+    
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '68e907fd5dfe1754893d',
+    clientSecret: 'ed0325900afb015d44f872be297e4c2b33bc9ef6',
+    repo: 'yuanrengu.github.io',
+    owner: 'yuanrengu',
+    admin: ['yuanrengu'],
+    id: md5(location.pathname),
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+
+<!--
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+-->
+
+</body>
+</html>

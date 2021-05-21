@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<script data-ad-client="ca-pub-6394975472135022" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2">
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    search: {
+      root: '/',
+      path: ''
+    },
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="本篇文章写于2017年3月14日。虽然写的比较早了，但很多东西依然适用于如今的职场。  近一年技术团队在不断扩充成员，一直忙于高级java工程师、Android工程师、iOS工程师的面试，很想写一篇和招聘程序猿相关的文章，特别是看到“酷壳”里皓哥写的一篇《我是怎么招聘程序员的》文章后，产生很多共鸣。 虽然工作年限还不够长，但也经历过很多大大小小的面试，即被面试过，也面试过很多人。经历过很多很专业">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何招聘程序猿？">
+<meta property="og:url" content="https://yuanrengu.com/2020/2329b301.html">
+<meta property="og:site_name" content="猿人谷">
+<meta property="og:description" content="本篇文章写于2017年3月14日。虽然写的比较早了，但很多东西依然适用于如今的职场。  近一年技术团队在不断扩充成员，一直忙于高级java工程师、Android工程师、iOS工程师的面试，很想写一篇和招聘程序猿相关的文章，特别是看到“酷壳”里皓哥写的一篇《我是怎么招聘程序员的》文章后，产生很多共鸣。 虽然工作年限还不够长，但也经历过很多大大小小的面试，即被面试过，也面试过很多人。经历过很多很专业">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-19T03:45:35.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何招聘程序猿？">
+<meta name="twitter:description" content="本篇文章写于2017年3月14日。虽然写的比较早了，但很多东西依然适用于如今的职场。  近一年技术团队在不断扩充成员，一直忙于高级java工程师、Android工程师、iOS工程师的面试，很想写一篇和招聘程序猿相关的文章，特别是看到“酷壳”里皓哥写的一篇《我是怎么招聘程序员的》文章后，产生很多共鸣。 虽然工作年限还不够长，但也经历过很多大大小小的面试，即被面试过，也面试过很多人。经历过很多很专业">
+  <link rel="alternate" href="/atom.xml" title="猿人谷" type="application/atom+xml">
+  <link rel="canonical" href="https://yuanrengu.com/2020/2329b301">
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>如何招聘程序猿？ | 猿人谷</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87311079-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !false) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87311079-1');
+    }
+  </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499dfe5d674d943f23758606c7806bed";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">猿人谷</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">技术成长，没有捷径，唯有积累</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-links">
+      
+    
+
+    <a href="/links" rel="section"><i class="menu-item-icon fa fa-fw fa-link"></i> <br>友链</a>
+
+  </li>
+    </ul>
+    
+
+</nav>
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yuanrengu.com/2020/2329b301.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="猿人谷">
+      <meta itemprop="description" content="技术成长，没有捷径，唯有积累。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿人谷">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">如何招聘程序猿？
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-17 17:42:12" itemprop="dateCreated datePublished" datetime="2020-01-17T17:42:12+08:00">2020-01-17</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-19 11:45:35" itemprop="dateModified" datetime="2020-01-19T11:45:35+08:00">2020-01-19</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/奋斗/" itemprop="url" rel="index"><span itemprop="name">奋斗</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon"
+              >
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          <br>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">3.3k</span>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span title="阅读时长">3 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>本篇文章写于2017年3月14日。虽然写的比较早了，但很多东西依然适用于如今的职场。</p>
+</blockquote>
+<p>近一年技术团队在不断扩充成员，一直忙于高级java工程师、Android工程师、iOS工程师的面试，很想写一篇和招聘程序猿相关的文章，特别是看到“酷壳”里皓哥写的一篇《我是怎么招聘程序员的》文章后，产生很多共鸣。</p>
+<p>虽然工作年限还不够长，但也经历过很多大大小小的面试，即被面试过，也面试过很多人。经历过很多很专业的面试，也经历过一些非常BT和令人不怎么舒服的面试。一个好的面试体验，公司的考核流程和面试官就显得非常重要了，如果考核流程非常繁琐，会让面试者内心没有任何好感，如面试时在前台莫名其妙的被晾置一两个小时，笔试初试复试得跑三趟公司。面试官就更重要了，不要刚开始面试，就弄的像别人欠你钱或别人在挑战的技术能力似的，或者尽问些非常冷门而且工作中完全用不到的技术来彰显自己的博学。</p>
+<p>公司招聘不要弄成一种买卖关系，应该是寻找一些志同道合和跟公司“气场”匹配的伙伴，这里的气场是指跟公司所需要的技能有一定的匹配度、跟公司的理念有一定程度的吻合。公司行政经常给我说：“技术人员是不是很矫情啊？说好来面试的，最后都不来，说好要入职的，入职前一天又说有公司给更高的待遇。”我只能微微一笑的给她说：“你见，或者不见我，我就在那里，不悲不喜。你来入职，或者不来入职，offer反正在你手里，不增只减”。因为我也曾经矫情过，研究生快毕业时，做了一堆的算法和数据结构方面的题，准备了一堆面试常问的题和一些面试技巧，就到处投简历面试（其实当时手里已经有几个不错的offer了），不为找工作，只为刷存在感，回想这年少无知的举动，倍感惭愧。技术圈说小不小，说大其实也不大，毕竟江湖不远，有缘再见，程序猿平时还是要多给自己攒攒口碑的。</p>
+<p>如何去考核一个程序猿是否可以给offer？我在面试应聘者的时候，最主要是要弄清如下几件事：</p>
+<ol>
+<li>应聘者是否可以跟我“正常对话”？</li>
+<li>应聘者的技能是否跟公司所需的技能达到一定的契合度？</li>
+<li>应聘者是否有能力解决工作中的难题？</li>
+<li>应聘者是否可以跟我们团队一起愉快的工作？</li>
+</ol>
+<p>我相信绝大部分的公司在考核应聘者时都会围绕上述四个问题来进行，可能有人会对第一个问题产生疑问，难道还有不能正常对话的人？还真别说，我就遇到几个性格比较“鲜明”的应聘者，面试时头抬的高高的，眼瞅着天花板，一副老子天下第一的表情，技术人员有傲骨可以理解，可是问几个技术问题，却一问三不知，问他之前团队如何协作的，只回答说公司安排的任务不喜欢就离职了，让人真的很难正常对话。对于第二个问题就更重要了，公司当然希望应聘者的技术越牛越好，梦想是美好的，能招到大神这肯定是公司之幸，现实终究还是很骨感，只希望能找到跟公司所需的技能契合度尽可能高的伙伴。</p>
+<p>技术圈比较流行一句话：面试造火箭，工作拧螺丝。这种情况确实比较常见，从某个层面来看是大部分公司程序猿能力的美好愿景，也催促自己去不断完善自己的知识体系。对于第三个问题，程序猿最基本的技能就是要通过网络解决工作中的一些难题，多问度娘，多问谷歌，程序猿比较忌讳的一点就是“拿来主义”，遇到问题不动脑思考张口就问别人。第四个问题，基本就是考查人的社交能力和情商了，个人人为，团队氛围的整体和谐是做好所有项目的前提。毕竟如今的项目都是靠团战，一个人即使能力再强，也很难独立完成整个项目。</p>
+<p>之前我经历过的一些比较传统的面试流程，基本是下面这样的：</p>
+<ol>
+<li>应聘者先做自我介绍</li>
+<li>问一些比较难的非常细节的技术问题，基本就是快问快答的形式</li>
+<li>给应聘者出一些比较怪异的算法题</li>
+</ol>
+<p>个人觉得这种面试形式不是太合适，可能会错过很多适合公司的程序猿。其实我个人不论是面试别人还是被面试时，都非常讨厌第一个问题，拿着别人简历难道不知道别人叫什么名字？技术面试，这种形式上的东西能少就尽量少即可。但应聘者一进来，总得有个关于介绍的开场。我面试应聘者时，别人一进来时我会先问好，给个微笑，让应聘者不要太紧张。让别人做下技术方面的简单介绍，如工作中主要处理哪里方面的业务（电商、金融等等）啊？主要用哪些编程语言？主要用哪些开发架构（dubbo、SOA等）？主要用哪些框架（Spring、mybatis等）？这样也方便对这个人有比较全面的了解，交流时也好针对性的问些问题，做偏技术方面的介绍也好了解这个人的沟通交流能力。毕竟很难从一个人的简历或自我阐述上来考核这个人是否合适。</p>
+<p>我绝不会在面试应聘者时问一些非常细节的问题，我曾经就经历一个非常BT的面试，面试官据称刚从华为出来，一上来就问我是否用过mybatis，我说用过。接下来这哥们问，mybatis是哪一年被开源的？接手的是哪个开发团队？mybatis的升级历史？当然我觉得我可能听错了，我说记不清楚哪一年被开源的，是apache开源的项目，讲解了下mybatis对比hibernate的优势和缺点。这哥们说是都不知道哪一年开源的，也不知道是apache的哪个团队接手，真的用过mybatis？说是我肯定没用过mybatis。当时内心就千万只骏马奔腾而过啊，我真的是在应聘程序猿吗？敢情我用了几年假的mybatis？</p>
+<p>还有一种面试流程是很多朋友都给我说过非常不喜欢的，就是跟hr的面聊，hr的小姐姐们一般都是聊家庭啊，聊什么让应聘者说自己目前做过最骄傲的事情是什么？最失败的事情是什么？还有问应聘者如何处理跟女票的矛盾，陪女票逛街时接到要加班的电话怎么办？还有非常多很奇怪的问题，其实程序猿虽然得到的评价是木讷，但都是很聪明的，这类问题都可以用些标准答案来应付，但不是内心真实的答案啊。例如陪女票逛街的问题，程序猿大都是很有责任心的，如果是项目非常忙，都会主动加班，如果项目没那么忙，好容易陪女票逛街要加啥班啊，毕竟程序猿有个女票还是非常不容易的，人艰不拆啊。</p>
+<p>我在面试时一般会根据应聘者自己的项目描述来提问，考核下他自己说的技能的熟练程度。也遇到一些技术确实够菜，简历写的无比高大上，问他自己说的问题都回答不上来，你问东他答西，完全不在同一频道对话。碰到这种情况，我就会问笔试题里的SpringMVC工作原理(笔试只是公司要求的形式，我一般不会太看重笔试的成绩)，这个问题非常简单，只要用过这个框架的人都能说出个一二三来。这道题也是所有人都答的非常好的，因为网上一搜，答案一大推，问这个问题也是让应聘者放松些不要太紧张，毕竟自己刚写过。但有些人笔试题上答案写了好大一堆，但口述却一点都说不出来，知道什么问题了吧？我真的不介意你笔试时抄网上的东西，只要你能复述出来讲清楚我都算你掌握了这个问题，但假如是抄的东西连复述都说不出来，那面试还有什么可问的？碰到这种情况，我也不能直接打发别人，还得照顾应聘者的自尊心啊，我会跟应聘者聊聊人生聊聊理想，然后面试就愉快的结束了。</p>
+<p>对于这里还得说一点，公司hr小姐姐要求即使面试遇到不合适的应聘者，说话也要照顾对方的面子，因为网络暴力真的很害人，但凡看一些招聘网站的面试分享，说公司好话的基本都是拿到offer了的，说不好话都是没拿到offer的，如果面试体验不好，就尽发些诋毁公司的言论，对后面要来公司应聘的伙伴来说起到非常不好的影响。网络暴力，确实。。。。。。</p>
+<p>如果没有一起工作过，没有一些实际的项目做背景，单靠半个小时或一个多小时的面试，是比较难全面的了解一个人的。个人觉得在应聘程序猿职务时需要做好如下几个方面：</p>
+<ol>
+<li>穿着大方、简单、整洁。（不需穿个西装打个领带）</li>
+<li>提前熟悉公司的业务、招聘需求，需要的技能可以提前准备下，有备无患嘛。这一点非常重要，知己知彼百战不殆。</li>
+<li>对于面试官的问题，知之为知之不知为不知，技术这东西会就是会，不会就是不会，没法伪装或隐瞒，不然等着面试官问个问题而拆穿就尴尬了。</li>
+<li>平时可以多写些技术博客、参入开源项目、参与技术活动，反正我是非常喜欢这样的程序猿，肯定能加分。</li>
+</ol>
+<p>所有的面试技巧都敌不过自己知识体系的深度、广度！不断提升自己，基础扎实，对某一个或几个业务有比较深入的熟悉，这样的小伙伴无论在哪家公司都是非常受欢迎的。</p>
+
+    </div>
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/7691e770.html" rel="bookmark">synchronized、Lock、ReentrantLock介绍</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/77eef79f.html" rel="bookmark">面试官，不要再问我三次握手和四次挥手</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/1977ac11.html" rel="bookmark">【面试必备】小伙伴栽在了JVM的内存分配策略。。。</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2020/ba184259.html" rel="bookmark">HashMap在Jdk1.7和1.8中的实现</a></div>
+      
+    </li>
+  
+  </ul>
+
+
+
+    
+    
+    
+    <div>
+      
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------本文结束<i class="fa fa-paw"></i>记得扫描下方二维码-------</div>
+    
+</div>
+
+      
+    </div>
+      <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center;">
+  <img id="wechat_subscriber_qcode" src="/images/wechat.png" alt="猿人谷 wechat" style="width: 200px; max-width: 100%;">
+  <div>关注公众号可获取更多学习资料哦！</div>
+</div>
+
+
+    <div>
+    
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>如何招聘程序猿？</a></p>
+  <p><span>文章作者:</span>猿人谷</a></p>
+  <p><span>发布时间:</span>2020年01月17日 - 17:42:12</p>
+  <p><span>最后更新:</span>2020年01月19日 - 11:45:35</p>
+  <p><span>原始链接:</span><a href="/2020/2329b301.html" title="如何招聘程序猿？">https://yuanrengu.com/2020/2329b301.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/2329b301.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+    
+    </div>
+
+    <footer class="post-footer">
+          
+        
+        <div class="post-tags">
+            <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+          
+        </div>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+              <a href="/2020/baec5dff.html" rel="next" title="Lombok介绍、使用方法和总结">
+                <i class="fa fa-chevron-left"></i> Lombok介绍、使用方法和总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+              <a href="/2020/2ecc1e06.html" rel="prev" title="Mybatis动态调用表名和字段名">
+                Mybatis动态调用表名和字段名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="gitalk-container"></div>
+  
+
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">猿人谷</p>
+  <div class="site-description motion-element" itemprop="description">技术成长，没有捷径，唯有积累。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">粤ICP备16101484号-1 </a>&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fas fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">猿人谷</span>
+</div>
+
+<!-- 新增访客统计代码 -->
+<div class="busuanzi-count">
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">94.4k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/16/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  <script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+  
+  <script src="/js/schemes/muse.js?v=7.3.0"></script>
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.3.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+  <script type="text/javascript" src="/js/src/clicksocialvalue.js"></script>
+    
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '68e907fd5dfe1754893d',
+    clientSecret: 'ed0325900afb015d44f872be297e4c2b33bc9ef6',
+    repo: 'yuanrengu.github.io',
+    owner: 'yuanrengu',
+    admin: ['yuanrengu'],
+    id: md5(location.pathname),
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+
+<!--
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+-->
+
+</body>
+</html>
