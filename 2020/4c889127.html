@@ -73,7 +73,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://cdn.yuanrengu.com/img/20200110154339.png">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pLmxvbGkubmV0LzIwMTkvMTAvMTkvblRneGVCUG1HOWhWc1c0LnBuZw?x-oss-process=image/format,png">
-<meta property="og:updated_time" content="2020-12-12T05:26:59.520Z">
+<meta property="og:updated_time" content="2021-05-21T09:04:05.146Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="弄明白CMS和G1，就靠这一篇了">
 <meta name="twitter:description" content="在开始介绍CMS和G1前，我们可以剧透几点：  根据不同分代的特点，收集器可能不同。有些收集器可以同时用于新生代和老年代，而有些时候，则需要分别为新生代或老年代选用合适的收集器。一般来说，新生代收集器的收集频率较高，应选用性能高效的收集器；而老年代收集器收集次数相对较少，对空间较为敏感，应当避免选择基于复制算法的收集器。 在垃圾收集执行的时刻，应用程序需要暂停运行。 可以串行收集，也可以并行收集。">
@@ -317,7 +317,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-12-12 13:26:59" itemprop="dateModified" datetime="2020-12-12T13:26:59+08:00">2020-12-12</time>
+                <time title="修改时间：2021-05-21 17:04:05" itemprop="dateModified" datetime="2021-05-21T17:04:05+08:00">2021-05-21</time>
               </span>
             
           
@@ -354,7 +354,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">8.4k</span>
+              <span title="本文字数">8.6k</span>
             </span>
           
             <span class="post-meta-item">
@@ -415,6 +415,7 @@
 </ul>
 <p>CMS收集器之所以能够做到并发，根本原因在于<strong>采用基于“标记-清除”的算法并对算法过程进行了细粒度的分解</strong>。前面篇章介绍过标记-清除算法将产生大量的内存碎片这对新生代来说是难以接受的，因此新生代的收集器并未提供CMS版本。</p>
 <p>另外要补充一点，JVM在暂停的时候，需要选准一个时机。由于JVM系统运行期间的复杂性，不可能做到随时暂停，因此引入了安全点的概念。</p>
+<p>CMS在JDK9中已经被标记deprecated，更高版本中（Java 14 ）已经被彻底移除。目前被广泛使用的垃圾回收器是 <code>G1</code>，通过很少的参数配置，内存即可高效回收。CMS 垃圾回收器已经在 Java 14 中被移除，由于它的 GC 时间不可控，有条件应该尽量避免使用。</p>
 <h3 id="安全点-Safepoint"><a href="#安全点-Safepoint" class="headerlink" title="安全点(Safepoint)"></a>安全点(Safepoint)</h3><p><strong>安全点，即程序执行时并非在所有地方都能停顿下来开始GC，只有在到达安全点时才能暂停</strong>。Safepoint的选定既不能太少以至于让GC等待时间太长，也不能过于频繁以致于过分增大运行时的负荷。</p>
 <p>安全点的初始目的并不是让其他线程停下，而是找到一个稳定的执行状态。在这个执行状态下，Java虚拟机的堆栈不会发生变化。这么一来，垃圾回收器便能够“安全”地执行可达性分析。只要不离开这个安全点，Java虚拟机便能够在垃圾回收的同时，继续运行这段本地代码。</p>
 <p>程序运行时并非在所有地方都能停顿下来开始GC，只有在到达安全点时才能暂停。安全点的选定基本上是以程序“是否具有让程序长时间执行的特征”为标准进行选定的。“<strong>长时间执行</strong>”的最明显特征就是指令序列复用，例如方法调用、循环跳转、异常跳转等，所以具有这些功能的指令才会产生Safepoint。</p>
@@ -429,7 +430,12 @@
 </li>
 </ul>
 <h3 id="安全区域"><a href="#安全区域" class="headerlink" title="安全区域"></a>安全区域</h3><p>指在一段代码片段中，引用关系不会发生变化。在这个区域中任意地方开始GC都是安全的。也可以把Safe Region看作是被扩展了的Safepoint。</p>
-<h2 id="2-G1收集器"><a href="#2-G1收集器" class="headerlink" title="2 G1收集器"></a>2 G1收集器</h2><p>G1重新定义了堆空间，打破了原有的分代模型，将堆划分为一个个区域。这么做的目的是在进行收集时不必在全堆范围内进行，这是它最显著的特点。区域划分的好处就是带来了<code>停顿时间可预测</code>的收集模型：用户可以指定收集操作在多长时间内完成。即G1提供了接近实时的收集特性。G1 的主要关注点在于达到可控的停顿时间，在这个基础上尽可能提高吞吐量。</p>
+<h2 id="2-G1收集器"><a href="#2-G1收集器" class="headerlink" title="2 G1收集器"></a>2 G1收集器</h2><p>默认收集器：</p>
+<ul>
+<li>jdk1.7，1.8 默认垃圾收集器Parallel Scavenge（新生代）+Parallel Old（老年代）</li>
+<li>jdk1.9 默认垃圾收集器G1</li>
+</ul>
+<p>G1重新定义了堆空间，打破了原有的分代模型，将堆划分为一个个区域。这么做的目的是在进行收集时不必在全堆范围内进行，这是它最显著的特点。区域划分的好处就是带来了<code>停顿时间可预测</code>的收集模型：用户可以指定收集操作在多长时间内完成。即G1提供了接近实时的收集特性。G1 的主要关注点在于达到可控的停顿时间，在这个基础上尽可能提高吞吐量。</p>
 <p>G1 使用了停顿预测模型来满足用户指定的停顿时间目标，并基于目标来选择进行垃圾回收的区块数量。G1 采用<code>增量回收</code>的方式，每次回收一些区块，而不是整堆回收。要清楚 G1 不是一个实时收集器（只是接近实时），它会尽力满足我们的停顿时间要求，但也不是绝对的，它基于之前垃圾收集的数据统计，估计出在用户指定的停顿时间内能收集多少个区块。</p>
 <p>G1与CMS的特征对比如下：</p>
 <table>
@@ -676,7 +682,7 @@
   <p><span>本文标题:</span>弄明白CMS和G1，就靠这一篇了</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月10日 - 16:00:00</p>
-  <p><span>最后更新:</span>2020年12月12日 - 13:26:59</p>
+  <p><span>最后更新:</span>2021年05月21日 - 17:04:05</p>
   <p><span>原始链接:</span><a href="/2020/4c889127.html" title="弄明白CMS和G1，就靠这一篇了">https://yuanrengu.com/2020/4c889127.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/4c889127.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -979,7 +985,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">94.4k</span> 字
+      博客全站共： <span class="post-count">94.5k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
