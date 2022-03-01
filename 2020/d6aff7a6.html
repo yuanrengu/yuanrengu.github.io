@@ -75,7 +75,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/18/QYD4cLRIl9zU52j.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/17/DbdKMswgfNeQAFW.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/17/WmFPQwVrRlExnjz.png">
-<meta property="og:updated_time" content="2020-03-25T01:37:03.457Z">
+<meta property="og:updated_time" content="2022-03-01T02:35:33.680Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">
 <meta name="twitter:description" content="这里我们先说句题外话，相信大家在面试中经常被问到介绍Java内存模型，我在面试别人时也会经常问这个问题。但是，往往都会令我比较尴尬，我还话音未落，面试者就会“背诵”一段（Java虚拟机是由堆、方法区、虚拟机栈，吧啦吧啦。。。），估计心里还一脸自豪的想幸好哥提前在网上搜过，早有准备。每每这个时候，我都不忍心打断，因为“背诵”的真的太顺畅了！ 这也怪不得面试者，首先Java虚拟机方面的知识，对中高级程">
@@ -319,7 +319,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-03-25 09:37:03" itemprop="dateModified" datetime="2020-03-25T09:37:03+08:00">2020-03-25</time>
+                <time title="修改时间：2022-03-01 10:35:33" itemprop="dateModified" datetime="2022-03-01T10:35:33+08:00">2022-03-01</time>
               </span>
             
           
@@ -356,7 +356,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">4.2k</span>
+              <span title="本文字数">4.5k</span>
             </span>
           
             <span class="post-meta-item">
@@ -420,6 +420,11 @@
 <h3 id="7-2-栈帧"><a href="#7-2-栈帧" class="headerlink" title="7.2 栈帧"></a>7.2 栈帧</h3><p>栈帧是用于支持虚拟机进行方法调用和方法执行的数据结构，它是虚拟机运行时数据区中的虚拟机栈的栈元素。<strong>栈帧存储了方法的局部变量表、操作数栈、动态连接和方法返回地址等信息</strong>。<strong>每一个方法从调用开始至执行完成的过程，都对应着一个栈帧在虚拟机栈里面从入栈到出栈的过程。</strong></p>
 <p>在编译程序代码的时候，栈帧中需要多大的局部变量表，多深的操作数栈都已经完全确定了，并且写入到方法表的Code属性之中。因此一个栈帧需要分配多少内存，不会收到程序运行期变量数据的影响，而仅仅取决于具体的虚拟机实现。</p>
 <p>一个线程中的方法调用链可能会很长，很多方法都同时处于执行状态。对于执行引擎来说，在活动线程中，只有位于栈顶的栈帧才是有效的，称为当前栈帧（Current Stack Frame），与这个栈帧相关联的方法称为当前方法（Current Method）。执行引擎运行的所有字节码指令都只针对当前栈帧进行操作。栈帧的概念结构如下：<br><img src="https://i.loli.net/2019/08/17/DbdKMswgfNeQAFW.png" alt="栈帧的概念结构.png"></p>
+<h3 id="7-3-Java8-为什么使用元空间替代永久代"><a href="#7-3-Java8-为什么使用元空间替代永久代" class="headerlink" title="7.3 Java8 为什么使用元空间替代永久代"></a>7.3 Java8 为什么使用元空间替代永久代</h3><p>官方给出的解释是：</p>
+<ul>
+<li>移除永久代是为了融合 HotSpot JVM 与 JRockit VM 而做出的努力，因为 JRockit 没有永久代，所以不需要配置永久代。</li>
+<li>永久代内存经常不够用或发生内存溢出，抛出异常 java.lang.OutOfMemoryError: PermGen。这是因为在 JDK1.7 版本中，指定的 PermGen 区大小为 8M，由于 PermGen 中类的元数据信息在每次 FullGC 的时候都可能被收集，回收率都偏低，成绩很难令人满意；还有，为 PermGen 分配多大的空间很难确定，PermSize 的大小依赖于很多因素，比如，JVM 加载的 class 总数、常量池的大小和方法的大小等。</li>
+</ul>
 <h2 id="8-运行时数据区脑图"><a href="#8-运行时数据区脑图" class="headerlink" title="8.运行时数据区脑图"></a>8.运行时数据区脑图</h2><p><img src="https://i.loli.net/2019/08/17/WmFPQwVrRlExnjz.png" alt="运行时数据区.png"></p>
 <blockquote>
 <p><strong>高清、无码、完整脑图可以私信或留言告知哦！！！</strong></p>
@@ -522,7 +527,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月08日 - 15:49:25</p>
-  <p><span>最后更新:</span>2020年03月25日 - 09:37:03</p>
+  <p><span>最后更新:</span>2022年03月01日 - 10:35:33</p>
   <p><span>原始链接:</span><a href="/2020/d6aff7a6.html" title="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">https://yuanrengu.com/2020/d6aff7a6.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/d6aff7a6.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -785,7 +790,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-运行时数据区介绍"><span class="nav-text">1.运行时数据区介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-堆（Heap）"><span class="nav-text">2.堆（Heap）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是否可能有两个对象共用一段内存的事故？"><span class="nav-text">是否可能有两个对象共用一段内存的事故？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-方法区（Method-Area）"><span class="nav-text">3.方法区（Method Area）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-程序计数器（Program-Counter-Register）"><span class="nav-text">4.程序计数器（Program Counter Register）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-虚拟机栈（VM-Stack）"><span class="nav-text">5.虚拟机栈（VM Stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-本地方法栈（Native-Method-Stack）"><span class="nav-text">6.本地方法栈（Native Method Stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-扩展知识点"><span class="nav-text">7.扩展知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-栈上分配和逃逸分析"><span class="nav-text">7.1 栈上分配和逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-栈帧"><span class="nav-text">7.2 栈帧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-运行时数据区脑图"><span class="nav-text">8.运行时数据区脑图</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-运行时数据区介绍"><span class="nav-text">1.运行时数据区介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-堆（Heap）"><span class="nav-text">2.堆（Heap）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是否可能有两个对象共用一段内存的事故？"><span class="nav-text">是否可能有两个对象共用一段内存的事故？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-方法区（Method-Area）"><span class="nav-text">3.方法区（Method Area）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-程序计数器（Program-Counter-Register）"><span class="nav-text">4.程序计数器（Program Counter Register）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-虚拟机栈（VM-Stack）"><span class="nav-text">5.虚拟机栈（VM Stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-本地方法栈（Native-Method-Stack）"><span class="nav-text">6.本地方法栈（Native Method Stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-扩展知识点"><span class="nav-text">7.扩展知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-栈上分配和逃逸分析"><span class="nav-text">7.1 栈上分配和逃逸分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-栈帧"><span class="nav-text">7.2 栈帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-Java8-为什么使用元空间替代永久代"><span class="nav-text">7.3 Java8 为什么使用元空间替代永久代</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-运行时数据区脑图"><span class="nav-text">8.运行时数据区脑图</span></a></li></ol></div>
             
 
           </div>
@@ -803,7 +808,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">粤ICP备16101484号-1 </a>&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">粤ICP备16101484号-1 </a>&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-fas fa-heartbeat"></i>
   </span>
@@ -825,7 +830,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">95.1k</span> 字
+      博客全站共： <span class="post-count">95.3k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
