@@ -75,7 +75,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/18/QYD4cLRIl9zU52j.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/17/DbdKMswgfNeQAFW.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/17/WmFPQwVrRlExnjz.png">
-<meta property="og:updated_time" content="2022-03-01T02:35:33.680Z">
+<meta property="og:updated_time" content="2022-03-01T02:41:23.150Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">
 <meta name="twitter:description" content="这里我们先说句题外话，相信大家在面试中经常被问到介绍Java内存模型，我在面试别人时也会经常问这个问题。但是，往往都会令我比较尴尬，我还话音未落，面试者就会“背诵”一段（Java虚拟机是由堆、方法区、虚拟机栈，吧啦吧啦。。。），估计心里还一脸自豪的想幸好哥提前在网上搜过，早有准备。每每这个时候，我都不忍心打断，因为“背诵”的真的太顺畅了！ 这也怪不得面试者，首先Java虚拟机方面的知识，对中高级程">
@@ -319,7 +319,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2022-03-01 10:35:33" itemprop="dateModified" datetime="2022-03-01T10:35:33+08:00">2022-03-01</time>
+                <time title="修改时间：2022-03-01 10:41:23" itemprop="dateModified" datetime="2022-03-01T10:41:23+08:00">2022-03-01</time>
               </span>
             
           
@@ -425,6 +425,7 @@
 <li>移除永久代是为了融合 HotSpot JVM 与 JRockit VM 而做出的努力，因为 JRockit 没有永久代，所以不需要配置永久代。</li>
 <li>永久代内存经常不够用或发生内存溢出，抛出异常 java.lang.OutOfMemoryError: PermGen。这是因为在 JDK1.7 版本中，指定的 PermGen 区大小为 8M，由于 PermGen 中类的元数据信息在每次 FullGC 的时候都可能被收集，回收率都偏低，成绩很难令人满意；还有，为 PermGen 分配多大的空间很难确定，PermSize 的大小依赖于很多因素，比如，JVM 加载的 class 总数、常量池的大小和方法的大小等。</li>
 </ul>
+<p>简单点说就是：1.为了统一JVM实现规范；2.避免PermGen导致的OOM。</p>
 <h2 id="8-运行时数据区脑图"><a href="#8-运行时数据区脑图" class="headerlink" title="8.运行时数据区脑图"></a>8.运行时数据区脑图</h2><p><img src="https://i.loli.net/2019/08/17/WmFPQwVrRlExnjz.png" alt="运行时数据区.png"></p>
 <blockquote>
 <p><strong>高清、无码、完整脑图可以私信或留言告知哦！！！</strong></p>
@@ -527,7 +528,7 @@
   <p><span>本文标题:</span>【JVM从小白学成大佬】2.Java虚拟机运行时数据区</a></p>
   <p><span>文章作者:</span>猿人谷</a></p>
   <p><span>发布时间:</span>2020年01月08日 - 15:49:25</p>
-  <p><span>最后更新:</span>2022年03月01日 - 10:35:33</p>
+  <p><span>最后更新:</span>2022年03月01日 - 10:41:23</p>
   <p><span>原始链接:</span><a href="/2020/d6aff7a6.html" title="【JVM从小白学成大佬】2.Java虚拟机运行时数据区">https://yuanrengu.com/2020/d6aff7a6.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://yuanrengu.com/2020/d6aff7a6.html"  aria-label="复制成功！"></i></span>
   </p>
